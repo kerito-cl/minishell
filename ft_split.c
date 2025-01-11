@@ -6,11 +6,11 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 15:40:11 by mquero            #+#    #+#             */
-/*   Updated: 2024/12/10 20:27:28 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/11 14:09:25 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "minishell.h"
 
 void	freesplit(char **strs)
 {

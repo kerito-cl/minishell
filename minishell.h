@@ -1,20 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 16:50:40 by mquero            #+#    #+#             */
-/*   Updated: 2024/12/28 14:34:41 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/11 14:44:44 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
+#ifndef MINISHELL_H
+# define MINISHELL_H
 
-# include "./printf/ft_printf.h"
 # include <errno.h>
+# include "./printf/ft_printf.h"
 # include <fcntl.h>
 # include <limits.h>
 # include <stdbool.h>
@@ -24,6 +24,8 @@
 # include <string.h>
 # include <sys/wait.h>
 # include <unistd.h>
+#include <readline/readline.h>
+#include <readline/history.h>
 
 typedef struct s_fd
 {
@@ -49,5 +51,6 @@ void		close_all(t_fd *fd);
 void		throw_error_child(char *path, t_fd *fd, char *arg);
 void		error_ifdir(char *str);
 void		e_free_e(char *str, char **split);
+char		*find_path(char *argv, char **envp, int i);
 
 #endif

@@ -6,11 +6,11 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 10:40:48 by mquero            #+#    #+#             */
-/*   Updated: 2024/12/20 11:16:41 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/11 14:08:59 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "minishell.h"
 
 size_t	ft_strlen(const char *str)
 {

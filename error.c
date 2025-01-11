@@ -6,11 +6,11 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 11:13:12 by mquero            #+#    #+#             */
-/*   Updated: 2024/12/28 14:42:56 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/11 14:09:31 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "minishell.h"
 
 void	close_all(t_fd *fd)
 {

@@ -6,11 +6,11 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 11:10:55 by mquero            #+#    #+#             */
-/*   Updated: 2024/12/28 14:40:02 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/11 14:08:28 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "minishell.h"
 
 bool	check_if_full_path(char *arg)
 {
