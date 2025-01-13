@@ -5,26 +5,39 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
+int g_signal = 0;
+
 int main(int argc, char const **argv, char **envp)
 {
-    char *input;
-    char *path;
-    char  **input_split;
+    t_in in;
 
     (void )argc;
     if (argv)
         
+    //init SIGNAL
     while (true)
     {
-        input = readline("minishell>");
-        input_split = ft_split(input, ' ');
-
-        if (*input) {
-            add_history(input);
+        in.input = readline("minishell>");
+        // if g_signal == 1;
+           // continue
+        in.cmds = ft_split(in.input, ' ');
+        if (*in.input) {
+            add_history(in.input);
         }
-        path = find_path(input_split[0], envp, 0);
-	    execve(path, input_split, envp);
-        free(input);
+        
+        //create_builting;
+        // parse function ;
+
+        
+        // childr(&t_sdfg)
+        // childr(&t_sdfg)
+
+        in.path = find_path(in.cmds[0], envp, 0);
+
+	    execve(in.path, in.cmds , envp);
+        free(in.input);
+        
     }
+    rl_clear_history();
     return 0;
 }

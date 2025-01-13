@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 16:50:40 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/11 14:44:44 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/13 11:16:35 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,16 @@ typedef struct s_fd
 	int		pid2;
 }			t_fd;
 
+typedef struct s_in
+{
+	char	**cmds;
+	char	*input;
+	char	*path;
+	int		n_pipes;
+	int		n_infiles;
+	int		n_outfiles;
+}			t_in;
+
 char		*ft_strjoin(char const *s1, char const *s2);
 void		freesplit(char **strs);
 char		**ft_split(char const *s, char c);
@@ -52,5 +62,6 @@ void		throw_error_child(char *path, t_fd *fd, char *arg);
 void		error_ifdir(char *str);
 void		e_free_e(char *str, char **split);
 char		*find_path(char *argv, char **envp, int i);
+void		parse(char *input);
 
 #endif
