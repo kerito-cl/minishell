@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 16:50:40 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/13 14:35:20 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/13 18:52:41 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,5 +64,8 @@ void		error_ifdir(char *str);
 void		e_free_e(char *str, char **split);
 char		*find_path(char *argv, char **envp, int i);
 void		parse(char *input);
+void		slash_signal(int sig);
+int			hook_signal(void);
+void		continue_signal(int sig);
 
 #endif

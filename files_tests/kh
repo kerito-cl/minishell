@@ -1,6 +1,6 @@
 NAME = minishell
 PNAME = libftprintf.a
-SOURCES = main.c ft_split.c utils.c children.c error.c signal.c
+SOURCES = main.c ft_split.c utils.c children.c error.c
 OFILES = $(SOURCES:.c=.o)
 CC = cc
 FLAGS = -Wall -Wextra -Werror
