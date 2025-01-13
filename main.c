@@ -12,7 +12,7 @@ int main(int argc, char const **argv, char **envp)
     (void )argc;
     if (argv)
         
-    rl_catch_signals = 0;
+    rl_catch_signals = 2;
     signal(SIGINT, continue_signal);
     signal(SIGQUIT, slash_signal);
     rl_event_hook = hook_signal;
