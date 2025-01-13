@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 16:50:40 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/13 11:16:35 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/13 14:35:20 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # include <unistd.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <signal.h>
 
 typedef struct s_fd
 {

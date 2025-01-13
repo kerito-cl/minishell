@@ -7,6 +7,23 @@
 
 int g_signal = 0;
 
+void exit_signal(int signal)
+{
+    g_signal = signal;
+    g_signal = 3;
+}
+
+void continue_signal(int signal)
+{
+    //printf("SIGNAL IS %d\n", signal);
+    g_signal = signal;
+            //write(1, "\n", 1);
+        rl_on_new_line();
+        rl_replace_line("", 0);
+        rl_redisplay();
+
+}
+
 int main(int argc, char const **argv, char **envp)
 {
     t_in in;
@@ -14,16 +31,22 @@ int main(int argc, char const **argv, char **envp)
     (void )argc;
     if (argv)
         
-    //init SIGNAL
+    //signal(EOF, exit_signal);
+    signal(SIGINT, continue_signal);
     while (true)
     {
         in.input = readline("minishell>");
-        // if g_signal == 1;
-           // continue
-        in.cmds = ft_split(in.input, ' ');
-        if (*in.input) {
-            add_history(in.input);
+        if (g_signal == SIGINT)
+        {
+            continue;
         }
+        if (in.input == NULL)
+        {
+            write(1, "\n", 1);
+            exit(1);
+        }
+        in.cmds = ft_split(in.input, ' ');
+        //add_history(in.input);
         
         //create_builting;
         // parse function ;
@@ -31,10 +54,11 @@ int main(int argc, char const **argv, char **envp)
         
         // childr(&t_sdfg)
         // childr(&t_sdfg)
-
-        in.path = find_path(in.cmds[0], envp, 0);
-
-	    execve(in.path, in.cmds , envp);
+        if (in.cmds[0] != NULL )
+        {
+            in.path = find_path(in.cmds[0], envp, 0);
+	        execve(in.path, in.cmds , envp);
+        }
         free(in.input);
         
     }
