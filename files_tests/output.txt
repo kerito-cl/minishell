@@ -1,0 +1,13 @@
+$(CC)
+ar
+CC
+clean:
+fclean:
+%.o:
+OFILES
+PFILES
+.PHONY:
+./printf/ft_strlen.c
+PSOURCES
+re:
+SOURCES

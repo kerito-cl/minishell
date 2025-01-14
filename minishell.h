@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 16:50:40 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/13 18:52:41 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/13 23:20:15 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,9 @@ typedef struct s_in
 	int		n_pipes;
 	int		n_infiles;
 	int		n_outfiles;
+	int		status;
+	int		pid1;
+	int		pid2;
 }			t_in;
 
 char		*ft_strjoin(char const *s1, char const *s2);
