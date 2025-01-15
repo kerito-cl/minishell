@@ -22,27 +22,30 @@ ASTNode* createNode(char *value, char *type) {
     return newNode;
 }
 
-// Define operavoid printAST(ASTNode *node) {
-void printAST(ASTNode *node, int *n_pipes) {
+
+//execute recursively pipes according to node->type and node->value
+void recursive_exec(ASTNode *node, int *n_pipes) {
 
     if (node == NULL) return;
     if (node->value[0] == '|')
     {
         *n_pipes += 1;
-        printAST(node->left, n_pipes);
+        recursive_exec(node->left, n_pipes);
         *n_pipes -= 1;
     }
     else{
-        printAST(node->left, n_pipes);
+        recursive_exec(node->left, n_pipes);
     }
     printf("%d ", *n_pipes);
     printf("%s ", node->value);
     /*
-        CHILD  PROCESS EXEC LEFT
+        if (node->type == cmd)
+            CHILD  PROCESS EXEC LEFT
     */
-    printAST(node->right, n_pipes);
+    recursive_exec(node->right, n_pipes);
     /*
-        CHILD  PROCESS EXEC RIGHT
+        if (node->type == cmd)
+            CHILD  PROCESS EXEC RIGHT
     */
 }
 
@@ -52,7 +55,6 @@ int main() {
     ASTNode *current;
     ASTNode *temp;
     int n_pipes;
-    // Debugging output to see the tokens
 
     root = createNode("|", "operator");
     root->right = createNode("ls", "cmd");
@@ -62,11 +64,8 @@ int main() {
     root->left->left->right = createNode("awk '{print $1}'", "cmd");
     root->left->left->left = createNode("|", "operator");
     root->left->left->left->right = createNode("grep c", "command");
-    root->left->left->left->left = createNode("cat", "cmd");
-    root->left->left->left->left->right = createNode("infile", "fds");
-    //root->right = createNode("file", "argument");
-    printAST(root, &n_pipes);
-    // Print the AST
+    root->left->left->left->left = createNode("cat infile", "cmd");
+    recursive_exec(root, &n_pipes);
 
     return 0;
 }
