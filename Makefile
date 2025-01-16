@@ -6,7 +6,7 @@
 #    By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/15 07:44:51 by ipersids          #+#    #+#              #
-#    Updated: 2025/01/15 23:16:33 by ipersids         ###   ########.fr        #
+#    Updated: 2025/01/16 14:32:36 by ipersids         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -93,7 +93,7 @@ run: all
 TEST_SRC		:= tests/test_main.c tests/test_env.c
 TEST_OBJ		:= $(TEST_SRC:tests/%.c=tests/%.o)
 
-test: $(OBJ_DIR) $(OBJS) $(TEST_OBJ)
+test: update-submodule build-submodule $(OBJ_DIR) $(OBJS) $(TEST_OBJ)
 	$(CC) $(CFLAGS) $(OBJS) $(TEST_OBJ) $(HDRS) $(LIBS) -o test_main
 
 %.o: %.c
