@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 12:01:49 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/17 13:19:36 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/17 13:38:55 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,25 +27,25 @@ static int	is_n_option(const char *word);
  * 
  * @note it doesn't check any special symbols for now.
  * 
- * @param arr Array of arguments passed to the echo command.
+ * @param args Array of arguments passed to the echo command.
  * @return int Returns 0 on success.
  */
-int	builtin_echo(char **arr)
+int	builtin_echo(char **args)
 {
 	int	is_new_line;
 	int	i;
 
 	i = 0;
 	is_new_line = 1;
-	while (arr[i] && is_n_option(arr[i]))
+	while (args[i] && is_n_option(args[i]))
 	{
 		is_new_line = 0;
 		i++;
 	}
-	while (arr[i])
+	while (args[i])
 	{
-		ft_putstr_fd(arr[i], 0);
-		if (arr[++i])
+		ft_putstr_fd(args[i], 0);
+		if (args[++i])
 			ft_putchar_fd(' ', 0);
 	}
 	if (is_new_line)

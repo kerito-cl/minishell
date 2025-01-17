@@ -2,7 +2,7 @@
 volatile int	g_status = 0;
 
 void test_env(char **envp);
-void test_builtin(void);
+void test_builtin(t_env *env);
 
 int main(int argc, char **argv, char **envp) {
 	if (argc != 1 || **argv == '\0' || !envp) {
@@ -10,7 +10,9 @@ int main(int argc, char **argv, char **envp) {
 	}
 
 	// test_env(envp);
-	test_builtin();
+	t_env env;
+	env_init(envp, &env);
+	test_builtin(&env);
 
 	return 0;
 }

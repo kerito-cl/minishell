@@ -6,7 +6,7 @@
 #    By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/15 07:44:51 by ipersids          #+#    #+#              #
-#    Updated: 2025/01/17 13:11:06 by ipersids         ###   ########.fr        #
+#    Updated: 2025/01/17 14:08:56 by ipersids         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,7 +45,8 @@ SRCS			:= $(SRCS_DIR)/signals/sig_handler.c \
 				   $(SRCS_DIR)/environment/env_add.c \
 				   $(SRCS_DIR)/environment/env_remove.c \
 				   $(SRCS_DIR)/environment/env_find_value.c \
-				   $(SRCS_DIR)/builtins/builtin_echo.c
+				   $(SRCS_DIR)/builtins/builtin_echo.c \
+				   $(SRCS_DIR)/builtins/builtin_env.c
 				   
 SRC_MAIN		:= $(SRCS_DIR)/main.c
 

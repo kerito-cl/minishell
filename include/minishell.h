@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 07:36:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/17 12:59:19 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/17 14:07:04 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,9 @@ const char	*env_find_value(const char *var, t_env *env);
 int			env_add(const char *var, t_env *env);
 int			env_remove(const char *var, t_env *env);
 
-int			builtin_echo(char **arr);
+/* -------------------------------- Builtins ------------------------------- */
+
+int			builtin_echo(char **args);
+int			builtin_env(char **args, t_env *env);
 
 #endif

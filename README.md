@@ -33,7 +33,9 @@
 #### 3. Builtins  
 Built-in commands are executed directly by the shell and are part of the shell itself. These commands do not require external binaries or files to execute. All commands should return zero in success and not-zero int overwise (we need handle `$?`).  
 
-- [ ] `echo` with option `-n` outputs text to the terminal (`printf()`).  
+It takes an array of array of chars as argument (the command should be skipped, ex: `"echo Hello!"` -> `char **args = ["echo", "Hello!", NULL]` -> `builtin_echo(&args[1])`).  
+
+- [x] `echo` with option `-n` outputs text to the terminal (`printf()`).  
 - [ ] `cd` with only a relative or absolute path changes the current working directory.  
 - [ ] `pwd` with no options  
 - [ ] `export` with no options sets environment variables.  
