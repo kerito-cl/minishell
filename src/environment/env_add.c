@@ -6,14 +6,28 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 19:20:10 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/15 22:44:10 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/17 11:52:01 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/* --------------------- Private function prototypes ----------------------- */
+
 static char	**realloc_env(t_env *env);
 
+/* --------------------------- Public Functions ---------------------------- */
+
+/**
+ * @brief Adds or updates an environment variable in the environment struct.
+ * 
+ * This function adds a new environment variable or updates an existing one.
+ * If the environment array is full, it reallocates memory.
+ * 
+ * @param var The variable to add or update in the environment.
+ * @param env Pointer to the environment struct containing an array of strings.
+ * @return int Returns 0 on success, or an error code on failure.
+ */
 int	env_add(const char *var, t_env *env)
 {
 	size_t	i;
@@ -40,6 +54,19 @@ int	env_add(const char *var, t_env *env)
 	return (0);
 }
 
+/* ------------------- Private Function Implementation --------------------- */
+
+/**
+ * @brief Reallocate memory for the array of environment variables.
+ * 
+ * This function doubles the capacity of the environment array 
+ * and copies the existing environment variables to the new array.
+ * It will free original environment array only in case of success.
+ * 
+ * @param env Pointer to the environment struct containing an array of strings.
+ * @return char** Pointer to the newly allocated environment structure, 
+ * 				  or NULL on failure.
+ */
 static char	**realloc_env(t_env *env)
 {
 	char			**res;

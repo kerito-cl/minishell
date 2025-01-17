@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 22:46:10 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/15 23:15:26 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/17 11:45:24 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ void test_env(char **envp) {
 	}
 	printf("\n\n%s----------------- END OF PRINT ----------------%s\n\n", PURPLE, DEFAULT);
 
+	printf("\n\n%s---------------- FIND VARIABLE ----------------%s\n\n", PURPLE, DEFAULT);
+
 	printf("\n%sTry to find variable%s \"USER=\": \n", PURPLE, DEFAULT);
 	size_t j = 0;
 	if (env_find_variable("USER=", &env, &j) != NULL)
@@ -59,6 +61,8 @@ void test_env(char **envp) {
 	else
 		printf("NOT HERE! I expected it! index = %zu (%s)\n", j, env.envp[j]);
 	
+	printf("\n\n%s----------------- ADD VARIABLE ----------------%s\n\n", PURPLE, DEFAULT);
+
 	printf("%sTry to add existing variable%s \"USER=aaaaaa\"\n", PURPLE, DEFAULT);
 	printf("exit_code %d\n", env_add("USER=aaaaaa", &env));
 	printf("\n%sTry to find variable%s \"USER=\": \n", PURPLE, DEFAULT);
@@ -80,6 +84,7 @@ void test_env(char **envp) {
 	
 	printf("\n%sEnvironment:%s len = %u, capacity = %u\n", PURPLE, DEFAULT, env.len, env.capacity);
 
+	printf("\n\n%s-------------- REMOVE VARIABLE ---------------%s\n\n", PURPLE, DEFAULT);
 	j = 0;
 	printf("\n%sTry remove existing variable%s \"USER\"\n", PURPLE, DEFAULT);
 	if (env_remove("USER=", &env) == 0 && env_find_variable("USER=", &env, &j) == NULL)
@@ -94,6 +99,21 @@ void test_env(char **envp) {
 	else
 		printf("Hmm, something wrong! len = %u\n", env.len);
 
+	printf("\n\n%s------------ RETURN VARIABLE VALUE ------------%s\n\n", PURPLE, DEFAULT);
+
+	j = 0;
+	printf("HOME:\n");
+	printf("Line found: %s\n", env_find_variable("HOME", &env, &j));
+	printf("Returned value of HOME: %s\n", env_find_value("HOME", &env));
+	printf("Returned value of $HOME: %s\n", env_find_value("$HOME", &env));
+
+	j = 0;
+	printf("\nTEST6 (do not exist):\n");
+	printf("Line found: %s\n", env_find_variable("TEST6", &env, &j));
+	printf("Returned value of TEST6: %s\n", env_find_value("TEST6", &env));
+	printf("Returned value of $TEST6: %s\n", env_find_value("$TEST6", &env));
+
+	printf("\n\n%s------------ FREEING ENVIRONMENT --------------%s\n\n", PURPLE, DEFAULT);
 	printf("\nFREEING!\n");
 	env_free(&env);
 	printf("%sEnvironment:%s len = %u, capacity = %u\n", PURPLE, DEFAULT, env.len, env.capacity);

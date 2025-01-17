@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 07:36:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/15 22:43:43 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/17 11:11:08 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,17 @@
 
 /* -------------------------------- Signals -------------------------------- */
 
-void	sig_handler_main(int sig, siginfo_t *info, void *context);
-void	sig_sigaction_init(struct sigaction *sa, \
-							void (*handler) (int, siginfo_t *, void *));
+void		sig_handler_main(int sig, siginfo_t *info, void *context);
+void		sig_sigaction_init(struct sigaction *sa, \
+								void (*handler) (int, siginfo_t *, void *));
 
 /* ------------------------------ Environment ------------------------------ */
 
-void	env_free(t_env *env);
-int		env_init(char **envp_arr, t_env *env);
-char	*env_find_variable(const char *var, t_env *env, size_t	*i);
-int		env_add(const char *var, t_env *env);
-int		env_remove(const char *var, t_env *env);
+void		env_free(t_env *env);
+int			env_init(char **envp_arr, t_env *env);
+char		*env_find_variable(const char *var, t_env *env, size_t	*i);
+const char	*env_find_value(const char *var, t_env *env);
+int			env_add(const char *var, t_env *env);
+int			env_remove(const char *var, t_env *env);
 
 #endif
