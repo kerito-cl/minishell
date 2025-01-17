@@ -6,7 +6,7 @@
 #    By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/15 07:44:51 by ipersids          #+#    #+#              #
-#    Updated: 2025/01/17 11:11:32 by ipersids         ###   ########.fr        #
+#    Updated: 2025/01/17 13:11:06 by ipersids         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,7 +44,8 @@ SRCS			:= $(SRCS_DIR)/signals/sig_handler.c \
 				   $(SRCS_DIR)/environment/env_find_variable.c \
 				   $(SRCS_DIR)/environment/env_add.c \
 				   $(SRCS_DIR)/environment/env_remove.c \
-				   $(SRCS_DIR)/environment/env_find_value.c
+				   $(SRCS_DIR)/environment/env_find_value.c \
+				   $(SRCS_DIR)/builtins/builtin_echo.c
 				   
 SRC_MAIN		:= $(SRCS_DIR)/main.c
 
@@ -59,6 +60,7 @@ $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
 	mkdir -p $(OBJ_DIR)/signals
 	mkdir -p $(OBJ_DIR)/environment
+	mkdir -p $(OBJ_DIR)/builtins
 
 # Rule for creating object files
 $(OBJ_DIR)/%.o: $(SRCS_DIR)/%.c
@@ -91,7 +93,7 @@ run: all
 	@./minishell
 
 # TESTING >>>
-TEST_SRC		:= tests/test_main.c tests/test_env.c
+TEST_SRC		:= tests/test_main.c tests/test_env.c tests/test_builtin.c
 TEST_OBJ		:= $(TEST_SRC:tests/%.c=tests/%.o)
 
 test: update-submodule build-submodule $(OBJ_DIR) $(OBJS) $(TEST_OBJ)
