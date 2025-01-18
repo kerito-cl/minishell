@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 16:50:40 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/16 17:13:20 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/18 15:01:24 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,9 @@ typedef struct s_index
 	int	pip;
 	int	pip_h;
 	int i;
+	int i_reout;
+	bool reout;
+	bool rein;
 
 }			t_index;
 
@@ -64,7 +67,7 @@ typedef struct s_in
 
 
 typedef struct s_ast {
-    char *value;         
+    char **value;         
     char *type;         // The value of the node (e.g., command or operator)
     struct s_ast *left;  // Left child (usually for arguments or commands)
     struct s_ast *right; // Right child (usually for subsequent commands or files)
