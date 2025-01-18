@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 07:36:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/18 17:06:15 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/18 18:30:20 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ int			builtin_echo(char **args);
 int			builtin_env(char **args, t_env *env);
 int 		builtin_unset(char **args, t_env *env);
 int			builtin_export(char **args, t_env *env);
+int			builtin_pwd(char **args);
 
 int			builtin_is_identifier_valid(const char *var);
 

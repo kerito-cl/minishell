@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 12:52:30 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/18 17:47:44 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/18 18:30:09 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,9 @@ void test_builtin(t_env *env) {
 	test_unset("unset _TEST test", env);
 	test_unset("unset TEST6", env);
 
+	printf("\n\n%s-------------- TEST PWD --------------%s\n\n", PURPLE, DEFAULT);
+
+	builtin_pwd(NULL);
 }
 
 static void test_unset(const char *command, t_env *env) {

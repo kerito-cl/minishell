@@ -37,9 +37,9 @@ It takes an array of array of chars as argument (the command should be skipped, 
 
 - [x] `echo` with option `-n`. Outputs text to the terminal with new lin or without (if `-n` was used).  
 - [ ] `cd` with only a relative or absolute path changes the current working directory.  
-- [ ] `pwd` with no options  
+- [x] `pwd` with no options  
 - [x] `export` with no options sets environment variables.  
-- [ ] `unset` with no options unsets environment variables.  
+- [x] `unset` with no options unsets environment variables.  
 - [x] `env` with no options or arguments  
 - [ ] `exit` with no options  
 
