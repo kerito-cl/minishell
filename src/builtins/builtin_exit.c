@@ -6,16 +6,21 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 19:58:44 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/19 01:00:36 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/19 01:14:35 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/* --------------------- Private function prototypes ----------------------- */
+
 static t_bool	is_exit_code_valid(const char *str, int *exit_code);
 
+/* --------------------------- Public Functions ---------------------------- */
+
 /**
- *
+ * @brief Executes the exit command.
+ * 
  * The exit status of an executed command is the value returned by the waitpid 
  * system call or equivalent function. Exit statuses fall between 0 and 255, 
  * though, as explained below, the shell may use values above 125 specially. 
@@ -31,14 +36,16 @@ static t_bool	is_exit_code_valid(const char *str, int *exit_code);
  * 3) If multiple arguments are provided, the shell should display an error 
  * and not exit.
  * 
+ * @param args Array of arguments passed to the exit command.
+ * @param ms Pointer to the minishell structure.
+ * @return int Returns the exit code.
  */
-
 int	builtin_exit(char **args, t_mshell *ms)
 {
 	int	len;
 
 	len = 0;
-	while(args && args[len])
+	while (args && args[len])
 		len++;
 	if (len > 1)
 	{
@@ -53,11 +60,20 @@ int	builtin_exit(char **args, t_mshell *ms)
 		ft_putstr_fd(args[0], STDERR_FILENO);
 		ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
 	}
-	if(ms->is_parent == TRUE)
+	if (ms->is_parent == TRUE)
 		exit_destroy_minishell(ms);
 	exit(ms->exit_code);
 }
 
+/* ------------------- Private Function Implementation --------------------- */
+
+/**
+ * @brief Checks if the given exit code is valid.
+ * 
+ * @param str The string representing the exit code.
+ * @param exit_code Pointer to an integer to store the parsed exit code.
+ * @return t_bool Returns TRUE if the exit code is valid, FALSE otherwise.
+ */
 static t_bool	is_exit_code_valid(const char *str, int *exit_code)
 {
 	size_t	i;
