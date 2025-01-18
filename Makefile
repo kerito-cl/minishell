@@ -6,7 +6,7 @@
 #    By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/15 07:44:51 by ipersids          #+#    #+#              #
-#    Updated: 2025/01/18 14:51:45 by ipersids         ###   ########.fr        #
+#    Updated: 2025/01/18 17:39:01 by ipersids         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,6 +48,8 @@ SRCS			:= $(SRCS_DIR)/signals/sig_handler.c \
 				   $(SRCS_DIR)/builtins/builtin_echo.c \
 				   $(SRCS_DIR)/builtins/builtin_env.c \
 				   $(SRCS_DIR)/builtins/builtin_export.c \
+				   $(SRCS_DIR)/builtins/builtin_unset.c \
+				   $(SRCS_DIR)/builtins/utils/builtin_is_identifier_valid.c
 				   
 SRC_MAIN		:= $(SRCS_DIR)/main.c
 
@@ -60,9 +62,10 @@ all: update-submodule build-submodule $(OBJ_DIR) $(NAME)
 # Rule to create the obj/* directory
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
-	mkdir -p $(OBJ_DIR)/signals
-	mkdir -p $(OBJ_DIR)/environment
-	mkdir -p $(OBJ_DIR)/builtins
+	@mkdir -p $(OBJ_DIR)/signals
+	@mkdir -p $(OBJ_DIR)/environment
+	@mkdir -p $(OBJ_DIR)/builtins
+	@mkdir -p $(OBJ_DIR)/builtins/utils
 
 # Rule for creating object files
 $(OBJ_DIR)/%.o: $(SRCS_DIR)/%.c

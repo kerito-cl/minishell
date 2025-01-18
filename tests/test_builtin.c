@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 12:52:30 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/18 13:32:30 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/18 17:47:44 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 
 static void	test_echo(char *str);
 static void test_export(const char *command, t_env *env);
+static void test_unset(const char *command, t_env *env);
 
 void test_builtin(t_env *env) {
 	
@@ -53,7 +54,58 @@ void test_builtin(t_env *env) {
 	test_export("export TEST=test1 TEST2=", env);
 	test_export("export 1TEST TEST2=test2", env);
 	test_export("export _TEST=_test test=small_test", env);
+	test_export("export TEST6", env);
 	test_export("export", env);
+
+	printf("\n\n%s-------------- TEST UNSET -------------%s\n\n", PURPLE, DEFAULT);
+
+	test_unset("unset TEST TEST1= TEST2=test", env);
+	test_unset("unset TEST=test1 TEST2=", env);
+	test_unset("unset 1TEST TEST2=test2", env);
+	test_unset("unset _TEST test", env);
+	test_unset("unset TEST6", env);
+
+}
+
+static void test_unset(const char *command, t_env *env) {
+	char **arr = NULL;
+	size_t i = 0;
+
+	printf("%s\nTesting command:%s %s\n", GREEN, DEFAULT, command);
+	arr = ft_split(command, ' ');
+	if (!arr)
+	{
+		perror(strerror(errno));
+		return ;
+	}
+
+	printf("\nBEFORE:\n");
+	for (int j = 1; arr[j] != NULL; j++) {
+		printf("Checking if variable '%s' exists in environment: ", arr[j]);
+		if (env_find_variable(arr[j], env, &i))
+			printf("%sYes%s\n", GREEN, DEFAULT);
+		else
+			printf("%sNo%s\n", RED, DEFAULT);
+	}
+	printf(">>>\n");
+	builtin_unset(arr, env);
+	printf("\nAFTER:\n");
+	for (int j = 1; arr[j] != NULL; j++) {
+		printf("Checking if variable '%s' exists in environment: ", arr[j]);
+		if (env_find_variable(arr[j], env, &i))
+			printf("%sYes%s\n", GREEN, DEFAULT);
+		else
+			printf("%sNo%s\n", RED, DEFAULT);
+	}
+	
+	i = 0;
+	while (arr[i])
+	{
+		free(arr[i]);
+		arr[i] = NULL;
+		i++;
+	}
+	free(arr);
 }
 
 static void test_export(const char *command, t_env *env) {
