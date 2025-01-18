@@ -6,9 +6,18 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 07:36:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/18 18:30:20 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/19 00:31:13 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+/**
+ * @note Small things to do:
+ * 
+ * 1) Setup uniform error handling system for builtins.
+ * 2) Check the original error codes for builtins.
+ * 3) Add function to init t_mshell minishell structure.
+ * 
+ */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -51,7 +60,12 @@ int			builtin_env(char **args, t_env *env);
 int 		builtin_unset(char **args, t_env *env);
 int			builtin_export(char **args, t_env *env);
 int			builtin_pwd(char **args);
+int			builtin_exit(char **args, t_mshell *ms);
 
 int			builtin_is_identifier_valid(const char *var);
+
+/* ------------------------- Exit, errors and memory ----------------------- */
+
+void		exit_destroy_minishell(t_mshell *ms);
 
 #endif

@@ -13,6 +13,8 @@ int main(int argc, char **argv, char **envp) {
 	t_env env;
 	env_init(envp, &env);
 	test_builtin(&env);
-
+	
+	if (env.envp != NULL)
+		env_free(&env);
 	return 0;
 }

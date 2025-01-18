@@ -41,7 +41,7 @@ It takes an array of array of chars as argument (the command should be skipped, 
 - [x] `export` with no options sets environment variables.  
 - [x] `unset` with no options unsets environment variables.  
 - [x] `env` with no options or arguments  
-- [ ] `exit` with no options  
+- [x] `exit` with no options  
 
 #### 4. External commands  
 The shell must search for the executable in directories specified in the PATH variable and spawn a new process to run it: search the `PATH`, create a new process (`fork()`) and execute (`execve()`) to run the command.   

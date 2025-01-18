@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 12:52:30 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/18 18:30:09 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/19 01:02:06 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,27 @@ void test_builtin(t_env *env) {
 
 	printf("\n\n%s-------------- TEST PWD --------------%s\n\n", PURPLE, DEFAULT);
 
+	char *pwd_str = NULL;
+	pwd_str = "hello";
 	builtin_pwd(NULL);
+	builtin_pwd(&pwd_str);
+
+	printf("\n\n%s-------------- TEST EXIT --------------%s\n\n", PURPLE, DEFAULT);
+
+	t_mshell ms;
+
+	ms.env.envp = env->envp;
+	ms.env.len = env->len;
+	ms.env.capacity = env->capacity;
+	ms.exit_code = 0;
+	ms.is_parent = TRUE;
+
+	char *exit_args[] = {"ghk", "123", "-125", "214f", NULL};
+	// builtin_exit(&(exit_args[1]), &ms);	// output $? = 123 + 'exit' message
+	// builtin_exit(NULL, &ms);				// output $? = 0 + 'exit' message
+	// builtin_exit(&(exit_args[2]), &ms);	// output $? = 125 + 'exit' message
+	// builtin_exit(&(exit_args[3]), &ms);	// output $? = 255 + 'exit' message + error message
+	builtin_exit(exit_args, &ms); 		// error message (doesn't exit)
 }
 
 static void test_unset(const char *command, t_env *env) {

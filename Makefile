@@ -6,7 +6,7 @@
 #    By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/15 07:44:51 by ipersids          #+#    #+#              #
-#    Updated: 2025/01/18 18:28:17 by ipersids         ###   ########.fr        #
+#    Updated: 2025/01/19 00:27:51 by ipersids         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,7 +50,9 @@ SRCS			:= $(SRCS_DIR)/signals/sig_handler.c \
 				   $(SRCS_DIR)/builtins/builtin_export.c \
 				   $(SRCS_DIR)/builtins/builtin_unset.c \
 				   $(SRCS_DIR)/builtins/builtin_pwd.c \
-				   $(SRCS_DIR)/builtins/utils/builtin_is_identifier_valid.c
+				   $(SRCS_DIR)/builtins/builtin_exit.c \
+				   $(SRCS_DIR)/builtins/utils/builtin_is_identifier_valid.c \
+				   $(SRCS_DIR)/destructor/exit_destroy_minishell.c
 				   
 SRC_MAIN		:= $(SRCS_DIR)/main.c
 
@@ -67,6 +69,7 @@ $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)/environment
 	@mkdir -p $(OBJ_DIR)/builtins
 	@mkdir -p $(OBJ_DIR)/builtins/utils
+	@mkdir -p $(OBJ_DIR)/destructor
 
 # Rule for creating object files
 $(OBJ_DIR)/%.o: $(SRCS_DIR)/%.c

@@ -1,35 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   structures.h                                       :+:      :+:    :+:   */
+/*   exit_destroy_minishell.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/15 07:35:41 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/19 00:33:18 by ipersids         ###   ########.fr       */
+/*   Created: 2025/01/18 20:01:44 by ipersids          #+#    #+#             */
+/*   Updated: 2025/01/19 00:34:58 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef STRUCTURES_H
-# define STRUCTURES_H
+#include "minishell.h"
 
-/* ------------------------------ Environment ------------------------------ */
-
-typedef struct s_env
+void	exit_destroy_minishell(t_mshell *ms)
 {
-	char			**envp;
-	unsigned int	len;
-	unsigned int	capacity;	
-}	t_env;
-
-/* ------------------------------- Minishell ------------------------------- */
-
-typedef struct s_mshell
-{
-	t_env	env;
-	int		exit_code;
-	int		is_parent;
-}			t_mshell;
-
-
-#endif
+	if (ms->env.envp != NULL)
+		env_free(&ms->env);
+	exit(ms->exit_code);
+}
