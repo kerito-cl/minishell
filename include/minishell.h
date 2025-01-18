@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 07:36:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/17 14:07:04 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/18 13:10:04 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,12 @@ int			env_remove(const char *var, t_env *env);
 
 /* -------------------------------- Builtins ------------------------------- */
 
+/// A command that is implemented internally by the shell itself, 
+/// rather than by an executable program somewhere in the file system.
+
 int			builtin_echo(char **args);
 int			builtin_env(char **args, t_env *env);
+// int 		builtin_unset(char **args, t_env *env);
+int			builtin_export(char **args, t_env *env);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 12:52:30 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/17 14:06:38 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/18 13:32:30 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 #endif
 
 static void	test_echo(char *str);
+static void test_export(const char *command, t_env *env);
 
 void test_builtin(t_env *env) {
 	
@@ -45,6 +46,43 @@ void test_builtin(t_env *env) {
 	printf("\n%sTest error message:%s\n", RED, DEFAULT);
 	char *env_args2[] = { "env", "-p", NULL };
 	builtin_env(&(env_args2[1]), env);
+
+	printf("\n\n%s-------------- TEST EXPORT ------------%s\n\n", PURPLE, DEFAULT);
+
+	test_export("export TEST TEST1= TEST2=test", env);
+	test_export("export TEST=test1 TEST2=", env);
+	test_export("export 1TEST TEST2=test2", env);
+	test_export("export _TEST=_test test=small_test", env);
+	test_export("export", env);
+}
+
+static void test_export(const char *command, t_env *env) {
+	char **arr = NULL;
+	size_t i = 0;
+
+	printf("%s\nTesting command:%s %s\n", GREEN, DEFAULT, command);
+	arr = ft_split(command, ' ');
+	if (!arr)
+	{
+		perror(strerror(errno));
+		return ;
+	}
+	builtin_export(&arr[1], env);
+	for (int j = 1; arr[j] != NULL; j++) {
+		printf("\nChecking if variable '%s' exists in environment: ", arr[j]);
+		if (env_find_variable(arr[j], env, &i))
+			printf("%sYes%s\nResult: %s\n", GREEN, DEFAULT, env->envp[i]);
+		else
+			printf("%sNo%s\n", RED, DEFAULT);
+	}
+	i = 0;
+	while (arr[i])
+	{
+		free(arr[i]);
+		arr[i] = NULL;
+		i++;
+	}
+	free(arr);
 }
 
 static void	test_echo(char *str) {

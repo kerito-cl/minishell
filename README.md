@@ -35,12 +35,12 @@ Built-in commands are executed directly by the shell and are part of the shell i
 
 It takes an array of array of chars as argument (the command should be skipped, ex: `"echo Hello!"` -> `char **args = ["echo", "Hello!", NULL]` -> `builtin_echo(&args[1])`).  
 
-- [x] `echo` with option `-n` outputs text to the terminal (`printf()`).  
+- [x] `echo` with option `-n`. Outputs text to the terminal with new lin or without (if `-n` was used).  
 - [ ] `cd` with only a relative or absolute path changes the current working directory.  
 - [ ] `pwd` with no options  
-- [ ] `export` with no options sets environment variables.  
+- [x] `export` with no options sets environment variables.  
 - [ ] `unset` with no options unsets environment variables.  
-- [ ] `env` with no options or arguments  
+- [x] `env` with no options or arguments  
 - [ ] `exit` with no options  
 
 #### 4. External commands  
