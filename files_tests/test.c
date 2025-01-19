@@ -1,8 +1,48 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   test.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/19 20:08:20 by mquero            #+#    #+#             */
+/*   Updated: 2025/01/19 21:02:23 by mquero           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
 #include "../minishell.h"
+
+void print_values(char **values) {
+    if (values) {
+        for (int i = 0; values[i] != NULL; i++) {
+            printf("%s", values[i]);
+            if (values[i + 1] != NULL) {
+                printf(", ");
+            }
+        }
+    }
+}
+
+void print_ast(t_ast *node, int depth)
+{
+    if (node == NULL) {
+        return;
+    }
+    for (int i = 0; i < depth; i++) {
+        printf("  ");
+    }
+    printf("Type: %s, Value: ", node->type);
+    print_values(node->value);
+    printf("\n");
+    if (node->left || node->right) {
+        print_ast(node->left, depth + 1);
+        print_ast(node->right, depth + 1);
+    }
+}
 
 void    assign_node(t_ast *root, char **split, t_index index, bool flag);
 
@@ -68,7 +108,7 @@ bool    find_operators_left(t_ast *root, char **split, t_index index)
         if (strcmp(split[index.i], "<") == 0)
         {
             root->left = create_node(split,"rein",index.i, index.i + 1);
-            index.pip_h = index.pip;
+            index.pip_h = index.pip - 1;
             index.pip = index.i + 1;
             index.reout = false;
             index.rein = true;
@@ -84,6 +124,52 @@ bool    find_operators_left(t_ast *root, char **split, t_index index)
             return (false);
         }
         index.i++;
+    }
+    return (true);
+}
+bool    find_operators_r1(t_ast *root, char **split, t_index index, bool flag)
+{
+    while (index.i < index.pip_h && !index.rein && !flag && !index.reout)
+    {
+        if (strcmp(split[index.i], "<") == 0)
+        {
+            root->right = create_node(split,"rein",index.i, index.i + 1);
+            index.pip = index.i + 1;
+            index.reout = false;
+            index.rein = true;
+            assign_node(root->right, split, index,false); 
+            return (false);
+        }
+        index.i++;
+    }
+    return (true);
+}
+
+bool    find_operators_r2(t_ast *root, char **split, t_index index, bool flag)
+{
+    while (index.i >= index.pip + 1 && !flag && !index.reout)
+    {
+        if (strcmp(split[index.i], ">") == 0 && !index.rein)
+        {
+            root->right = create_node(split, "reout", index.i, index.i + 1);
+            index.reout = true;
+            index.pip_h = index.i - 1;
+            assign_node(root->right, split, index, false);
+            return (false);
+        }
+        else if (strcmp(split[index.i], ">") == 0 && index.rein)
+        {
+            root->left = create_node(split, "reout", index.i, index.i + 1);
+            index.pip_h = index.i - 1;
+            break;
+        }
+        index.i-= 1;
+    }
+    if (!flag)
+        root->right = create_node(split, "command", index.pip + 1, index.pip_h);
+    else if (flag)
+    {
+        root->left = create_node(split, "command", index.pip + 1, index.pip_h);
     }
     return (true);
 }
@@ -147,53 +233,23 @@ void    assign_node(t_ast *root, char **split, t_index index, bool flag)
     {
         if (!find_pipe(root, split, index))
             return ;
-        index.i-= 1;
+        if (index.i != 0)
+            index.i-= 1;
         if (index.i == 0)
         {
+            index.pip_h = index.pip - 1;
             if (!find_operators_left(root, split, index))
                 return ;
-            index.pip_h = index.pip - 1;
             index.pip = -1;
             break;
          }
     }
     index.i = index.pip + 1;
-    while (index.i < index.pip_h && !index.rein && !flag && !index.reout)
-    {
-        if (strcmp(split[index.i], "<") == 0)
-        {
-            root->right = create_node(split,"rein",index.i, index.i + 1);
-            index.pip = index.i + 1;
-            index.reout = false;
-            index.rein = true;
-            assign_node(root->right, split, index,false); 
-            return ;
-        }
-        index.i++;
-    }
+    if (!find_operators_r1(root, split, index, flag))
+        return ;
     index.i = index.pip_h;
-    while (index.i >= index.pip + 1 && !flag && !index.reout)
-    {
-        if (strcmp(split[index.i], ">") == 0 && !index.rein)
-        {
-            root->right = create_node(split, "reout", index.i, index.i + 1);
-            index.reout = true;
-            index.pip_h = index.i - 1;
-            assign_node(root->right, split, index, false);
-            return ;
-        }
-        else if (strcmp(split[index.i], ">") == 0 && index.rein)
-        {
-            root->left = create_node(split, "reout", index.i, index.i + 1);
-            index.pip_h = index.i - 1;
-            break;
-        }
-        index.i-= 1;
-    }
-    if (!flag)
-        root->right = create_node(split, "command", index.pip + 1, index.pip_h);
-    else if (flag)
-        root->left = create_node(split, "command", index.pip + 1, index.pip_h);
+    if (!find_operators_r2(root, split, index, flag))
+        return ;
 }
 
 t_ast  *divide_input(char **split, int right, bool flag)
@@ -229,37 +285,35 @@ t_ast  *divide_input(char **split, int right, bool flag)
     return (root);
 }
 
-t_ast *parse_input(t_ast *root, char **split)
+t_ast *parse_input(t_ast *root, char *input)
 {
     int i;
+    char **split;
 
+    split = ft_split(input, ' ');
     i = 0;
     while (split[i] != NULL)
         i++;
     i--;
     root = divide_input(split, i, false);
     freesplit(split);
-    printf("     %s\n", root->value[0]);
-    printf("     %s\n", root->right->value[0]);
-    printf("     %s\n", root->right->right->value[0]);
-    printf("%s ", root->left->value[0]);
-    printf("%s ", root->left->right->value[0]);
-    //printf("%s   ", root->left->right->value[0]);
-    //printf("   %s \n", root->left->right->value[1]);
-    //printf("   %s \n", root->left->right->left->value[2]);
-    //printf("   %s \n", root->left->right->right->value[2]);
+    print_ast(root, 0);
+    //printf("%s \n", root->value[0]);
+    //printf("%s \n", root->left->value[0]);
     return (root);
 }
 
-int main() {
+int main() 
+{
     //char input[] = "< file cat -e > out1 | < in2 grep pattern > out2 | ls -a > output.txt";
+    //char input[] = "< das cat text -e | ls > out";
+    //char input[] = "cat | ls > out";
     char input[] = "< das cat text -e | ls > out";
-    char **split;
+    //char **split;
     t_ast *root;
     int n_pipes;
 
-    split = ft_split(input, ' ');
-    root = parse_input(root, split);
+    root = parse_input(root, input);
     /*freesplit(root->value);
     free(root->type);
     free(root);*/
