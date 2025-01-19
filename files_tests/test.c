@@ -4,6 +4,8 @@
 #include <ctype.h>
 #include "../minishell.h"
 
+void    assign_node(t_ast *root, char **split, t_index index, bool flag);
+
 char    **assign_value(char **split, int left, int right)
 {
     int i;
@@ -31,7 +33,7 @@ char    **assign_value(char **split, int left, int right)
     return (value);
 }
 // Function to create a new AST node
-t_ast* createNode(char **value, char *type, int left, int right) 
+t_ast* create_node(char **value, char *type, int left, int right) 
 {
     t_ast *newNode = (t_ast *)malloc(sizeof(t_ast));
     if (!newNode) 
@@ -43,57 +45,124 @@ t_ast* createNode(char **value, char *type, int left, int right)
     return newNode;
 }
 
+bool    find_pipe(t_ast *root, char **split, t_index index)
+{
+    if (strcmp(split[index.i], "|") == 0)
+    {
+        root->left = create_node(split,"pipe", index.i, index.i);
+        index.pip_h = index.pip;
+        index.pip = index.i;
+        assign_node(root->left, split, index, true);
+        index.reout = false;
+        index.rein = false;
+        assign_node(root->left, split, index, false);
+        return (false);
+    }
+    return (true);
+}
 
+bool    find_operators_left(t_ast *root, char **split, t_index index)
+{
+    while (index.i < index.pip_h)
+    {
+        if (strcmp(split[index.i], "<") == 0)
+        {
+            root->left = create_node(split,"rein",index.i, index.i + 1);
+            index.pip_h = index.pip;
+            index.pip = index.i + 1;
+            index.reout = false;
+            index.rein = true;
+            assign_node(root->left, split, index,false); 
+            return (false);
+        }
+        else if (strcmp(split[index.i], ">") == 0)
+        {
+            root->left = create_node(split,"reout",index.i, index.i + 1);
+            index.pip = -1;
+            index.pip_h = index.i - 1;
+            assign_node(root->left, split, index,false); 
+            return (false);
+        }
+        index.i++;
+    }
+    return (true);
+}
+
+void     assign_ifnopipe(t_ast **root ,char **split, t_index index)
+{
+    index.i = 0;
+    while (index.i < index.pip_h && !index.rein)
+    {
+        if (strcmp(split[index.i], "<") == 0)
+        {
+            *root = create_node(split,"rein",index.i, index.i + 1);
+            index.pip = index.i + 1;
+            index.reout = false;
+            index.rein = true;
+            assign_ifnopipe(root, split, index); 
+            return ;
+        }
+        index.i++;
+    }
+    index.i = index.pip_h;
+    while (index.i >= index.pip && !index.reout)
+    {
+        if (strcmp(split[index.i], ">") == 0 && !index.rein)
+        {
+            (*root) = create_node(split, "reout", index.i, index.i + 1);
+            index.reout = true;
+            break;
+        }
+        else if (strcmp(split[index.i], ">") == 0 && index.rein)
+        {
+            (*root)->left = create_node(split, "reout", index.i, index.i + 1);
+            index.pip_h = index.i - 1;
+            index.reout = false;
+            break;
+        }
+        index.i-= 1;
+    }
+    if (index.reout == true && !index.rein)
+    {
+        index.pip_h = index.i - 1;
+        index.reout = false;
+        assign_ifnopipe(root, split, index);
+    }
+    else if (index.reout == false)
+    {
+        if ((*root) == NULL)
+            (*root) = create_node(split, "command", 0 , index.pip_h);
+        else
+            (*root)->right = create_node(split, "command", index.pip + 1, index.pip_h);
+    }
+
+}
 
 void    assign_node(t_ast *root, char **split, t_index index, bool flag)
 {
-    if (index.pip <= 0)
+    if (index.pip <= 0 && flag)
         return ;
     index.i = index.pip - 1;
     while (index.i >= 0 && flag == true)
     {
-        if (strcmp(split[index.i], "|") == 0)
-        {
-            root->left = createNode(split,"pipe", index.i, index.i);
-            index.pip_h = index.pip;
-            index.pip = index.i;
-            assign_node(root->left, split, index, true);
-            index.reout = false;
-            index.rein = false;
-            assign_node(root->left, split, index, false);
-            flag = true;
+        if (!find_pipe(root, split, index))
             return ;
-        }
         index.i-= 1;
         if (index.i == 0)
         {
-            while (index.i < index.pip_h)
-            {
-                if (strcmp(split[index.i], "<") == 0)
-                {
-                    root->left = createNode(split,"rein",index.i, index.i + 1);
-                    index.pip_h = index.pip;
-                    index.pip = index.i;
-                    assign_node(root->left, split, index,true);
-                    index.pip = index.i + 1;
-                    // FIGURE OUT LATER HOW TO ASSIGN COMMAND TO LEFT <file cat or cat <file
-                    index.reout = false;
-                    index.rein = true;
-                    assign_node(root->left, split, index,false); 
-                    return ;
-                }
-                index.i++;
-            }
-            return ;
+            if (!find_operators_left(root, split, index))
+                return ;
+            index.pip_h = index.pip - 1;
+            index.pip = -1;
+            break;
          }
-            
     }
     index.i = index.pip + 1;
-    while (index.i < index.pip_h && !index.rein && !flag)
+    while (index.i < index.pip_h && !index.rein && !flag && !index.reout)
     {
         if (strcmp(split[index.i], "<") == 0)
         {
-            root->right = createNode(split,"rein",index.i, index.i + 1);
+            root->right = create_node(split,"rein",index.i, index.i + 1);
             index.pip = index.i + 1;
             index.reout = false;
             index.rein = true;
@@ -107,45 +176,44 @@ void    assign_node(t_ast *root, char **split, t_index index, bool flag)
     {
         if (strcmp(split[index.i], ">") == 0 && !index.rein)
         {
-            if (root->right == NULL)
-                root->right = createNode(split, "reout", index.i, index.i + 1);
+            root->right = create_node(split, "reout", index.i, index.i + 1);
             index.reout = true;
-            break;
+            index.pip_h = index.i - 1;
+            assign_node(root->right, split, index, false);
+            return ;
         }
         else if (strcmp(split[index.i], ">") == 0 && index.rein)
         {
-            if (root->right == NULL)
-                root->left = createNode(split, "reout", index.i, index.i + 1);
+            root->left = create_node(split, "reout", index.i, index.i + 1);
             index.pip_h = index.i - 1;
-            index.reout = false;
             break;
         }
         index.i-= 1;
     }
-    if (index.reout == true && flag == false && !index.rein)
-    {
-        index.pip_h = index.i - 1;
-        index.reout = false;
-        assign_node(root->right, split, index, false);
-    }
-    else if (index.reout == false && flag == false)
-        root->right = createNode(split, "command", index.pip + 1, index.pip_h);
+    if (!flag)
+        root->right = create_node(split, "command", index.pip + 1, index.pip_h);
+    else if (flag)
+        root->left = create_node(split, "command", index.pip + 1, index.pip_h);
 }
 
-t_ast  *divide_and_conquer(char **split, int left, int right, bool flag)
+t_ast  *divide_input(char **split, int right, bool flag)
 {
     t_index index;
     t_ast *root;
 
     index.i = 0;
     index.pip = right;
+    index.pip_h = right;
+    index.reout = false;
+    index.rein = false;
+    root = NULL;
     if (!flag)
     {
-        while (index.pip >= left)
+        while (index.pip > 0)
         {
             if (strcmp(split[index.pip], "|") == 0)
             {
-                root = createNode(split, "pipe", index.pip, index.pip);
+                root = create_node(split, "pipe", index.pip, index.pip);
                 break; 
             }
             index.pip--;
@@ -154,12 +222,10 @@ t_ast  *divide_and_conquer(char **split, int left, int right, bool flag)
     if (index.pip > 0)
     {
         assign_node(root, split, index, true);
-        index.pip_h = right;
-        index.reout = false;
-        index.rein = false;
         assign_node(root, split, index, false);
-    // IF INDEX.I STILL NOT == RIGHT , WE RECALL THIS LOOP
     }
+    else
+        assign_ifnopipe(&root,split,index);
     return (root);
 }
 
@@ -171,23 +237,23 @@ t_ast *parse_input(t_ast *root, char **split)
     while (split[i] != NULL)
         i++;
     i--;
-    root = divide_and_conquer(split, 0, i, false);
+    root = divide_input(split, i, false);
     freesplit(split);
     printf("     %s\n", root->value[0]);
-    printf("  %s", root->left->value[0]);
     printf("     %s\n", root->right->value[0]);
     printf("     %s\n", root->right->right->value[0]);
-    printf("%s ", root->left->left->value[0]);
-    printf("%s   ", root->left->left->value[1]);
-    printf("   %s \n", root->left->right->value[1]);
-    printf("   %s \n", root->left->right->left->value[2]);
-    printf("   %s \n", root->left->right->right->value[2]);
+    printf("%s ", root->left->value[0]);
+    printf("%s ", root->left->right->value[0]);
+    //printf("%s   ", root->left->right->value[0]);
+    //printf("   %s \n", root->left->right->value[1]);
+    //printf("   %s \n", root->left->right->left->value[2]);
+    //printf("   %s \n", root->left->right->right->value[2]);
     return (root);
 }
 
 int main() {
-    char input[] = "< file cat -e > out1 | < in2 grep pattern > out2 | ls -a > output.txt";
-    //char input[] = "< file cat -e > outfile";
+    //char input[] = "< file cat -e > out1 | < in2 grep pattern > out2 | ls -a > output.txt";
+    char input[] = "< das cat text -e | ls > out";
     char **split;
     t_ast *root;
     int n_pipes;
@@ -201,16 +267,16 @@ int main() {
 
     return 0;
 }
-    /*root = createNode("|", "operator"); // LAST PIPE AS MAIN ROOT ALWAYS;
+    /*root = create_node("|", "operator"); // LAST PIPE AS MAIN ROOT ALWAYS;
 
-    root->right = createNode("ls", "cmd");
-    root->left = createNode(">", "operator");
-    root->left->right = createNode("outfile", "fd");
-    root->left->left = createNode("|", "operator");
-    root->left->left->right = createNode("awk '{print $1}'", "cmd");
-    root->left->left->left = createNode("|", "operator");
-    root->left->left->left->right = createNode("grep c", "command");
-    root->left->left->left->left = createNode("cat infile", "cmd");*/
+    root->right = create_node("ls", "cmd");
+    root->left = create_node(">", "operator");
+    root->left->right = create_node("outfile", "fd");
+    root->left->left = create_node("|", "operator");
+    root->left->left->right = create_node("awk '{print $1}'", "cmd");
+    root->left->left->left = create_node("|", "operator");
+    root->left->left->left->right = create_node("grep c", "command");
+    root->left->left->left->left = create_node("cat infile", "cmd");*/
     //recursive_exec(root, &n_pipes);
 
 //execute recursively pipes according to node->type and node->value

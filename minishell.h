@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 16:50:40 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/18 15:01:24 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/19 16:27:25 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,5 +90,6 @@ void		slash_signal(int sig);
 int			hook_signal(void);
 void		continue_signal(int sig);
 char	*ft_strjoin(char *s1, char const *s2);
+char    **assign_value(char **split, int left, int right);
 
 #endif
