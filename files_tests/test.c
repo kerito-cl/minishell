@@ -62,50 +62,73 @@ void    assign_node(t_ast *root, char **split, t_index index, bool flag)
             index.rein = false;
             assign_node(root->left, split, index, false);
             flag = true;
-            break;
-        }
-        else if (strcmp(split[index.i], "<") == 0)
-        {
-            root->left = createNode(split,"rein",index.i, index.i + 1);
-            index.pip_h = index.pip;
-            index.pip = index.i;
-            assign_node(root->left, split, index,true);
-            index.pip = index.i + 1;
-            // FIGURE OUT LATER HOW TO ASSIGN COMMAND TO LEFT <file cat or cat <file
-            index.reout = false;
-            index.rein = true;
-            assign_node(root->left, split, index,false); 
-            flag = true;
-            break;
+            return ;
         }
         index.i-= 1;
+        if (index.i == 0)
+        {
+            while (index.i < index.pip_h)
+            {
+                if (strcmp(split[index.i], "<") == 0)
+                {
+                    root->left = createNode(split,"rein",index.i, index.i + 1);
+                    index.pip_h = index.pip;
+                    index.pip = index.i;
+                    assign_node(root->left, split, index,true);
+                    index.pip = index.i + 1;
+                    // FIGURE OUT LATER HOW TO ASSIGN COMMAND TO LEFT <file cat or cat <file
+                    index.reout = false;
+                    index.rein = true;
+                    assign_node(root->left, split, index,false); 
+                    return ;
+                }
+                index.i++;
+            }
+            return ;
+         }
+            
     }
-
-    printf("PIP H IS %d\n", index.pip_h);
+    index.i = index.pip + 1;
+    while (index.i < index.pip_h && !index.rein && !flag)
+    {
+        if (strcmp(split[index.i], "<") == 0)
+        {
+            root->right = createNode(split,"rein",index.i, index.i + 1);
+            index.pip = index.i + 1;
+            index.reout = false;
+            index.rein = true;
+            assign_node(root->right, split, index,false); 
+            return ;
+        }
+        index.i++;
+    }
     index.i = index.pip_h;
-    if (index.rein && !flag)
-        root->left = createNode(split, "command", index.pip + 1, index.pip_h - 1);
-
     while (index.i >= index.pip + 1 && !flag && !index.reout)
     {
-        if (strcmp(split[index.i], ">") == 0)
+        if (strcmp(split[index.i], ">") == 0 && !index.rein)
         {
             if (root->right == NULL)
                 root->right = createNode(split, "reout", index.i, index.i + 1);
             index.reout = true;
             break;
         }
+        else if (strcmp(split[index.i], ">") == 0 && index.rein)
+        {
+            if (root->right == NULL)
+                root->left = createNode(split, "reout", index.i, index.i + 1);
+            index.pip_h = index.i - 1;
+            index.reout = false;
+            break;
+        }
         index.i-= 1;
     }
-    //if (index.rein == true && flag == false)
-     //   root->left = createNode(split, "command", index.pip + 1, index.pip_h - 1);
     if (index.reout == true && flag == false && !index.rein)
     {
         index.pip_h = index.i - 1;
         index.reout = false;
         assign_node(root->right, split, index, false);
     }
-    else if (index.reout == false && flag == false && !index.rein)
+    else if (index.reout == false && flag == false)
         root->right = createNode(split, "command", index.pip + 1, index.pip_h);
 }
 
@@ -152,17 +175,18 @@ t_ast *parse_input(t_ast *root, char **split)
     freesplit(split);
     printf("     %s\n", root->value[0]);
     printf("  %s", root->left->value[0]);
-    printf("     %s\n", root->right->value[1]);
-    printf("     %s\n", root->right->right->value[1]);
+    printf("     %s\n", root->right->value[0]);
+    printf("     %s\n", root->right->right->value[0]);
     printf("%s ", root->left->left->value[0]);
     printf("%s   ", root->left->left->value[1]);
-    printf("   %s \n", root->left->right->value[0]);
-    printf("%s   ", root->left->left->left->value[0]);
+    printf("   %s \n", root->left->right->value[1]);
+    printf("   %s \n", root->left->right->left->value[2]);
+    printf("   %s \n", root->left->right->right->value[2]);
     return (root);
 }
 
 int main() {
-    char input[] = "< file cat -e | grep pattern | ls -a > output.txt";
+    char input[] = "< file cat -e > out1 | < in2 grep pattern > out2 | ls -a > output.txt";
     //char input[] = "< file cat -e > outfile";
     char **split;
     t_ast *root;
