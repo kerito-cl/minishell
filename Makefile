@@ -6,7 +6,7 @@
 #    By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/15 07:44:51 by ipersids          #+#    #+#              #
-#    Updated: 2025/01/19 00:27:51 by ipersids         ###   ########.fr        #
+#    Updated: 2025/01/20 16:02:02 by ipersids         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,7 +51,9 @@ SRCS			:= $(SRCS_DIR)/signals/sig_handler.c \
 				   $(SRCS_DIR)/builtins/builtin_unset.c \
 				   $(SRCS_DIR)/builtins/builtin_pwd.c \
 				   $(SRCS_DIR)/builtins/builtin_exit.c \
+				   $(SRCS_DIR)/builtins/builtin_cd.c \
 				   $(SRCS_DIR)/builtins/utils/builtin_is_identifier_valid.c \
+				   $(SRCS_DIR)/builtins/utils/builtin_update_env_var.c \
 				   $(SRCS_DIR)/destructor/exit_destroy_minishell.c
 				   
 SRC_MAIN		:= $(SRCS_DIR)/main.c

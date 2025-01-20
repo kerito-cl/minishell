@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 11:04:55 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/18 11:45:47 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/20 16:41:14 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ const char	*env_find_value(const char *var, t_env *env)
 	if (!env_find_variable(var, env, &i))
 		return (NULL);
 	res = ft_strchr(env->envp[i], '=');
-	if (!res)
-		res = ft_memchr(env->envp[i], '\0', ft_strlen(env->envp[i]));
+	if (res)
+		return (++res);
+	res = ft_memchr(env->envp[i], '\0', ft_strlen(env->envp[i]) + 1);
 	return (res);
 }

@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 12:52:30 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/19 01:02:06 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/20 18:55:42 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,46 @@ void test_builtin(t_env *env) {
 	// builtin_exit(&(exit_args[2]), &ms);	// output $? = 125 + 'exit' message
 	// builtin_exit(&(exit_args[3]), &ms);	// output $? = 255 + 'exit' message + error message
 	builtin_exit(exit_args, &ms); 		// error message (doesn't exit)
+
+	printf("\n\n%s--------------- TEST CD ---------------%s\n\n", PURPLE, DEFAULT);
+
+	char *path_cd[] = {"/home/ipersids/Documents", NULL, "Documents", NULL};
+
+	printf("\nGo to %s:\n", *path_cd);
+	printf("Before:\nOLDPWD = %s,\nPWD = %s\n", env_find_value("OLDPWD", env), env_find_value("PWD", env));
+	builtin_cd(path_cd, env);
+	printf("After:\nOLDPWD = %s,\nPWD = %s\n", env_find_value("OLDPWD", env), env_find_value("PWD", env));
+
+	printf("\nGo HOME: %s\n", env_find_value("HOME", env));
+	printf("Before:\nOLDPWD = %s,\nPWD = %s\n", env_find_value("OLDPWD", env), env_find_value("PWD", env));
+	builtin_cd(NULL, env);
+	printf("After:\nOLDPWD = %s,\nPWD = %s\n", env_find_value("OLDPWD", env), env_find_value("PWD", env));
+
+	printf("\nGo to %s:\n", path_cd[2]);
+	printf("Before:\nOLDPWD = %s,\nPWD = %s\n", env_find_value("OLDPWD", env), env_find_value("PWD", env));
+	builtin_cd(&(path_cd[2]), env);
+	printf("After:\nOLDPWD = %s,\nPWD = %s\n", env_find_value("OLDPWD", env), env_find_value("PWD", env));
+
+	printf("\nUnset OLDRWD\n");
+	env_remove("OLDPWD", env);
+	printf("Before:\nOLDPWD = %s,\nPWD = %s\n", env_find_value("OLDPWD", env), env_find_value("PWD", env));
+	builtin_cd(NULL, env);
+	printf("After:\nOLDPWD = %s,\nPWD = %s\n", env_find_value("OLDPWD", env), env_find_value("PWD", env));
+
+	printf("\nUnset PWD\n");
+	env_remove("PWD", env);
+	printf("Before:\nOLDPWD = %s,\nPWD = %s\n", env_find_value("OLDPWD", env), env_find_value("PWD", env));
+	builtin_cd(NULL, env);
+	printf("After:\nOLDPWD = %s,\nPWD = %s\n", env_find_value("OLDPWD", env), env_find_value("PWD", env));
+
+	printf("\nUnset HOME\n");
+	env_remove("HOME", env);
+	printf("Before:\nOLDPWD = %s,\nPWD = %s\n", env_find_value("OLDPWD", env), env_find_value("PWD", env));
+	builtin_cd(NULL, env);
+	printf("After:\nOLDPWD = %s,\nPWD = %s\n", env_find_value("OLDPWD", env), env_find_value("PWD", env));
 }
+
+
 
 static void test_unset(const char *command, t_env *env) {
 	char **arr = NULL;

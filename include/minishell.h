@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 07:36:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/19 00:31:13 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/20 16:16:10 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,11 @@ int 		builtin_unset(char **args, t_env *env);
 int			builtin_export(char **args, t_env *env);
 int			builtin_pwd(char **args);
 int			builtin_exit(char **args, t_mshell *ms);
+int			builtin_cd(char **args, t_env *env);
 
 int			builtin_is_identifier_valid(const char *var);
+void		builtin_update_env_var(const char *name, const char *value, \
+									t_env *env);
 
 /* ------------------------- Exit, errors and memory ----------------------- */
 

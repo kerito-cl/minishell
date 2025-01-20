@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 18:41:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/18 22:45:36 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/20 14:36:49 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ extern volatile int	g_status;
 
 typedef enum e_error_code
 {
+	ERROR_GENERIC = 1,
 	ERROR_BUILTIN_EXIT_TOO_MANY_ARGS = 1,
 	ERROR_SIGACTION_FAILS = 100,
 	ERROR_MALLOC_FAILS,
