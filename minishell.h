@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 16:50:40 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/19 16:27:25 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/20 16:25:34 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,11 @@
 # define MINISHELL_H
 
 # include <errno.h>
-# include "./printf/ft_printf.h"
 # include <fcntl.h>
 # include <limits.h>
+# include <readline/history.h>
+# include <readline/readline.h>
+# include <signal.h>
 # include <stdbool.h>
 # include <stdint.h>
 # include <stdio.h>
@@ -24,9 +26,17 @@
 # include <string.h>
 # include <sys/wait.h>
 # include <unistd.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-#include <signal.h>
+
+typedef enum {
+    PIPE = 22,
+    REIN,
+    REIN2,
+    REOUT,
+    REOUT2,
+    SQUOTE,
+    DQUOTE,
+    ARG,
+} tokentype;
 
 typedef struct s_fd
 {
@@ -42,12 +52,15 @@ typedef struct s_fd
 }			t_fd;
 typedef struct s_index
 {
-	int	pip;
-	int	pip_h;
-	int i;
-	int i_reout;
-	bool reout;
-	bool rein;
+	int		pip;
+	int		pip_h;
+	int		i;
+	int		min;
+	int		max;
+	int		prior;
+	int		i_reout;
+	bool	reout;
+	bool	rein;
 
 }			t_index;
 
@@ -64,20 +77,25 @@ typedef struct s_in
 	int		pid2;
 }			t_in;
 
+typedef struct s_token
+{
+	char *value;
+	tokentype type;
+	int	j;
+}			t_token;
 
-
-typedef struct s_ast {
-    char **value;         
-    char *type;         // The value of the node (e.g., command or operator)
-    struct s_ast *left;  // Left child (usually for arguments or commands)
-    struct s_ast *right; // Right child (usually for subsequent commands or files)
-} t_ast;
+typedef struct s_ast
+{
+	char	*value;
+	tokentype type;          
+	struct s_ast *left;  
+	struct s_ast *right;
+}			t_ast;
 
 char		*ft_strjoin_slash(char const *s1, char const *s2);
 void		freesplit(char **strs);
 char		**ft_split(char const *s, char c);
 size_t		ft_strlcpy(char *dst, const char *src, size_t size);
-char		*ft_strdup(const char *s);
 void		child1(t_fd fd, char **argv, char **envp);
 void		child2(t_fd fd, char **argv, char **envp);
 void		close_all(t_fd *fd);
@@ -89,7 +107,10 @@ void		parse(char *input);
 void		slash_signal(int sig);
 int			hook_signal(void);
 void		continue_signal(int sig);
-char	*ft_strjoin(char *s1, char const *s2);
-char    **assign_value(char **split, int left, int right);
+char		*ft_strjoin(char *s1, char const *s2);
+char		**assign_value(char **split, int left, int right);
+int			ft_strcmp(const char *s1, char *s2);
+char		*ft_strdup(const char *s, size_t n);
+size_t	ft_strlen(const char *str);
 
 #endif
