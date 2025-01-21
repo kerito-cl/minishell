@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 20:08:20 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/20 21:42:00 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/21 11:02:44 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,8 @@
 #include <ctype.h>
 #include "../minishell.h"
 
-//void    assign_node(t_ast *root, char **split, t_index index, bool flag);
+void    assign_to_left(t_ast *root, t_token *tokens, t_index i, bool flag);
 
-
-void    assign_node(t_ast **root, t_token *tokens, t_index *i ,int used);
 
 void print_values(char *values) 
 {
@@ -44,33 +42,6 @@ void print_ast(t_ast *node, int depth)
         print_ast(node->right, depth + 1);
     }
 }
-
-char    **assign_value(char **split, int left, int right)
-{
-    int i;
-    int len;
-    char    **value;
-
-    len = (right - left) + 1;
-    value = (char **)malloc(sizeof(char *) * (len + 1));
-    if (value == NULL)
-        return (NULL);
-    value[len] = NULL;
-    i = 0;
-    while(left <= right)
-    {
-        value[i] = (char *)malloc(sizeof(char) * ft_strlen(split[left]) + 2);
-        if (value[i] == NULL)
-        {
-            freesplit(value);
-            return (NULL);
-        }
-        ft_strlcpy(value[i], split[left], ft_strlen(split[left]) + 1);
-        i++;
-        left++;
-    }
-    return (value);
-}
 // Function to create a new AST node
 t_ast* create_node(char *s1 , tokentype type) 
 {
@@ -90,252 +61,65 @@ t_ast* create_node(char *s1 , tokentype type)
     new_node->type = type;
     new_node->left = NULL;
     new_node->right = NULL;
-    return new_node;
-}
-/*
-void    find_root(t_ast **root, char **split, t_index *index)
-{
-    index->i = 0;
-    while (index->i <= index->pip_h)
-    {
-        if (ft_strcmp(split[index->i], "<") == 0 && root == NULL)
-            *root = create_node(split, "rein", index->i , index->i + 1);
-        if (ft_strcmp(split[index->i], "<<") == 0 && root == NULL)
-            *root = create_node(split, "rein2", index->i , index->i + 1);
-        if (ft_strcmp(split[index->i], ">") == 0 && root == NULL)
-            *root = create_node(split, "reout", index->i, index->i + 1);
-        if (ft_strcmp(split[index->i], ">>") == 0 && root == NULL)
-            *root = create_node(split, "reout2", index->i, index->i + 1);
-        if (root != NULL)
-        {
-            index->pip_h = index->pip;
-            break;
-        }
-        index->i++;
-    }
-    if (root == NULL)
-        *root = create_node(split, "reout2", 0, index->pip_h);
-}
-bool    find_pipe(t_ast *root, char **split, t_index index)
-{
-    if (ft_strcmp(split[index.i], "|") == 0)
-    {
-        root->left = create_node(split,"pipe", index.i, index.i);
-        index.pip_h = index.pip;
-        index.pip = index.i;
-        assign_node(root->left, split, index, true);
-        index.reout = false;
-        index.rein = false;
-        assign_node(root->left, split, index, false);
-        return (false);
-    }
-    return (true);
+    return (new_node);
 }
 
-bool    find_operators_left(t_ast *root, char **split, t_index index)
+void    assign_to_right(t_ast *root, t_token *tokens, t_index i, bool flag)
 {
-    while (index.i < index.pip_h)
-    {
-        if (ft_strcmp(split[index.i], "<") == 0)
-        {
-            root->left = create_node(split,"rein",index.i, index.i + 1);
-            index.pip_h = index.pip - 1;
-            index.pip = index.i + 1;
-            index.reout = false;
-            index.rein = true;
-            assign_node(root->left, split, index,false); 
-            return (false);
-        }
-        else if (ft_strcmp(split[index.i], ">") == 0)
-        {
-            root->left = create_node(split,"reout",index.i, index.i + 1);
-            index.pip = -1;
-            index.pip_h = index.i - 1;
-            assign_node(root->left, split, index,false); 
-            return (false);
-        }
-        index.i++;
-    }
-    return (true);
-}
-bool    find_operators_r1(t_ast *root, char **split, t_index index, bool flag)
-{
-    while (index.i < index.pip_h  && !flag && !index.reout)
-    {
-        if (ft_strcmp(split[index.i], "<") == 0)
-        {
-            root->right = create_node(split,"rein",index.i, index.i + 1);
-            index.pip = index.i + 1;
-            index.reout = false;
-            index.rein = true;
-            assign_node(root->right, split, index,false); 
-            return (false);
-        }
-        index.i++;
-    }
-    return (true);
-}
+    int k;
 
-bool    find_operators_r2(t_ast *root, char **split, t_index index, bool flag)
-{
-    while (index.i >= index.pip + 1 && !flag)
+    k = i.min;
+    while (k < i.max)
     {
-        if (ft_strcmp(split[index.i], ">") == 0 && !index.rein)
+        if (REIN2 == tokens[k].type && !tokens[k].lock)
         {
-            root->right = create_node(split, "reout", index.i, index.i + 1);
-            index.reout = true;
-            index.pip_h = index.i - 1;
-            assign_node(root->right, split, index, false);
-            return (false);
-        }
-        else if (ft_strcmp(split[index.i], ">") == 0 && index.rein)
-        {
-            root->left = create_node(split, "reout", index.i, index.i + 1);
-            index.pip_h = index.i - 1;
-            break;
-        }
-        index.i-= 1;
-    }
-    if (!flag && index.pip + 1 <= index.pip_h)
-        root->right = create_node(split, "command", index.pip + 1, index.pip_h);
-    else if (flag && index.pip + 1 <= index.pip_h)
-        root->left = create_node(split, "command", index.pip + 1, index.pip_h);
-    return (true);
-}
-
-void     assign_ifnopipe(t_ast *root ,char **split, t_index index)
-{
-    index.i = index.pip;
-    while (index.i < index.pip_h )
-    {
-        if (ft_strcmp(split[index.i], "<") == 0 && !index.rein)
-        {
-            root->left = create_node(split,"rein",index.i, index.i + 1);
-            index.pip = index.i + 1;
-            index.reout = false;
-            index.rein = true;
-            assign_ifnopipe(root, split, index); 
+            root->right = create_node(tokens[k + 1].value, REIN2);
+            tokens[k].lock = true;
+            tokens[k + 1].lock = true;
+            assign_to_left(root->right, tokens, i, true);
             return ;
         }
-        index.i++;
+        k++;
     }
-    index.i = index.pip_h;
-    while (index.i >= index.pip && !index.reout)
+    k = i.min;
+    while (k < i.max)
     {
-        if (ft_strcmp(split[index.i], ">") == 0 && !index.rein)
+        if (REIN == tokens[k].type && !tokens[k].lock)
         {
-            root->left = create_node(split, "reout", index.i, index.i + 1);
-            index.reout = true;
-            break;
-        }
-        else if (ft_strcmp(split[index.i], ">") == 0 && index.rein)
-        {
-            root->left = create_node(split, "reout", index.i, index.i + 1);
-            index.pip_h = index.i - 1;
-            index.reout = false;
-            break;
-        }
-        index.i-= 1;
-    }
-    if (index.reout == true && !index.rein)
-    {
-        index.pip_h = index.i - 1;
-        index.reout = false;
-        assign_ifnopipe(root, split, index);
-    }
-    else if (index.reout == false)
-    {
-        if (root == NULL)
-            root = create_node(split, "command", 0 , index.pip_h);
-        else
-            root->right = create_node(split, "command", index.pip + 1, index.pip_h);
-    }
-}
-
-void    assign_node(t_ast *root, char **split, t_index index, bool flag)
-{
-    if (index.pip <= 0 && flag)
-        return ;
-    index.i = index.pip - 1;
-    while (index.i >= 0 && flag == true)
-    {
-        if (!find_pipe(root, split, index))
+            root->right = create_node(tokens[k + 1].value, REIN);
+            tokens[k].lock = true;
+            tokens[k + 1].lock = true;
+            assign_to_left(root->right, tokens, i, true);
             return ;
-        if (index.i != 0)
-            index.i-= 1;
-        if (index.i == 0)
-        {
-            index.pip_h = index.pip - 1;
-            if (!find_operators_left(root, split, index))
-                return ;
-            index.pip = -1;
-            break;
-         }
-    }
-    index.i = index.pip + 1;
-    if (!find_operators_r1(root, split, index, flag))
-        return ;
-    index.i = index.pip_h;
-    if (!find_operators_r2(root, split, index, flag))
-        return ;
-}
-
-t_ast  *divide_input(char **split, int right, bool flag)
-{
-    t_index index;
-    t_ast *root;
-
-    index.i = 0;
-    index.pip = right;
-    index.pip_h = right;
-    index.reout = false;
-    index.rein = false;
-    root = NULL;
-    if (!flag)
-    {
-        while (index.pip > 0)
-        {
-            if (ft_strcmp(split[index.pip], "|") == 0)
-            {
-                root = create_node(split, "pipe", index.pip, index.pip);
-                break; 
-            }
-            index.pip--;
         }
+        k++;
     }
-    if (index.pip > 0)
+    k = i.min;
+    while (k < i.max)
     {
-        assign_node(root, split, index, true);
-        assign_node(root, split, index, false);
+        if (REOUT == tokens[k].type && !tokens[k].lock)
+        {
+            root->right = create_node(tokens[k + 1].value, REOUT);
+            tokens[k].lock = true;
+            tokens[k + 1].lock = true;
+            assign_to_left(root->right, tokens, i, true);
+            return ;
+        }
+        k++;
     }
-    else
+    k = i.min;
+    while (k < i.max)
     {
-        find_root(&root, split, &index);
-        assign_ifnopipe(root,split,index);
+        if (ARG == tokens[k].type && !tokens[k].lock)
+        {
+            root->right = create_node(tokens[k].value, ARG);
+            tokens[k].lock = true;
+            return ;
+        }
+        k++;
     }
-    return (root);
 }
-
-t_ast *parse_input(t_ast *root, char *input)
-{
-    int i;
-    char **split;
-
-    split = ft_split(input, ' ');
-    i = 0;
-    while (split[i] != NULL)
-        i++;
-    i--;
-    root = divide_input(split, i, false);
-    freesplit(split);
-    print_ast(root, 0);
-    //printf("%s \n", root->value[0]);
-    //printf("%s \n", root->left->value[0]);
-    return (root);
-}
-*/
-
-void    assign_to_left(t_ast *root, t_token *tokens, t_index i, int used)
+void    assign_to_left(t_ast *root, t_token *tokens, t_index i, bool flag)
 {
     int k;
     int prior;
@@ -347,7 +131,10 @@ void    assign_to_left(t_ast *root, t_token *tokens, t_index i, int used)
         {
             root->left = create_node(NULL, PIPE);
             i.max = k;
-            assign_to_left(root->left, tokens, i, k);
+            assign_to_left(root->left, tokens, i, false);
+            i.min = k + 1;
+            i.max = i.len;
+            assign_to_right(root->left, tokens, i, false);
             return ;
         }
         k--;
@@ -360,7 +147,7 @@ void    assign_to_left(t_ast *root, t_token *tokens, t_index i, int used)
             root->left = create_node(tokens[k + 1].value, REIN2);
             tokens[k].lock = true;
             tokens[k + 1].lock = true;
-            assign_to_left(root->left, tokens, i , k); 
+            assign_to_left(root->left, tokens, i, true);
             return ;
         }
         k++;
@@ -373,7 +160,7 @@ void    assign_to_left(t_ast *root, t_token *tokens, t_index i, int used)
             root->left = create_node(tokens[k + 1].value, REIN);
             tokens[k].lock = true;
             tokens[k + 1].lock = true;
-            assign_to_left(root->left, tokens, i , k); 
+            assign_to_left(root->left, tokens, i, true);
             return ;
         }
         k++;
@@ -386,7 +173,7 @@ void    assign_to_left(t_ast *root, t_token *tokens, t_index i, int used)
             root->left = create_node(tokens[k + 1].value, REOUT);
             tokens[k].lock = true;
             tokens[k + 1].lock = true;
-            assign_to_left(root->left, tokens, i , k); 
+            assign_to_left(root->left, tokens, i, true);
             return ;
         }
         k++;
@@ -396,7 +183,7 @@ void    assign_to_left(t_ast *root, t_token *tokens, t_index i, int used)
     {
         if (ARG == tokens[k].type && !tokens[k].lock)
         {
-            if (root == NULL)
+            if (!flag)
                 root->left = create_node(tokens[k].value, ARG);
             else
                 root->right = create_node(tokens[k].value, ARG);
@@ -413,7 +200,6 @@ t_ast  *divide_input(t_token *tokens, int len, bool flag)
     t_index i;
 
     i.pip = len;
-    i.prior = 0;
     while (i.pip > 0)
     {
         if (tokens[i.pip].type == PIPE)
@@ -425,8 +211,12 @@ t_ast  *divide_input(t_token *tokens, int len, bool flag)
     }
     i.min = 0;
     i.max = i.pip;
-    assign_to_left(root, tokens, i , -1);
-    return root;
+    i.len = i.pip;
+    assign_to_left(root, tokens, i, false);
+    i.min = i.pip + 1;
+    i.max = len;
+    assign_to_right(root, tokens, i, false);
+    return (root);
 }
 t_ast *parse_input(t_ast *root, t_token *tokens, int len)
 {
@@ -443,7 +233,7 @@ bool compare_token(char *input, int i)
 {
     if (input[i] == '<' || input[i] == '>')
         return (false);
-    if (input[i] == '|' || input[i] == ' ')
+    if (input[i] == '|' || input[i] == ' ' )
         return (false);
     return (true);
 }
@@ -458,7 +248,7 @@ int tokenize(t_token *tokens, char *input)
     j = 0;
     k = 0;
     flag = true;
-    while (input[i])
+    while (input[i] != '\0')
     {
         if (input[i] == ' ')
             i++;
@@ -481,15 +271,22 @@ int tokenize(t_token *tokens, char *input)
         else 
         {
             k = i;
-            while (input[i])
+            while (input[i] != '\0')
             {
                 if (!compare_token(input, i))
                 {
                     tokens[j].value = ft_strdup(input + k , (size_t)i - k);
                     tokens[j].type = ARG;
+                    printf("%s\n", tokens[j].value);
                     break;
                 }
                 i++;
+            }
+            if (input[i] == '\0')
+            {
+                tokens[j].value = ft_strdup(input + k , (size_t)i - k);
+                tokens[j].type = ARG;
+                break;
             }
         }
         i++;   
@@ -503,16 +300,11 @@ int main()
     t_token *tokens;
     t_ast *root;
     int len;
-    char input[] = "cat -e Makefile <in << s > out | grep c | ls >out";
+    char input[] = "cat | < in grep c > out1 >out2 | ls >out3";
 
 
     tokens = (t_token *)malloc(sizeof(t_token) * ft_strlen(input) + 1);
     len = tokenize(tokens, input);
-    int i = 0;
-    while (i < len)
-    {
-        i++;
-    }
     root = parse_input(root, tokens, len);
 
     return 0;
