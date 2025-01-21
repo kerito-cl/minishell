@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 20:08:20 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/21 13:02:40 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/21 18:32:35 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,7 @@
 #include <ctype.h>
 #include "../minishell.h"
 
-void    assign_to_left(t_ast *root, t_token *tokens, t_index i, bool flag);
-
+void    assign_to_left(t_ast *root, t_token *tokens, t_index *i, bool flag);
 
 void print_values(char *values) 
 {
@@ -54,7 +53,7 @@ t_ast* create_node(char *s1 , tokentype type)
     if (s1 != NULL)
     {
         len = ft_strlen(s1);
-        new_node->value = ft_strdup(s1, len);
+        new_node->value = ft_strndup(s1, len);
     }
     else
         new_node->value = NULL;
@@ -64,25 +63,26 @@ t_ast* create_node(char *s1 , tokentype type)
     return (new_node);
 }
 
-bool assign_node(t_ast **root, t_token *tokens, t_index i, int n)
+bool assign_node(t_ast **root, t_token *tokens, t_index *i, int n)
 {
-    i.key = i.min;
-    while (i.key < i.max)
+    i->key = i->min;
+    i->max = i->max;
+    while (i->key < i->max)
     {
-        if (n == tokens[i.key].type && !tokens[i.key].lock)
+        if (n == tokens[i->key].type && !tokens[i->key].lock)
         {
-            *root = create_node(tokens[i.key + 1].value, n);
-            tokens[i.key].lock = true;
-            tokens[i.key + 1].lock = true;
+            *root = create_node(tokens[i->key + 1].value, n);
+            tokens[i->key].lock = true;
+            tokens[i->key + 1].lock = true;
             assign_to_left(*root , tokens, i, true);
             return (true);
         }
-        i.key++;
+        i->key++;
     }
     return (false);
 }
 
-void    assign_to_right(t_ast *root, t_token *tokens, t_index i, bool flag)
+void    assign_to_right(t_ast *root, t_token *tokens, t_index *i)
 {
     if (assign_node(&(root->right), tokens, i, REIN2))
         return ;
@@ -92,36 +92,36 @@ void    assign_to_right(t_ast *root, t_token *tokens, t_index i, bool flag)
         return ;
     if (assign_node(&(root->right), tokens, i, REOUT2))
         return ;
-    i.key = i.min;
-    while (i.key < i.max)
+    i->key = i->min;
+    i->max = i->max;
+    while (i->key <= i->max)
     {
-        if (ARG == tokens[i.key].type && !tokens[i.key].lock)
+        if (ARG == tokens[i->key].type && !tokens[i->key].lock)
         {
-            root->right = create_node(tokens[i.key].value, CMD);
-            tokens[i.key].lock = true;
+            root->right = create_node(tokens[i->key].value, CMD);
+            tokens[i->key].lock = true;
             return ;
         }
-        i.key++;
+        i->key++;
     }
 }
 
-void    assign_to_left(t_ast *root, t_token *tokens, t_index i, bool flag)
+void    assign_to_left(t_ast *root, t_token *tokens, t_index *i, bool flag)
 {
-
-    i.key = i.max - 1;
-    while (i.key > i.min)
+    i->key = i->max - 1;
+    while (i->key > i->min)
     {
-        if (PIPE == tokens[i.key].type)
+        if (PIPE == tokens[i->key].type)
         {
             root->left = create_node(NULL, PIPE);
-            i.max = i.key;
+            i->max = i->key;
             assign_to_left(root->left, tokens, i, false);
-            i.min = i.key + 1;
-            i.max = i.len;
-            assign_to_right(root->left, tokens, i, false);
+            i->min = i->key + 1;
+            i->max = i->len;
+            assign_to_right(root->left, tokens, i);
             return ;
         }
-        i.key--;
+        i->key--;
     }
     if (assign_node(&(root->left), tokens, i, REIN2))
         return ;
@@ -131,45 +131,69 @@ void    assign_to_left(t_ast *root, t_token *tokens, t_index i, bool flag)
         return ;
     if (assign_node(&(root->left), tokens, i, REOUT2))
         return ;
-    i.key = i.min;
-    while (i.key < i.max)
+    i->key = i->min;
+    while (i->key < i->max)
     {
-        if (ARG == tokens[i.key].type && !tokens[i.key].lock)
+        if (ARG == tokens[i->key].type && !tokens[i->key].lock)
         {
             if (!flag)
-                root->left = create_node(tokens[i.key].value, CMD);
+                root->left = create_node(tokens[i->key].value, CMD);
             else
-                root->right = create_node(tokens[i.key].value, CMD);
-            tokens[i.key].lock = true;
+                root->right = create_node(tokens[i->key].value, CMD);
+            tokens[i->key].lock = true;
             return ;
         }
-        i.key++;
+        i->key++;
     }
 }
 
-t_ast  *divide_input(t_token *tokens, int len, t_index i, bool flag)
+void    find_root(t_ast **root, t_token *tokens, t_index *i) 
+{
+    if (assign_node(root, tokens, i, REIN2))
+        return ;
+    if (assign_node(root, tokens, i, REIN))
+        return ;
+    if (assign_node(root, tokens, i, REOUT))
+        return ;
+    if (assign_node(root, tokens, i, REOUT2))
+        return ;
+    i->key = i->min;
+    while (i->key <= i->max)
+    {
+        if (ARG == tokens[i->key].type && !tokens[i->key].lock)
+        {
+            *root = create_node(tokens[i->key].value, CMD);
+            tokens[i->key].lock = true;
+            return ;
+        }
+        i->key++;
+    }
+}
+
+t_ast  *divide_input(t_token *tokens, int len, t_index *i, bool flag)
 {
     t_ast *root;
 
-    while (i.pip > 0)
+    while (i->pip > 0)
     {
-        if (tokens[i.pip].type == PIPE)
+        if (tokens[i->pip].type == PIPE)
         {
             root = create_node(NULL, PIPE);
             break;
         }
-        i.pip--;
+        i->pip--;
     }
-    if (i.pip > 0)
+    if (i->pip > 0)
     {
-        i.max = i.pip;
-        i.len = i.pip;
+        i->max = i->pip;
+        i->len = i->pip;
         assign_to_left(root, tokens, i, false);
-        i.min = i.pip + 1;
-        i.max = len ;
-        assign_to_right(root, tokens, i, false);
+        i->min = i->pip + 1;
+        i->max = len ;
+        assign_to_right(root, tokens, i);
     }
-
+    else
+        find_root(&root, tokens, i);
     return (root);
 }
 t_ast *parse_input(t_ast *root, t_token *tokens, int len)
@@ -178,12 +202,10 @@ t_ast *parse_input(t_ast *root, t_token *tokens, int len)
 
     i.pip = len + 1;
     i.min = 0;
-    root = divide_input(tokens, len, i, false);
+    i.len = len;
+    i.max = i.len ;
+    root = divide_input(tokens, len, &i, false);
     print_ast(root, 0);
-   /*printf("%d\n", root->left->type);
-   printf("%s\n", root->left->left->value);
-   printf("%d\n", root->left->left->type);
-   printf("%s\n", root->left->left->left->value);*/
    return (root);
 }
 
@@ -248,7 +270,7 @@ int tokenize(t_token *tokens, char *input)
             {
                 if (!compare_token(input, &i, flag))
                 {
-                    tokens[j].value = ft_strdup(input + k , (size_t)i - k);
+                    tokens[j].value = ft_strndup(input + k , (size_t)i - k);
                     tokens[j].type = ARG;
                     flag = false;
                     break;
@@ -257,7 +279,7 @@ int tokenize(t_token *tokens, char *input)
             }
             if (input[i] == '\0')
             {
-                tokens[j].value = ft_strdup(input + k , (size_t)i - k);
+                tokens[j].value = ft_strndup(input + k , (size_t)i - k);
                 tokens[j].type = ARG;
                 break;
             }
@@ -269,7 +291,7 @@ int tokenize(t_token *tokens, char *input)
             {
                 if (!compare_token(input, &i, flag))
                 {
-                    tokens[j].value = ft_strdup(input + k , (size_t)i - k);
+                    tokens[j].value = ft_strndup(input + k , (size_t)i - k);
                     tokens[j].type = ARG;
                     break;
                 }
@@ -277,7 +299,7 @@ int tokenize(t_token *tokens, char *input)
             }
             if (input[i] == '\0')
             {
-                tokens[j].value = ft_strdup(input + k , (size_t)i - k);
+                tokens[j].value = ft_strndup(input + k , (size_t)i - k);
                 tokens[j].type = ARG;
                 break;
             }
@@ -293,7 +315,9 @@ int main()
     t_token *tokens;
     t_ast *root;
     int len;
-    char input[] = "cat Makefile | << in grep c > out1 >out2 | ls >>out3";
+    char input[] = "grep c| ls";
+
+    //char input[] = "< in cat > out";
 
 
     tokens = (t_token *)malloc(sizeof(t_token) * ft_strlen(input) + 1);

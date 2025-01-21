@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 08:53:14 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/21 17:44:25 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/21 16:47:25 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,6 @@ void print_ast(t_ast *node, int depth)
 int main(int argc, char const **argv)
 {
     char *input;
-    int len;
-    t_token *tokens;
-    t_ast *root;
     rl_hook_func_t sig;
     (void )argc;
     if (argv)
@@ -59,10 +56,6 @@ int main(int argc, char const **argv)
         input = readline("minishell>");
         if (input == NULL)
             exit(1);
-        tokens = (t_token *)malloc(sizeof(t_token) * ft_strlen(input) + 1);
-        len = tokenize(tokens, input);
-        root = parse_input(root, tokens, len);
-        print_ast(root, 0);
 
         /*in.cmds = ft_split(in.input, ' ');
         //add_history(in.input);

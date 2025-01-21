@@ -1,28 +1,31 @@
 NAME = minishell
-PNAME = libftprintf.a
-SOURCES = main.c ft_split.c utils.c children.c error.c signal.c
-OFILES = $(SOURCES:.c=.o)
+SRCS_DIR		:= src
+
+SRCS := 		parse.c \
+				tokenize.c \
+				signal.c \
+				utils.c \
+				assign_node.c \
+				main.c 
+
+OFILES = $(SRCS:.c=.o)
 CC = cc
 FLAGS = -Wall -Wextra -Werror
-PSOURCES = ./printf/ft_printf.c ./printf/ft_putnbr_fd.c \
-			 ./printf/ft_strlen.c ./printf/ft_strdup.c ./printf/ft_printhex.c
-PFILES = $(PSOURCES:.c=.o)
 
-all: $(PNAME) $(NAME)
+all: $(NAME)
 
-$(PNAME): $(PFILES)
-	ar -rcs $(PNAME) $(PFILES)
-
-$(NAME): $(OFILES) $(PNAME)
-	$(CC) $(FLAGS) $(OFILES) -o $(NAME) -lreadline -L. -lftprintf 
+$(NAME): $(OFILES)
+	$(CC) $(FLAGS) $(OFILES) -o $(NAME) -lreadline
 
 %.o: %.c
 	$(CC) $(FLAGS) -c $< -I. -o $@
 
 clean:
-	rm -f $(OFILES) $(PFILES)
+	rm -f $(OFILES)
 fclean: clean
-	rm -f $(NAME) $(PNAME)
+	rm -f $(NAME)
 re: fclean all
 
 .PHONY: all, clean, fclean, re
+
+.PHONY: all clean fclean re run
