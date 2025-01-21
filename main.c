@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 08:53:14 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/21 17:44:25 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/21 20:24:37 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,8 @@
 
 void print_values(char *values) 
 {
-    if (values) {
-            printf("%s", values);
-    }
+    if (values)
+        printf("%s", values);
 }
 
 void print_ast(t_ast *node, int depth)
@@ -43,8 +42,6 @@ void print_ast(t_ast *node, int depth)
 int main(int argc, char const **argv)
 {
     char *input;
-    int len;
-    t_token *tokens;
     t_ast *root;
     rl_hook_func_t sig;
     (void )argc;
@@ -59,19 +56,17 @@ int main(int argc, char const **argv)
         input = readline("minishell>");
         if (input == NULL)
             exit(1);
-        tokens = (t_token *)malloc(sizeof(t_token) * ft_strlen(input) + 1);
-        len = tokenize(tokens, input);
-        root = parse_input(root, tokens, len);
+        root = parse_input(input);
         print_ast(root, 0);
+        free_ast(root);
 
-        /*in.cmds = ft_split(in.input, ' ');
         //add_history(in.input);
         //create_builting;
         // parse function ;
 
         // childr(&t_sdfg)
         // childr(&t_sdfg)
-        if (in.cmds[0] != NULL )
+        /*if (in.cmds[0] != NULL )
         {
             in.path = find_path(in.cmds[0], envp, 0);
 	        execve(in.path, in.cmds , envp);

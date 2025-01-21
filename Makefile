@@ -6,6 +6,7 @@ SRCS := 		parse.c \
 				signal.c \
 				utils.c \
 				assign_node.c \
+				efe.c \
 				main.c 
 
 OFILES = $(SRCS:.c=.o)
