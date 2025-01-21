@@ -9,12 +9,16 @@ int main(int argc, char **argv, char **envp) {
 		return 1;
 	}
 
+	// // test 1
 	// test_env(envp);
-	t_env env;
-	env_init(envp, &env);
-	test_builtin(&env);
+
+	// // test 3
+	// t_env env;
+	// env_init(envp, &env);
+	// test_builtin(&env);
+	// if (env.envp != NULL)
+	// 	env_free(&env);
 	
-	if (env.envp != NULL)
-		env_free(&env);
+	
 	return 0;
 }

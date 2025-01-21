@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 18:41:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/20 14:36:49 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/21 18:44:48 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,21 @@ typedef enum e_error_code
 	ERROR_BUILTIN_GETCWD_FAILS,
 	ERROR_BUILTIN_EXIT_INVALID_ARG = 255
 }	t_error_code;
+
+# ifndef FD_READ
+#  define FD_READ 0
+# endif
+
+# ifndef FD_WRITE
+#  define FD_WRITE 1
+# endif
+
+# ifndef FORK_LEFT
+#  define FORK_LEFT 0
+# endif
+
+# ifndef FORK_RIGHT
+#  define FORK_RIGHT 1
+# endif
 
 #endif

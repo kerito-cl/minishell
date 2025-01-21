@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 07:36:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/20 16:16:10 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/21 19:40:02 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <stdlib.h>	// malloc()
-# include <unistd.h>
+# include <unistd.h>	// write(), fork()
+# include <sys/wait.h>	// waitpid()
 
 # include "constants.h"
 # include "structures.h"
