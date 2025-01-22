@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 16:28:29 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/21 21:17:29 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/22 13:53:48 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "minishell.h"
 
 t_ast* create_node(char *s1 , tokentype type) 
 {
@@ -77,5 +77,5 @@ t_ast *parse_input(char *input)
     i.max = i.len ;
     root = divide_input(tokens, len, &i);
     free_tokens(tokens, len);
-   return (root);
+    return (root);
 }

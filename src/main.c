@@ -3,19 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 08:53:14 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/21 16:47:25 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/22 13:58:00 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
 #include "minishell.h"
-#include <stdlib.h>
-#include <stdbool.h>
-#include <readline/readline.h>
-#include <readline/history.h>
+
+volatile int	g_status = 0;
 
 void print_values(char *values) 
 {
@@ -40,38 +37,33 @@ void print_ast(t_ast *node, int depth)
         print_ast(node->right, depth + 1);
     }
 }
-int main(int argc, char const **argv)
+int	main(int argc, char **argv, char **envp)
 {
-    char *input;
-    rl_hook_func_t sig;
-    (void )argc;
-    if (argv)
-        
-    rl_catch_signals = 0;
-    signal(SIGINT, continue_signal);
-    signal(SIGQUIT, slash_signal);
-    rl_event_hook = hook_signal;
-    while (true)
-    {
-        input = readline("minishell>");
-        if (input == NULL)
-            exit(1);
+	struct sigaction	sa;
+	char				*line;
+	t_env				env;
+    t_ast *root;
 
-        /*in.cmds = ft_split(in.input, ' ');
-        //add_history(in.input);
-        //create_builting;
-        // parse function ;
-
-        // childr(&t_sdfg)
-        // childr(&t_sdfg)
-        if (in.cmds[0] != NULL )
-        {
-            in.path = find_path(in.cmds[0], envp, 0);
-	        execve(in.path, in.cmds , envp);
-        }*/
-        free(input);
-        
-    }
-    rl_clear_history();
-    return 0;
+	if (argc != 1 || !argv || !envp)
+	{
+		ft_putstr_fd("Usage: ./minishell\n", 2);
+		exit(EXIT_FAILURE);
+	}
+	env_init(envp, &env);
+	sig_sigaction_init(&sa, sig_handler_main);
+	while (1)
+	{
+		line = readline("minishell> ");
+		if (line == NULL)
+			break ;
+        root = parse_input(line);
+        print_ast(root, 0);
+		add_history(line);
+		free(line);
+	}
+	rl_clear_history();
+	free(line);
+	env_free(&env);
+	write(1, "Good luck!\n", 11);
+	return (0);
 }
