@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 07:35:41 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/21 18:38:38 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/22 12:59:33 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,26 +30,5 @@ typedef struct s_mshell
 	int		exit_code;
 	int		is_parent;
 }			t_mshell;
-
-/* -------------------------- Abstract syntax tree -------------------------- */
-
-typedef enum e_tokentype {
-    PIPE = 22,
-    REIN,
-    REIN2,
-    REOUT,
-    REOUT2,
-    SQUOTE,
-    DQUOTE,
-    ARG
-}	t_tokentype;
-
-typedef struct s_ast
-{
-	char			*value;
-	t_tokentype		type;          
-	struct s_ast	*left;  
-	struct s_ast	*right;
-}					t_ast;
 
 #endif

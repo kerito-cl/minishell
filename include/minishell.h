@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 07:36:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/21 19:40:02 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/22 13:54:04 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,11 @@
 # include <stdlib.h>	// malloc()
 # include <unistd.h>	// write(), fork()
 # include <sys/wait.h>	// waitpid()
+# include <stdbool.h>
 
 # include "constants.h"
 # include "structures.h"
+# include "parsing.h"
 # include "libft.h"
 
 /* -------------------------------- Signals -------------------------------- */
