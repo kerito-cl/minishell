@@ -1,35 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/29 11:36:52 by mquero            #+#    #+#             */
-/*   Updated: 2024/11/08 12:11:49 by mquero           ###   ########.fr       */
+/*   Created: 2024/10/28 15:47:36 by mquero            #+#    #+#             */
+/*   Updated: 2025/01/20 08:50:47 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "minishell.h"
 
-char	*ft_strdup(const char *s)
+int	ft_strcmp(const char *s1, char *s2)
 {
-	int		len;
-	char	*des;
+	size_t	i;
 
-	len = ft_strlen(s);
-	des = (char *)malloc((len + 1) * sizeof(char));
-	if (des == NULL || s == NULL)
+	i = 0;
+	while (s1[i])
 	{
-		free(des);
-		return (NULL);
+		if (s1[i] != s2[i])
+			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+		else if (s1[i] == '\0' && s2[i] == '\0')
+			return (0);
+		i++;
 	}
-	len = 0;
-	while (s[len])
-	{
-		des[len] = s[len];
-		len++;
-	}
-	des[len] = '\0';
-	return (des);
+	return (0);
 }

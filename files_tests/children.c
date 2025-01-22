@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 11:10:55 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/11 14:08:28 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/16 16:37:15 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	*find_path(char *argv, char **envp, int i)
 	i = 0;
 	while (paths[i])
 	{
-		wholepath = ft_strjoin(paths[i], argv);
+		wholepath = ft_strjoin_slash(paths[i], argv);
 		if (access(wholepath, X_OK) == 0)
 			break ;
 		else

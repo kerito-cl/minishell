@@ -1,25 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   efe.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/29 11:38:31 by mquero            #+#    #+#             */
-/*   Updated: 2024/11/08 12:11:56 by mquero           ###   ########.fr       */
+/*   Created: 2025/01/21 19:02:55 by mquero            #+#    #+#             */
+/*   Updated: 2025/01/21 19:22:26 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "parsing.h"
 
-size_t	ft_strlen(const char *str)
+void    free_tokens(t_token *tokens, int len)
 {
-	size_t	i;
+    int i;
 
-	i = 0;
-	if (str == NULL)
-		return (0);
-	while (str[i])
-		i++;
-	return (i);
+    i = 0;
+    while (i <= len)
+   {
+        free(tokens[i].value);
+        tokens[i].value = NULL;
+        i++;
+    }
+    free(tokens);
+}
+
+void free_ast(t_ast *node) {
+    if (node == NULL)
+        return;
+    free_ast(node->left);
+    free_ast(node->right);
+    if (node->value != NULL)
+        free(node->value);
+    free(node);
 }

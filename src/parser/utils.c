@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 10:40:48 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/11 14:08:59 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/21 19:26:22 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 	return (len);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin_slash(char const *s1, char const *s2)
 {
 	int		i;
 	int		j;
@@ -71,21 +71,35 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	return (dest);
 }
 
-char	*ft_strdup(const char *s)
+char	*ft_strndup(const char *s, size_t n)
 {
-	int		len;
+	size_t		len;
 	char	*des;
 
 	len = ft_strlen(s);
-	des = (char *)malloc((len + 1) * sizeof(char));
+	des = (char *)malloc((n + 1) * sizeof(char));
 	if (des == NULL)
 		return (NULL);
 	len = 0;
-	while (s[len])
+	while (len < n)
 	{
 		des[len] = s[len];
 		len++;
 	}
 	des[len] = '\0';
 	return (des);
+}
+
+void	ft_bzero(void *s, size_t n)
+{
+	size_t	i;
+	char	*str;
+
+	i = 0;
+	str = s;
+	while (i < n)
+	{
+		str[i] = '\0';
+		i++;
+	}
 }
