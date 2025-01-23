@@ -6,7 +6,7 @@
 #    By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/15 07:44:51 by ipersids          #+#    #+#              #
-#    Updated: 2025/01/22 13:48:07 by ipersids         ###   ########.fr        #
+#    Updated: 2025/01/23 15:24:46 by ipersids         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,12 +39,15 @@ OBJ_DIR			:= obj
 # Sources and objects
 SRCS			:= $(SRCS_DIR)/signals/sig_handler.c \
         		   $(SRCS_DIR)/signals/sig_sigaction_init.c \
+				   $(SRCS_DIR)/signals/sig_child_process_handler.c \
+				   \
 				   $(SRCS_DIR)/environment/env_init.c \
 				   $(SRCS_DIR)/environment/env_free.c \
 				   $(SRCS_DIR)/environment/env_find_variable.c \
 				   $(SRCS_DIR)/environment/env_add.c \
 				   $(SRCS_DIR)/environment/env_remove.c \
 				   $(SRCS_DIR)/environment/env_find_value.c \
+				   \
 				   $(SRCS_DIR)/builtins/builtin_echo.c \
 				   $(SRCS_DIR)/builtins/builtin_env.c \
 				   $(SRCS_DIR)/builtins/builtin_export.c \
@@ -54,12 +57,19 @@ SRCS			:= $(SRCS_DIR)/signals/sig_handler.c \
 				   $(SRCS_DIR)/builtins/builtin_cd.c \
 				   $(SRCS_DIR)/builtins/utils/builtin_is_identifier_valid.c \
 				   $(SRCS_DIR)/builtins/utils/builtin_update_env_var.c \
+				   \
 				   $(SRCS_DIR)/destructor/exit_destroy_minishell.c \
+				   \
 				   $(SRCS_DIR)/parser/assign_node.c \
 				   $(SRCS_DIR)/parser/efe.c \
 				   $(SRCS_DIR)/parser/parse.c \
 				   $(SRCS_DIR)/parser/tokenize.c \
-				   $(SRCS_DIR)/parser/utils.c
+				   $(SRCS_DIR)/parser/utils.c \
+				   \
+				   $(SRCS_DIR)/execution/utils/exe_close_fd.c \
+				   $(SRCS_DIR)/execution/utils/exe_wait_children.c \
+				   $(SRCS_DIR)/execution/exe_pipe.c \
+				   $(SRCS_DIR)/execution/exe_ast_tree.c
 				   
 SRC_MAIN		:= $(SRCS_DIR)/main.c
 
@@ -78,6 +88,8 @@ $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)/builtins/utils
 	@mkdir -p $(OBJ_DIR)/destructor
 	@mkdir -p $(OBJ_DIR)/parser
+	@mkdir -p $(OBJ_DIR)/execution
+	@mkdir -p $(OBJ_DIR)/execution/utils
 
 # Rule for creating object files
 $(OBJ_DIR)/%.o: $(SRCS_DIR)/%.c
@@ -110,7 +122,7 @@ run: all
 	@./minishell
 
 # TESTING >>>
-TEST_SRC		:= tests/test_main.c tests/test_env.c tests/test_builtin.c
+TEST_SRC		:= tests/test_main.c tests/test_env.c tests/test_builtin.c tests/test_pipex.c
 TEST_OBJ		:= $(TEST_SRC:tests/%.c=tests/%.o)
 
 test: update-submodule build-submodule $(OBJ_DIR) $(OBJS) $(TEST_OBJ)

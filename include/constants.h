@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 18:41:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/21 18:44:48 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/23 13:11:06 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 #  define PATH_MAX 1024
 # endif
 
-extern volatile int	g_status;
+extern volatile sig_atomic_t	g_status;
 
 typedef enum e_error_code
 {

@@ -6,13 +6,13 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 08:53:14 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/22 13:58:00 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/23 15:00:16 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-volatile int	g_status = 0;
+volatile sig_atomic_t	g_status = 0;
 
 void print_values(char *values) 
 {
@@ -41,29 +41,33 @@ int	main(int argc, char **argv, char **envp)
 {
 	struct sigaction	sa;
 	char				*line;
-	t_env				env;
-    t_ast *root;
+    t_ast				*root;
+	t_mshell			ms;
 
 	if (argc != 1 || !argv || !envp)
 	{
 		ft_putstr_fd("Usage: ./minishell\n", 2);
 		exit(EXIT_FAILURE);
 	}
-	env_init(envp, &env);
+	env_init(envp, &ms.env);
+	ms.interactive_mode = isatty(STDIN_FILENO); // for signals in child processes;
 	sig_sigaction_init(&sa, sig_handler_main);
 	while (1)
 	{
+		root = NULL;
 		line = readline("minishell> ");
 		if (line == NULL)
 			break ;
-        root = parse_input(line);
+        root = parse_input(line); /** @bug if nothing allocated better to return NULL; case ./minishell <ENTER> (line is empty) */
         print_ast(root, 0);
 		add_history(line);
 		free(line);
+		free_ast(root); /** @bug set root to NULL in free_ast to avoid segfault in ./minishell <cntr+D> case */
 	}
 	rl_clear_history();
 	free(line);
-	env_free(&env);
+	env_free(&ms.env);
+	free_ast(root);
 	write(1, "Good luck!\n", 11);
 	return (0);
 }

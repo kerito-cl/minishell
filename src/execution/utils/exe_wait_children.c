@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 19:27:47 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/22 12:57:02 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/23 12:50:39 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,12 @@ int	exe_wait_children(pid_t *pids, int amount)
 			return (errno);
 		}
 		i++;
+	}
+	if (WIFSIGNALED(exit_code))
+	{
+		ft_putstr_fd("minishell: process terminated by signal", STDERR_FILENO);
+		ft_putnbr_fd(WTERMSIG(exit_code), STDERR_FILENO);
+		return (EXIT_FAILURE);
 	}
 	if (WIFEXITED(exit_code))
 		return (WEXITSTATUS(exit_code));

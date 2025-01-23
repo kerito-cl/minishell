@@ -6,16 +6,19 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 07:36:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/22 13:54:04 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/23 14:31:24 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /**
  * @note Small things to do:
  * 
- * 1) Setup uniform error handling system for builtins.
- * 2) Check the original error codes for builtins.
- * 3) Add function to init t_mshell minishell structure.
+ * 1) Check the original error codes for builtins.
+ * 2) Add function to init t_mshell minishell structure.
+ * 3) exe_wait_children() should we specify the error message?
+ * 4) builtins echo $? handler
+ * 5) $ARG check when it is str or variable
+ * 6) check if rl_replace_line() or rl_redisplay() fail?
  * 
  */
 
@@ -43,6 +46,7 @@
 void		sig_handler_main(int sig, siginfo_t *info, void *context);
 void		sig_sigaction_init(struct sigaction *sa, \
 								void (*handler) (int, siginfo_t *, void *));
+void		sig_child_process_handler(int is_interactive_mode);
 
 /* ------------------------------ Environment ------------------------------ */
 
@@ -69,6 +73,14 @@ int			builtin_cd(char **args, t_env *env);
 int			builtin_is_identifier_valid(const char *var);
 void		builtin_update_env_var(const char *name, const char *value, \
 									t_env *env);
+
+/* -------------------------------- Execution ------------------------------ */
+
+int			exe_ast_tree(t_ast *node, t_mshell *ms);
+int			exe_pipe(t_ast *root, t_mshell *ms);
+
+int			exe_wait_children(pid_t *pids, int amount);
+void		exe_close_fd(int *fd);
 
 /* ------------------------- Exit, errors and memory ----------------------- */
 
