@@ -6,7 +6,7 @@
 #    By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/15 07:44:51 by ipersids          #+#    #+#              #
-#    Updated: 2025/01/23 15:24:46 by ipersids         ###   ########.fr        #
+#    Updated: 2025/01/23 17:30:14 by ipersids         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,6 +59,7 @@ SRCS			:= $(SRCS_DIR)/signals/sig_handler.c \
 				   $(SRCS_DIR)/builtins/utils/builtin_update_env_var.c \
 				   \
 				   $(SRCS_DIR)/destructor/exit_destroy_minishell.c \
+				   $(SRCS_DIR)/destructor/free_2d_array.c \
 				   \
 				   $(SRCS_DIR)/parser/assign_node.c \
 				   $(SRCS_DIR)/parser/efe.c \
@@ -68,8 +69,10 @@ SRCS			:= $(SRCS_DIR)/signals/sig_handler.c \
 				   \
 				   $(SRCS_DIR)/execution/utils/exe_close_fd.c \
 				   $(SRCS_DIR)/execution/utils/exe_wait_children.c \
+				   $(SRCS_DIR)/execution/utils/exe_split_command.c \
 				   $(SRCS_DIR)/execution/exe_pipe.c \
-				   $(SRCS_DIR)/execution/exe_ast_tree.c
+				   $(SRCS_DIR)/execution/exe_ast_tree.c \
+				   $(SRCS_DIR)/execution/exe_command.c
 				   
 SRC_MAIN		:= $(SRCS_DIR)/main.c
 

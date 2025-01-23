@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 18:44:20 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/23 15:32:08 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/23 16:04:19 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ static int	run_left_fork(int pipe_fd[2], int *pid, t_ast *node, t_mshell *ms)
 		if (dup2(pipe_fd[FD_WRITE], STDOUT_FILENO) == -1)
 		{
 			exe_close_fd(&pipe_fd[FD_WRITE]);
-			perror("minishell: dup2");
 			exit(errno);
 		}
 		exe_close_fd(&pipe_fd[FD_WRITE]);
@@ -77,7 +76,6 @@ static int	run_right_fork(int pipe_fd[2], int *pid, t_ast *node, t_mshell *ms)
 		if (dup2(pipe_fd[FD_READ], STDIN_FILENO) == -1)
 		{
 			exe_close_fd(&pipe_fd[FD_READ]);
-			perror("minishell: dup2");
 			exit(errno);
 		}
 		exe_close_fd(&pipe_fd[FD_READ]);

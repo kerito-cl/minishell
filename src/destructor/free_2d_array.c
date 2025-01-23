@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 17:21:02 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/23 17:22:59 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/23 17:52:32 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,13 @@ void	free_2d_array(char **arr, int count)
 {
 	int	i;
 
+	if (!arr)
+		return ;
+	if (count == 0)
+	{
+		while (arr[count] != NULL)
+			count++;
+	}
 	i = 0;
 	while (i < count)
 	{

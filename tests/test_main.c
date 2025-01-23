@@ -1,5 +1,5 @@
 #include "minishell.h" 
-volatile int	g_status = 0;
+volatile sig_atomic_t	g_status = 0;
 
 void test_env(char **envp);
 void test_builtin(t_env *env);
@@ -12,7 +12,6 @@ int main(int argc, char **argv, char **envp) {
 		exit(EXIT_FAILURE);
 	}
 
-	t_mshell ms;
 
 	// // test 1
 	// test_env(envp);
@@ -24,10 +23,12 @@ int main(int argc, char **argv, char **envp) {
 	// if (env.envp != NULL)
 	// 	env_free(&env);
 
+	// test 4
+	t_mshell ms;
 	ms.env.envp = NULL;
 	ms.exit_code = -255;
 	ms.interactive_mode = isatty(STDIN_FILENO);
-	test_pipex_exernal_cmd("ls -la", "cat", &ms);
+	test_pipex_exernal_cmd("ls -la", "echo", &ms);
 	
-	return 0;
+	return ms.exit_code;
 }

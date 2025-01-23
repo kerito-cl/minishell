@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 07:36:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/23 14:31:24 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/23 18:09:45 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,12 +78,15 @@ void		builtin_update_env_var(const char *name, const char *value, \
 
 int			exe_ast_tree(t_ast *node, t_mshell *ms);
 int			exe_pipe(t_ast *root, t_mshell *ms);
+int			exe_command(t_ast *node, t_mshell *ms);
 
 int			exe_wait_children(pid_t *pids, int amount);
 void		exe_close_fd(int *fd);
+char		**exe_split_command(char *input);
 
 /* ------------------------- Exit, errors and memory ----------------------- */
 
 void		exit_destroy_minishell(t_mshell *ms);
+void		free_2d_array(char **arr, int count);
 
 #endif
