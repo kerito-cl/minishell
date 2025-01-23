@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 16:34:08 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/21 21:15:11 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/23 16:51:26 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,5 +64,6 @@ void				assign_to_left(t_ast *root, t_token *tokens, t_index *i,
 void				find_root(t_ast **root, t_token *tokens, t_index *i);
 void				free_tokens(t_token *tokens, int len);
 void				free_ast(t_ast *node);
+char  				*deal_with_quotes(char *input);
 
 #endif
