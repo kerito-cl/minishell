@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 07:35:41 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/23 13:46:13 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/24 22:31:38 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ typedef struct s_mshell
 {
 	t_env	env;
 	int		exit_code;
-	int		is_parent;
 	int		interactive_mode;
 }			t_mshell;
 

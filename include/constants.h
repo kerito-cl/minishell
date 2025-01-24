@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 18:41:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/24 15:36:41 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/24 23:30:18 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,18 +24,12 @@ extern volatile sig_atomic_t	g_status;
 typedef enum e_error_code
 {
 	ERROR_GENERIC = 1,
-	ERROR_INVALID_OPTION,
-	ERROR_BUILTIN_EXIT_TOO_MANY_ARGS = 1,
+	ERROR_INVALID_OPTION = 2,
 	ERROR_SIGACTION_FAILS = 100,
 	ERROR_MALLOC_FAILS,
 	ERROR_NULL_INPUT,
-	ERROR_BUILTIN_ENV_ARGS,
-	ERROR_BUILTIN_EXPORT_INV_VAR,
-	ERROR_BUILTIN_UNSET_INV_VAR,
-	ERROR_BUILTIN_PWD_ARGS,
-	ERROR_BUILTIN_GETCWD_FAILS,
 	ERROR_CMD_NOT_FOUND = 127,
-	ERROR_BUILTIN_EXIT_INVALID_ARG = 255
+	ERROR_INVALID_EXIT_CODE = 255
 }	t_error_code;
 
 # ifndef FD_READ
