@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 08:53:14 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/24 16:14:33 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/24 23:47:09 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	main(int argc, char **argv, char **envp)
 		ft_putstr_fd("Usage: ./minishell\n", 2);
 		exit(EXIT_FAILURE);
 	}
-	env_init(envp, &ms.env);
+	init_environment(envp, &ms.env);
 	ms.interactive_mode = isatty(STDIN_FILENO); // for signals in child processes;
 	sig_sigaction_init(&sa, sig_handler_main);
 	while (1)
@@ -74,7 +74,7 @@ int	main(int argc, char **argv, char **envp)
 	}
 	rl_clear_history();
 	free(line);
-	env_free(&ms.env);
+	free_environment(&ms.env);
 	free_ast(root);
 	write(1, "Good luck!\n", 11);
 	return (0);

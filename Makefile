@@ -6,7 +6,7 @@
 #    By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/15 07:44:51 by ipersids          #+#    #+#              #
-#    Updated: 2025/01/24 15:37:57 by ipersids         ###   ########.fr        #
+#    Updated: 2025/01/24 23:48:38 by ipersids         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,8 +41,6 @@ SRCS			:= $(SRCS_DIR)/signals/sig_handler.c \
         		   $(SRCS_DIR)/signals/sig_sigaction_init.c \
 				   $(SRCS_DIR)/signals/sig_child_process_handler.c \
 				   \
-				   $(SRCS_DIR)/environment/env_init.c \
-				   $(SRCS_DIR)/environment/env_free.c \
 				   $(SRCS_DIR)/environment/env_find_variable.c \
 				   $(SRCS_DIR)/environment/env_add.c \
 				   $(SRCS_DIR)/environment/env_remove.c \
@@ -58,8 +56,12 @@ SRCS			:= $(SRCS_DIR)/signals/sig_handler.c \
 				   $(SRCS_DIR)/builtins/utils/builtin_is_identifier_valid.c \
 				   $(SRCS_DIR)/builtins/utils/builtin_update_env_var.c \
 				   \
+				   $(SRCS_DIR)/constructor/init_environment.c \
+				   $(SRCS_DIR)/constructor/init_minishell_struct.c \
+				   \
 				   $(SRCS_DIR)/destructor/exit_destroy_minishell.c \
 				   $(SRCS_DIR)/destructor/free_2d_array.c \
+				   $(SRCS_DIR)/destructor/free_environment.c \
 				   \
 				   $(SRCS_DIR)/parser/assign_node.c \
 				   $(SRCS_DIR)/parser/efe.c \
@@ -93,6 +95,7 @@ $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)/parser
 	@mkdir -p $(OBJ_DIR)/execution
 	@mkdir -p $(OBJ_DIR)/execution/utils
+	@mkdir -p $(OBJ_DIR)/constructor
 
 # Rule for creating object files
 $(OBJ_DIR)/%.o: $(SRCS_DIR)/%.c

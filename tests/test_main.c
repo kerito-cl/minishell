@@ -49,7 +49,7 @@ int main(int argc, char **argv, char **envp) {
 
 	// test 4
 	t_mshell ms;
-	env_init(envp, &ms.env);
+	init_environment(envp, &ms.env);
 	ms.exit_code = -255;
 	ms.interactive_mode = isatty(STDIN_FILENO);
 	// test_pipex_exernal_cmd("pwd", "cat src/main.c", &ms);
@@ -60,7 +60,7 @@ int main(int argc, char **argv, char **envp) {
 	exe_ast_tree(root, &ms);
 
 	free_ast(root);
-	env_free(&ms.env);
+	free_environment(&ms.env);
 	
 	return 0;
 }

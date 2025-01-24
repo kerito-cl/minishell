@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 07:36:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/24 23:32:08 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/24 23:45:12 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,6 @@ void		sig_child_process_handler(int is_interactive_mode);
 
 /* ------------------------------ Environment ------------------------------ */
 
-void		env_free(t_env *env);
-int			env_init(char **envp_arr, t_env *env);
 char		*env_find_variable(const char *var, t_env *env, size_t	*i);
 const char	*env_find_value(const char *var, t_env *env);
 int			env_add(const char *var, t_env *env);
@@ -81,13 +79,18 @@ int			exe_command(t_ast *node, t_mshell *ms);
 
 int			exe_wait_children(pid_t *pids, int amount);
 void		exe_close_fd(int *fd);
-char		**exe_split_command(char *input);
 char		*exe_search_cmd_path(const char *cmd, const char *env_path, \
 								char *path);
 
 /* ------------------------- Exit, errors and memory ----------------------- */
 
 void		exit_destroy_minishell(t_mshell *ms);
+void		free_environment(t_env *env);
 void		free_2d_array(char **arr, int count);
+
+/* ------------------------------ Initialisation --------------------------- */
+
+int			init_environment(char **envp_arr, t_env *env);
+void		init_minishell_struct(t_mshell *ms, char **envp);
 
 #endif
