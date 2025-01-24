@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 18:41:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/23 18:08:56 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/24 00:29:31 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ typedef enum e_error_code
 	ERROR_BUILTIN_UNSET_INV_VAR,
 	ERROR_BUILTIN_PWD_ARGS,
 	ERROR_BUILTIN_GETCWD_FAILS,
+	ERROR_CMD_NOT_FOUND = 127,
 	ERROR_BUILTIN_EXIT_INVALID_ARG = 255
 }	t_error_code;
 

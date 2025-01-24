@@ -28,7 +28,7 @@ int main(int argc, char **argv, char **envp) {
 	ms.env.envp = NULL;
 	ms.exit_code = -255;
 	ms.interactive_mode = isatty(STDIN_FILENO);
-	test_pipex_exernal_cmd("ls -la", "echo", &ms);
+	test_pipex_exernal_cmd("pwd", "echo HELLO", &ms);
 	
 	return ms.exit_code;
 }

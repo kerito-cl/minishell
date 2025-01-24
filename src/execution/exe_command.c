@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 16:41:21 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/23 18:29:06 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/24 01:23:04 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,15 @@ static int	run_command(char **args, t_mshell *ms)
 
 static int	run_external(char **args, t_mshell *ms)
 {
-	(void)args; // del
-	(void)ms; // del
-	printf("Trying run eternal command\n"); // del
+	char	path[PATH_MAX];
+
+	path[0] = '\0';
+	if (!exe_search_cmd_path(*args, env_find_value("PATH", &ms->env), &path))
+	{
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd(args[0], STDERR_FILENO);
+		ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
+		return (ERROR_CMD_NOT_FOUND);
+	}
 	return (0);
 }
