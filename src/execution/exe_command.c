@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 16:41:21 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/24 01:23:04 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/24 12:06:35 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static int	run_external(char **args, t_mshell *ms)
 	char	path[PATH_MAX];
 
 	path[0] = '\0';
-	if (!exe_search_cmd_path(*args, env_find_value("PATH", &ms->env), &path))
+	if (!exe_search_cmd_path(*args, env_find_value("PATH", &ms->env), path))
 	{
 		ft_putstr_fd("minishell: ", STDERR_FILENO);
 		ft_putstr_fd(args[0], STDERR_FILENO);
