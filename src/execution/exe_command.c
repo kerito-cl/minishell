@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 16:41:21 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/24 14:33:32 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/24 17:35:18 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ static int	run_command(char **args, t_mshell *ms)
 static int	run_external(char **args, t_mshell *ms)
 {
 	char	path[PATH_MAX];
+	pid_t	pid;
 
 	path[0] = '\0';
 	if (!exe_search_cmd_path(*args, env_find_value("PATH", &ms->env), path))
@@ -68,10 +69,12 @@ static int	run_external(char **args, t_mshell *ms)
 		ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
 		return (ERROR_CMD_NOT_FOUND);
 	}
-	if (execve(path, args, ms->env.envp) == -1)
+	pid = fork();
+	if (pid == 0 && execve(path, args, ms->env.envp) == -1)
 	{
 		perror("minishell: execve");
 		return (errno);
 	}
-	return (0);
+	ms->exit_code = exe_wait_children(&pid, 1);
+	return (ms->exit_code);
 }

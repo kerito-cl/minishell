@@ -6,9 +6,14 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 07:36:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/24 12:09:05 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/24 16:21:52 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+/**
+ * @bug
+ * 1) if there is not `pipe`, external command exit the main proccess
+ */
 
 /**
  * @note Small things to do:

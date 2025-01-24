@@ -54,7 +54,7 @@ int main(int argc, char **argv, char **envp) {
 	ms.interactive_mode = isatty(STDIN_FILENO);
 	// test_pipex_exernal_cmd("pwd", "cat src/main.c", &ms);
 
-	t_ast *root = parse_input("echo Hello | ls -la | cat | cat | echo Hello");
+	t_ast *root = parse_input("cd ../ hd");
 	print_ast(root, 0);
 
 	exe_ast_tree(root, &ms);
