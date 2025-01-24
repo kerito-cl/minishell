@@ -6,7 +6,7 @@
 #    By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/15 07:44:51 by ipersids          #+#    #+#              #
-#    Updated: 2025/01/24 12:00:24 by ipersids         ###   ########.fr        #
+#    Updated: 2025/01/24 14:09:54 by ipersids         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ SUBM_LIBFT_HDR	:= -I$(SUBM_LIBFT_DIR)/include
 
 # Compilation variables
 CC				:= clang
-CFLAGS			:= -Wall -Wextra -Werror
+CFLAGS			:= -Wall -Wextra -Werror -g
 HDRS			:= -Iinclude $(SUBM_LIBFT_HDR)
 LIBS			:= -L$(SUBM_LIBFT_DIR) -lft
 

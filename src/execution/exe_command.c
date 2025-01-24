@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 16:41:21 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/24 12:06:35 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/24 14:33:32 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	exe_command(t_ast *node, t_mshell *ms)
 
 	if (!node || !ms)
 		return (0);
-	parse_input = exe_split_command(node->value);
+	parse_input = ft_split(node->value, ' ');
 	if (!parse_input)
 		return (ERROR_MALLOC_FAILS);
 	if (parse_input[0] == NULL || parse_input[0][0] == '\0')
@@ -67,6 +67,11 @@ static int	run_external(char **args, t_mshell *ms)
 		ft_putstr_fd(args[0], STDERR_FILENO);
 		ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
 		return (ERROR_CMD_NOT_FOUND);
+	}
+	if (execve(path, args, ms->env.envp) == -1)
+	{
+		perror("minishell: execve");
+		return (errno);
 	}
 	return (0);
 }
