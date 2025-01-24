@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 08:54:30 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/21 18:29:29 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/24 11:06:06 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ bool    assign_pipe(t_ast *root, t_token *tokens, t_index *i)
     return (false);
 }
 
-bool assign_node(t_ast **root, t_token *tokens, t_index *i, tokentype n)
+bool assign_node(t_ast **root, t_token *tokens, t_index *i, t_tokentype n)
 {
     i->key = i->min;
     i->max = i->max;

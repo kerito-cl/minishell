@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 08:53:14 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/22 17:15:07 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/24 13:51:46 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ int main(int argc, char const **argv)
             in.path = find_path(in.cmds[0], envp, 0);
 	        execve(in.path, in.cmds , envp);
         }*/
-        free(input);
         
     }
     rl_clear_history();

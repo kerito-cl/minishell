@@ -6,13 +6,13 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 16:28:29 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/21 21:17:29 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/24 11:46:21 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-t_ast* create_node(char *s1 , tokentype type) 
+t_ast* create_node(char *s1 , t_tokentype type) 
 {
     t_ast *new_node;
     size_t  len;
@@ -71,6 +71,8 @@ t_ast *parse_input(char *input)
     tokens = (t_token *)malloc(sizeof(t_token) * ft_strlen(input) + 1);
     ft_bzero(tokens, sizeof(t_token) * ft_strlen(input) + 1);
     len = tokenize(tokens, input);
+    if (len == -1)
+        return (NULL);
     i.pip = len + 1;
     i.min = 0;
     i.len = len;

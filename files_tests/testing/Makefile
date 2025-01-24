@@ -8,6 +8,7 @@ SRCS := 		parse.c \
 				assign_node.c \
 				efe.c \
 				quote_handler.c \
+				create_cmd.c \
 				main.c 
 
 OFILES = $(SRCS:.c=.o)
