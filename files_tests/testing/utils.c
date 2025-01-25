@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 10:40:48 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/21 19:26:22 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/25 13:39:56 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ char	*ft_strndup(const char *s, size_t n)
 	char	*des;
 
 	len = ft_strlen(s);
-	des = (char *)malloc((n + 1) * sizeof(char));
+	des = (char *)malloc(sizeof(char) * (n + 1));
 	if (des == NULL)
 		return (NULL);
 	len = 0;

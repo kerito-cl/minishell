@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 16:28:29 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/24 11:46:21 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/25 14:53:53 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ t_ast *parse_input(char *input)
 {
     t_index i;
     t_token *tokens;
-    t_ast *root;
+    //t_ast *root;
     int len;
 
     tokens = (t_token *)malloc(sizeof(t_token) * ft_strlen(input) + 1);
@@ -77,7 +77,8 @@ t_ast *parse_input(char *input)
     i.min = 0;
     i.len = len;
     i.max = i.len ;
-    root = divide_input(tokens, len, &i);
-    free_tokens(tokens, len);
-   return (root);
+    //root = divide_input(tokens, len, &i);
+    //free_tokens(tokens, len);
+   //return (root);
+   return NULL;
 }

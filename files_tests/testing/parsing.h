@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 16:34:08 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/24 13:15:59 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/25 14:12:36 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,7 @@ typedef struct s_token
 	t_tokentype		type;
 	bool			lock;
 	bool			has_dollar;
-	bool			in_dquotes;
-	bool			in_squotes;
+	char			quote;
 }					t_token;
 
 typedef struct s_ast

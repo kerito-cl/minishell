@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 16:49:00 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/24 14:09:06 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/25 14:55:32 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,14 @@ char  *deal_with_quotes(char *input)
     k = 0;
     i = 0;
     j = 0;
+    quote = 0;
     flag.a = false;
     flag.b = false;
-    buffer = (char *)malloc(sizeof(char) * ft_strlen(input) * 2);
+    buffer = (char *)malloc(sizeof(char) * (ft_strlen(input) * 2));
     if (!buffer)
         return (NULL);
-    ft_bzero(buffer, sizeof(char) * ft_strlen(input) * 2);
-    while (input[i])
+    ft_bzero(buffer, sizeof(char) * (ft_strlen(input) * 2));
+    while (input[i] != '\n' && input[i])
     {
         while (input[i] == '<' || input[i] == '>' || input[i] == '|')
         {
@@ -62,7 +63,7 @@ char  *deal_with_quotes(char *input)
         {
             buffer[j] = quote;
             j++;
-            while (input[i])
+            while (input[i] != '\n' && input[i])
             {
                 if (input[i] != quote)
                 {
@@ -74,7 +75,7 @@ char  *deal_with_quotes(char *input)
                 i++;
                 if (flag.a == false)
                 {
-                    while (input[i])
+                    while (input[i] != '\n' && input[i])
                     {
                         if (input[i] == ' ')
                         {
@@ -98,7 +99,7 @@ char  *deal_with_quotes(char *input)
                     {
                         buffer[j] = quote;
                         j++;
-                        if (flag.a == false)
+                        if (flag.a == false && input[i] != '\0')
                         {
                             buffer[j] = ' ';
                             j++;
@@ -121,7 +122,5 @@ char  *deal_with_quotes(char *input)
         write(2,"Unclosed quotes\n", 16);
         return (NULL);
     }
-    //printf("%s\n", buffer);
-    printf(" BUFFER ----> %s\n", buffer);
     return (buffer);
 }
