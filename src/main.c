@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 08:53:14 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/24 23:47:09 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/25 00:01:41 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ void print_ast(t_ast *node, int depth)
 int	main(int argc, char **argv, char **envp)
 {
 	struct sigaction	sa;
-	char				*line;
-    t_ast				*root;
+	char				*line; // add to t_mshell as input
+    t_ast				*root; // add to t_mshell as root
 	t_mshell			ms;
 
 	if (argc != 1 || !argv || !envp)
@@ -49,8 +49,7 @@ int	main(int argc, char **argv, char **envp)
 		ft_putstr_fd("Usage: ./minishell\n", 2);
 		exit(EXIT_FAILURE);
 	}
-	init_environment(envp, &ms.env);
-	ms.interactive_mode = isatty(STDIN_FILENO); // for signals in child processes;
+	init_minishell_struct(&ms, envp);
 	sig_sigaction_init(&sa, sig_handler_main);
 	while (1)
 	{
@@ -72,10 +71,10 @@ int	main(int argc, char **argv, char **envp)
 		free(line);
 		free_ast(root); /** @bug set root to NULL in free_ast to avoid segfault in ./minishell <cntr+D> case */
 	}
-	rl_clear_history();
-	free(line);
-	free_environment(&ms.env);
-	free_ast(root);
+	rl_clear_history(); // call from exit_destroy_minishell(&ms)
+	free(line); // call from exit_destroy_minishell(&ms)
+	exit_destroy_minishell(&ms);
+	free_ast(root); // call from exit_destroy_minishell(&ms)
 	write(1, "Good luck!\n", 11);
 	return (0);
 }

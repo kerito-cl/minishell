@@ -6,17 +6,31 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 18:44:20 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/24 17:26:41 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/25 02:41:00 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/* --------------------- Private function prototypes ----------------------- */
+
 static int	run_left_fork(int pipe_fd[2], int *pid, t_ast *node, t_mshell *ms);
 static int	run_right_fork(int pipe_fd[2], int *pid, t_ast *node, t_mshell *ms);
 
-/// Creating a pipe between two child processes
-/// @todo Signals for child processes
+/* --------------------------- Public Functions ---------------------------- */
+
+/**
+ * @brief Executes a pipe command.
+ * 
+ * This function sets up a pipe between two commands represented 
+ * by the left and right children of the AST node. It creates a pipe, 
+ * forks two child processes to run the left and right commands, and waits 
+ * for both children to finish.
+ * 
+ * @param root Pointer to the AST node representing the pipe command.
+ * @param ms Pointer to the minishell structure containing the shell state.
+ * @return int Returns 0 on success, or an error code on failure.
+ */
 int	exe_pipe(t_ast *root, t_mshell *ms)
 {
 	int		pipe_fd[2];
@@ -36,6 +50,20 @@ int	exe_pipe(t_ast *root, t_mshell *ms)
 	return (ms->exit_code);
 }
 
+/* ------------------- Private Function Implementation --------------------- */
+
+/**
+ * @brief Runs the left command in a forked child process.
+ * 
+ * This function forks a child process to run the left command of the pipe. 
+ * It sets up the pipe for writing and executes the left command.
+ * 
+ * @param pipe_fd Array of file descriptors for the pipe.
+ * @param pid Pointer to the process ID of the forked child process.
+ * @param node Pointer to the AST node representing the left command.
+ * @param ms Pointer to the minishell structure containing the shell state.
+ * @return int Returns 0 on success, or an error code on failure.
+ */
 static int	run_left_fork(int pipe_fd[2], int *pid, t_ast *node, t_mshell *ms)
 {
 	*pid = fork();
@@ -61,6 +89,18 @@ static int	run_left_fork(int pipe_fd[2], int *pid, t_ast *node, t_mshell *ms)
 	return (0);
 }
 
+/**
+ * @brief Runs the right command in a forked child process.
+ * 
+ * This function forks a child process to run the right command of the pipe. 
+ * It sets up the pipe for reading and executes the right command.
+ * 
+ * @param pipe_fd Array of file descriptors for the pipe.
+ * @param pid Pointer to the process ID of the forked child process.
+ * @param node Pointer to the AST node representing the right command.
+ * @param ms Pointer to the minishell structure containing the shell state.
+ * @return int Returns 0 on success, or an error code on failure.
+ */
 static int	run_right_fork(int pipe_fd[2], int *pid, t_ast *node, t_mshell *ms)
 {
 	*pid = fork();

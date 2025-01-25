@@ -6,14 +6,29 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 00:54:49 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/24 12:19:50 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/25 00:21:45 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/* --------------------- Private function prototypes ----------------------- */
+
 static char	*get_full_path(const char *cmd, const char *root, char *dst);
 
+/* --------------------------- Public Functions ---------------------------- */
+
+/**
+ * @brief Searches for the command path in the given environment path.
+ * 
+ * This function attempts to locate the full path of a command by searching
+ * through the directories listed in the environment PATH variable.
+ * 
+ * @param cmd The command to search for.
+ * @param env_path The environment path variable with directories to search.
+ * @param path A buffer to store the found command path.
+ * @return char* The full path to the command if found, otherwise NULL.
+ */
 char	*exe_search_cmd_path(const char *cmd, const char *env_path, char *path)
 {
 	char	**arr;
@@ -42,7 +57,16 @@ char	*exe_search_cmd_path(const char *cmd, const char *env_path, char *path)
 	return (NULL);
 }
 
+/* ------------------- Private Function Implementation --------------------- */
 
+/**
+ * @brief Constructs the full path to the command.
+ * 
+ * @param cmd The name of the command.
+ * @param root The root path where the command could be located.
+ * @param dst The buffer where the constructed full path will be stored.
+ * @return char* Pointer to the destination buffer containing the full path.
+ */
 static char	*get_full_path(const char *cmd, const char *root, char *dst)
 {
 	size_t	len_root;

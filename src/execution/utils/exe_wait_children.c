@@ -6,12 +6,23 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 19:27:47 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/24 15:37:03 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/25 00:23:25 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/**
+ * @brief Waits for all child processes to finish execution.
+ * 
+ * This function takes an array of process IDs (pids) and the number 
+ * of processes (amount), and waits for each child process to complete. 
+ * It returns the exit status of the last child process that terminates.
+ * 
+ * @param pids An array of process IDs representing the child processes.
+ * @param amount The number of child processes.
+ * @return int The exit status of the last child process that terminates.
+ */
 int	exe_wait_children(pid_t *pids, int amount)
 {
 	int	i;

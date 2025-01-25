@@ -6,18 +6,20 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 07:36:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/24 23:45:12 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/25 00:16:25 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /**
  * @note Small things to do:
  * 
- * 2) Add function to init t_mshell minishell structure.
- * 3) exe_wait_children() should we specify the error message?
- * 4) builtins echo $? handler
- * 5) $ARG check when it is str or variable
- * 6) check if rl_replace_line() or rl_redisplay() fail?
+ * 1) Add function to init t_mshell minishell structure.
+ * 2) exe_wait_children() should we specify the error message?
+ * 3) builtins echo $? handler
+ * 4) $ARG check when it is str or variable
+ * 5) check if rl_replace_line() or rl_redisplay() fail?
+ * 6) exe_search_cmd_path should we add current directory to search?
+ *    (case to run `minishell> ./minishell`)
  * 
  */
 
