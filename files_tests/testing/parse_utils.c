@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 11:37:38 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/26 12:52:36 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/26 19:04:07 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ char	quote_value(char c)
 
 char	**cpy_cmds(char **strs)
 {
-	char **cmd;
-	int i;
+	char	**cmd;
+	int		i;
 
 	i = 0;
 	while (strs[i] != NULL)

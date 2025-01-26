@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 16:34:08 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/26 14:51:46 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/26 19:07:15 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,11 @@ typedef struct s_flags
 
 typedef struct s_elem
 {
-	int			i;
-	int			k;
-	int			y;
-	int			j;
+	int				i;
+	int				k;
+	int				y;
+	int				j;
+	char			quote;
 }					t_elem;
 
 typedef struct s_index
@@ -71,8 +72,8 @@ typedef struct s_index
 
 int					ft_strcmp(const char *s1, char *s2);
 void				ft_bzero(void *s, size_t n);
-char				*ft_strndup(const char *s, size_t n);
-size_t				ft_strlen(const char *str);
+char				*ft_strndup(char *s, size_t n);
+size_t				ft_strlen(char *str);
 t_ast				*create_node(char **s1, t_tokentype type);
 int					tokenize(t_token *tokens, char *input);
 t_ast				*parse_input(char *input);

@@ -14,7 +14,7 @@ SRCS := 		parse.c \
 
 OFILES = $(SRCS:.c=.o)
 CC = cc
-FLAGS = -Wall -Wextra -Werror
+FLAGS = -Wall -Werror -Wextra
 
 all: $(NAME)
 

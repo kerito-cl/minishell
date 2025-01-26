@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 11:25:19 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/26 16:11:07 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/26 19:50:31 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ int	count_str(char *s)
 	counter = 0;
 	while (s[i])
 	{
+		while (s[i] == ' ')
+			i++;
 		quote = quote_value(s[i]);
 		i++;
 		increase_counter(&counter, s, &i, &quote);
@@ -105,9 +107,9 @@ void	loop_val(char *s, char **cmd, t_elem elem)
 
 char	**create_cmd(char *s)
 {
-	char    **cmd;
-	int     counter;
-	t_elem  elem;
+	char	**cmd;
+	int		counter;
+	t_elem	elem;
 
 	elem.y = 0;
 	elem.i = 0;
@@ -118,5 +120,6 @@ char	**create_cmd(char *s)
 		exit(1);
 	cmd[counter] = NULL;
 	loop_val(s, cmd, elem);
+	free(s);
 	return (cmd);
 }

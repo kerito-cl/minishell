@@ -6,122 +6,137 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 16:49:00 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/26 12:14:48 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/26 19:08:00 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-
-char  *deal_with_quotes(char *input)
+static void	first_loop(char *input, t_elem *el, t_flags *flag)
 {
-    int i;
-    int j;
-    int k;
-    t_flags flag;
-    char *buffer;
-    char  quote;
+	while (input[el->k])
+	{
+		if (input[el->k] == '\'')
+		{
+			flag->a = true;
+			el->quote = '\'';
+			break ;
+		}
+		if (input[el->k] == '\"')
+		{
+			flag->a = true;
+			el->quote = '\"';
+			break ;
+		}
+		if (input[el->k] == ' ')
+			break ;
+		el->k++;
+	}
+}
 
-    k = 0;
-    i = 0;
-    j = 0;
-    quote = 0;
-    flag.a = false;
-    flag.b = false;
-    buffer = (char *)malloc(sizeof(char) * (ft_strlen(input) * 2));
-    if (!buffer)
-        exit(1);
-    ft_bzero(buffer, sizeof(char) * (ft_strlen(input) * 2));
-    while (input[i] != '\n' && input[i])
-    {
-        while (input[i] == '<' || input[i] == '>' || input[i] == '|')
-        {
-            buffer[j] = input[i];
-            j++;
-            i++;
-        }
-        k = i;
-        while (input[k])
-        {
-            if (input[k] == '\'')
-            {
-                flag.a = true;
-                quote = '\'';
-                break;
-            }
-            if (input[k] == '\"')
-            {
-                flag.a = true;
-                quote = '\"';
-                break;
-            }   
-            if (input[k] == ' ')
-               break;
-            k++;
-        }
-        if (flag.a)
-        {
-            buffer[j] = quote;
-            j++;
-            while (input[i] != '\n' && input[i])
-            {
-                if (input[i] != quote)
-                {
-                    buffer[j] = input[i];
-                    j++;
-                }
-                else if (input[i] == quote && i != k)
-                    flag.a = false;
-                i++;
-                if (flag.a == false)
-                {
-                    while (input[i] != '\n' && input[i])
-                    {
-                        if (input[i] == ' ')
-                        {
-                            flag.b = true;
-                            break;
-                        }
-                        if (input[i] != quote)
-                        {
-                            buffer[j] = input[i];
-                            j++;
-                        }
-                        if (input[i] == quote)
-                        {
-                            flag.a = true;
-                            i++;
-                            break;
-                        }   
-                        i++;
-                    }
-                    if (flag.a == false)
-                    {
-                        buffer[j] = quote;
-                        j++;
-                        if (flag.a == false && input[i] != '\0')
-                        {
-                            buffer[j] = ' ';
-                            j++;
-                        }
-                        break;
-                    }
-                }
-            }
-        }
-        else if (input[i] != quote)
-        {
-            buffer[j] = input[i];
-            j++;
-        }
-        if (input[i] != '\0')
-            i++;
-    }
-    if (flag.a == true)
-    {
-        free(buffer);
-        write(2,"Unclosed quotes\n", 16);
-        return (NULL);
-    }
-    return (buffer);
+static void	second_loop(char *input, char *buffer, t_elem *el, t_flags *flag)
+{
+	while (input[el->i])
+	{
+		if (input[el->i] == ' ')
+		{
+			flag->b = true;
+			break ;
+		}
+		if (input[el->i] != el->quote)
+		{
+			buffer[el->j] = input[el->i];
+			el->j++;
+		}
+		if (input[el->i] == el->quote)
+		{
+			flag->a = true;
+			el->i++;
+			break ;
+		}
+		el->i++;
+	}
+}
+
+static bool	check_quote(char *input, char *buffer, t_elem *el, t_flags *flag)
+{
+	if (input[el->i] != el->quote)
+	{
+		buffer[el->j] = input[el->i];
+		el->j++;
+	}
+	else if (input[el->i] == el->quote && el->i != el->k)
+		flag->a = false;
+	el->i++;
+	if (flag->a == false)
+	{
+		second_loop(input, buffer, el, flag);
+		if (flag->a == false)
+		{
+			buffer[el->j] = el->quote;
+			el->j++;
+			if (flag->a == false && input[el->i] != '\0')
+			{
+				buffer[el->j] = ' ';
+				el->j++;
+			}
+			return (false);
+		}
+	}
+	return (true);
+}
+
+static void	logic_loop(char *input, char *buffer, t_elem *el, t_flags *flag)
+{
+	while (input[el->i] == '<' || input[el->i] == '>' || input[el->i] == '|')
+	{
+		buffer[el->j] = input[el->i];
+		el->j++;
+		el->i++;
+	}
+	el->k = el->i;
+	first_loop(input, el, flag);
+	if (flag->a)
+	{
+		buffer[el->j] = el->quote;
+		el->j++;
+		while (input[el->i])
+		{
+			if (!check_quote(input, buffer, el, flag))
+				break ;
+		}
+	}
+	else if (input[el->i] != el->quote)
+	{
+		buffer[el->j] = input[el->i];
+		el->j++;
+	}
+	if (input[el->i] != '\0')
+		el->i++;
+}
+
+char	*deal_with_quotes(char *input)
+{
+	t_elem	elem;
+	t_flags	flag;
+	char	*buffer;
+
+	elem.i = 0;
+	elem.j = 0;
+	elem.quote = 0;
+	flag.a = false;
+	flag.b = false;
+	buffer = (char *)malloc(sizeof(char) * (ft_strlen(input) * 2));
+	if (!buffer)
+		exit(1);
+	ft_bzero(buffer, sizeof(char) * (ft_strlen(input) * 2));
+	while (input[elem.i] != '\n' && input[elem.i])
+		logic_loop(input, buffer, &elem, &flag);
+	if (flag.a == true)
+	{
+		free(buffer);
+		write(2, "Unclosed quotes\n", 16);
+		return (NULL);
+	}
+	return (buffer);
 }
