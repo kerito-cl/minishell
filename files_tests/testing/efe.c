@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 19:02:55 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/26 19:45:39 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/26 20:16:24 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void free_tokens(t_token *tokens, int len)
     {
         if (tokens[i].cmd)
         {
+            j = 0;
             while (tokens[i].cmd[j])
 			{
                 free(tokens[i].cmd[j]);
