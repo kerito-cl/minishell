@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 16:15:29 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/25 16:07:00 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/26 12:01:14 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,20 +37,6 @@ bool add_type(t_token *tokens, char *buffer, int *i, int j)
         return (true);
     }
     return (false);
-}
-
-bool compare_token(char *buffer, int i, bool flag, char quote)
-{
-    if (quote == 0)
-    {
-        if (buffer[i] == '<' || buffer[i] == '>')
-            return (false);
-        if (buffer[i] == '|' )
-            return (false);
-        if (buffer[i] == ' ' && flag == true)
-            return (false);
-    }
-    return (true);
 }
 
 bool add_redirval(t_token *tokens, char *buffer, int *i, int j)

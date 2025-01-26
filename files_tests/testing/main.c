@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 08:53:14 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/25 13:03:44 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/26 14:09:08 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-void print_values(char *values) 
+/*void print_values(char *values) 
 {
     if (values)
         printf("%s", values);
@@ -38,7 +38,37 @@ void print_ast(t_ast *node, int depth)
         print_ast(node->left, depth + 1);
         print_ast(node->right, depth + 1);
     }
+}*/
+
+void print_values(char **values) 
+{
+    if (values) {
+        for (int i = 0; values[i] != NULL; i++) {
+            printf("%s", values[i]);
+            if (values[i + 1] != NULL) {
+                printf(", "); // Separate multiple values with a comma
+            }
+        }
+    }
 }
+
+void print_ast(t_ast *node, int depth)
+{
+    if (node == NULL) {
+        return;
+    }
+    for (int i = 0; i < depth; i++) {
+        printf("  ");
+    }
+    printf("Type: %d, Value: ", node->type);
+    print_values(node->value);
+    printf("\n");
+    if (node->left || node->right) {
+        print_ast(node->left, depth + 1);
+        print_ast(node->right, depth + 1);
+    }
+}
+
 int main(int argc, char const **argv)
 {
     char *input;
@@ -57,8 +87,8 @@ int main(int argc, char const **argv)
         if (input == NULL)
             exit(1);
         root = parse_input(input);
-        //print_ast(root, 0);
-        free_ast(root);
+        print_ast(root, 0);
+        //free_ast(root);
 
         //add_history(in.input);
         //create_builting;

@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 16:34:08 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/25 14:12:36 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/26 14:51:46 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,7 @@ typedef struct s_token
 
 typedef struct s_ast
 {
-	char			*value;
-	char			**cmd;
+	char			**value;
 	t_tokentype		type;
 	struct s_ast	*left;
 	struct s_ast	*right;
@@ -47,10 +46,18 @@ typedef struct s_ast
 
 typedef struct s_flags
 {
-	bool a;
-	bool b;
-	bool c;
+	bool			a;
+	bool			b;
+	bool			c;
 }					t_flags;
+
+typedef struct s_elem
+{
+	int			i;
+	int			k;
+	int			y;
+	int			j;
+}					t_elem;
 
 typedef struct s_index
 {
@@ -66,7 +73,7 @@ int					ft_strcmp(const char *s1, char *s2);
 void				ft_bzero(void *s, size_t n);
 char				*ft_strndup(const char *s, size_t n);
 size_t				ft_strlen(const char *str);
-t_ast				*create_node(char *s1, t_tokentype type);
+t_ast				*create_node(char **s1, t_tokentype type);
 int					tokenize(t_token *tokens, char *input);
 t_ast				*parse_input(char *input);
 void				assign_to_right(t_ast *root, t_token *tokens, t_index *i);
@@ -75,7 +82,10 @@ void				assign_to_left(t_ast *root, t_token *tokens, t_index *i,
 void				find_root(t_ast **root, t_token *tokens, t_index *i);
 void				free_tokens(t_token *tokens, int len);
 void				free_ast(t_ast *node);
-char  				*deal_with_quotes(char *input);
-char 				**create_cmd(char *s);
+char				*deal_with_quotes(char *input);
+char				**create_cmd(char *s);
+bool				compare_token(char *buffer, int i, bool flag, char quote);
+char				quote_value(char c);
+char				**cpy_cmds(char **strs);
 
 #endif

@@ -5,6 +5,7 @@ SRCS := 		parse.c \
 				tokenize.c \
 				signal.c \
 				utils.c \
+				parse_utils.c \
 				assign_node.c \
 				efe.c \
 				quote_handler.c \

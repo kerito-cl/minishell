@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 16:50:40 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/21 17:36:49 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/26 11:59:37 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,6 @@ void		continue_signal(int sig);
 char		*ft_strjoin(char *s1, char const *s2);
 int			ft_strcmp(const char *s1, char *s2);
 char		*ft_strdup(const char *s, size_t n);
-size_t	ft_strlen(const char *str);
+size_t		ft_strlen(const char *str);
 
 #endif
