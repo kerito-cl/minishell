@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 16:34:08 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/26 19:07:15 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/27 16:20:21 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ char				*ft_strndup(char *s, size_t n);
 // size_t			ft_strlen(char *str);
 t_ast				*create_node(char **s1, t_tokentype type);
 int					tokenize(t_token *tokens, char *input);
-t_ast				*parse_input(char *input);
+t_ast				*parse_input(char *input, char **envp);
 void				assign_to_right(t_ast *root, t_token *tokens, t_index *i);
 void				assign_to_left(t_ast *root, t_token *tokens, t_index *i,
 						bool flag);
@@ -85,5 +85,8 @@ char				**create_cmd(char *s);
 bool				compare_token(char *buffer, int i, bool flag, char quote);
 char				quote_value(char c);
 char				**cpy_cmds(char **strs);
+void    			handle_dollar_sign(char **envp, t_token *tokens, int len);
+char				*env_find_variable_v2(const char *var, t_env *env, size_t *i);
+const char			*env_find_value_v2(const char *var, t_env *env);
 
 #endif

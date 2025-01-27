@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 08:53:14 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/27 11:21:07 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/27 18:07:12 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		root = NULL;
-		line = readline("minishell> ");
+		line = readline("minishell! *.* : ");
 		if (line == NULL)
 			break ;
 		if (line[0] == '\0')
@@ -67,11 +67,11 @@ int	main(int argc, char **argv, char **envp)
 			free(line);
 			continue;
 		}
-        root = parse_input(line); /** @bug if nothing allocated better to return NULL; case ./minishell <ENTER> (line is empty) */
-        //print_ast(root, 0);
+        root = parse_input(line, envp); /** @bug if nothing allocated better to return NULL; case ./minishell <ENTER> (line is empty) */
+        print_ast(root, 0);
 		printf("\n------------\n");
-		exe_ast_tree(root, &ms);
-		printf("exit code: %d\n", ms.exit_code);
+		//exe_ast_tree(root, &ms);
+		//printf("exit code: %d\n", ms.exit_code);
 		add_history(line);
 		//free(line);
 		free_ast(root); /** @bug set root to NULL in free_ast to avoid segfault in ./minishell <cntr+D> case */

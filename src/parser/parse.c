@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 16:28:29 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/26 19:24:37 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/27 14:13:01 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ t_ast	*divide_input(t_token *tokens, int len, t_index *i)
 	return (root);
 }
 
-t_ast	*parse_input(char *input)
+t_ast	*parse_input(char *input, char **envp)
 {
 	t_token	*tokens;
 	t_ast	*root;
@@ -71,6 +71,7 @@ t_ast	*parse_input(char *input)
 	len = tokenize(tokens, input);
 	if (len == -1)
 		return (NULL);
+	handle_dollar_sign(envp, tokens, len);
 	i.pip = len + 1;
 	i.min = 0;
 	i.len = len;

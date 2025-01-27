@@ -6,7 +6,7 @@
 #    By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/15 07:44:51 by ipersids          #+#    #+#              #
-#    Updated: 2025/01/27 11:18:30 by mquero           ###   ########.fr        #
+#    Updated: 2025/01/27 16:21:43 by mquero           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -71,6 +71,9 @@ SRCS			:= $(SRCS_DIR)/signals/sig_handler.c \
 				   $(SRCS_DIR)/parser/parse_utils.c \
 				   $(SRCS_DIR)/parser/create_cmd.c \
 				   $(SRCS_DIR)/parser/quote_handler.c \
+				   $(SRCS_DIR)/parser/dollar.c \
+				   $(SRCS_DIR)/parser/env_find_variable_v2.c \
+				   $(SRCS_DIR)/parser/env_find_value_v2.c \
 				   \
 				   $(SRCS_DIR)/execution/utils/exe_close_fd.c \
 				   $(SRCS_DIR)/execution/utils/exe_wait_children.c \

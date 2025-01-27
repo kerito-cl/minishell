@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 11:25:19 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/27 11:17:40 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/27 18:10:11 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,9 +83,11 @@ bool	dupvalues(char *s, char **cmd, t_elem *elem, char quote)
 void	loop_val(char *s, char **cmd, t_elem elem)
 {
 	char	quote;
+	bool	flag;
 
 	while (s[elem.i])
 	{
+		flag = false;
 		while (s[elem.i] == ' ')
 			elem.i++;
 		quote = quote_value(s[elem.i]);
@@ -96,8 +98,12 @@ void	loop_val(char *s, char **cmd, t_elem elem)
 		{
 			if (s[elem.i] == '$' && quote != 0)
 			{
-				elem.y = 1;
-				elem.k--;
+				if (!flag)
+				{
+					elem.y = 1;
+					elem.k--;
+					flag = true;
+				}
 			}
 			if (!dupvalues(s, cmd, &elem, quote))
 				break ;
