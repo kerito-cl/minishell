@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 22:46:10 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/17 11:45:24 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/24 23:51:43 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@
 void test_env(char **envp) {
 	t_env env;
 
-	if (env_init(envp, &env) != 0)
+	if (init_environment(envp, &env) != 0)
 	{
-		printf("env_init(envp, &env) fails\n");
+		printf("init_environment(envp, &env) fails\n");
 		exit(EXIT_FAILURE);
 	}
 
@@ -115,6 +115,6 @@ void test_env(char **envp) {
 
 	printf("\n\n%s------------ FREEING ENVIRONMENT --------------%s\n\n", PURPLE, DEFAULT);
 	printf("\nFREEING!\n");
-	env_free(&env);
+	free_environment(&env);
 	printf("%sEnvironment:%s len = %u, capacity = %u\n", PURPLE, DEFAULT, env.len, env.capacity);
 }

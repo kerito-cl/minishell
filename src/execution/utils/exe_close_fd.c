@@ -1,20 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit_destroy_minishell.c                           :+:      :+:    :+:   */
+/*   exe_close_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/18 20:01:44 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/24 23:49:28 by ipersids         ###   ########.fr       */
+/*   Created: 2025/01/23 12:42:06 by ipersids          #+#    #+#             */
+/*   Updated: 2025/01/25 00:12:34 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	exit_destroy_minishell(t_mshell *ms)
+/**
+ * @brief Closes a file descriptor if it is open.
+ * 
+ * @param fd Pointer to the file descriptor to close.
+ */
+void	exe_close_fd(int *fd)
 {
-	if (ms->env.envp != NULL)
-		free_environment(&ms->env);
-	exit(ms->exit_code);
+	if (*fd != -1)
+	{
+		close(*fd);
+		*fd = -1;
+	}
 }

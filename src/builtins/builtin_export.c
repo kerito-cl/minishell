@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:34:58 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/18 17:28:14 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/24 23:29:45 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 
 static int	print_sorted_export(char **var_arr, unsigned int len);
 static void	bubble_sort(char **arr, unsigned int size);
+static int	export_error_check(char *arg, int i);
 
 /* --------------------------- Public Functions ---------------------------- */
 
@@ -37,18 +38,20 @@ int	builtin_export(char **args, t_env *env)
 	int		exit_code;
 
 	if (!args || args[0] == NULL)
-		return (print_sorted_export(env->envp, env->len));
+	{
+		exit_code = print_sorted_export(env->envp, env->len);
+		if (exit_code != 0)
+			perror("minishell: export");
+		return (exit_code);
+	}
 	i = 0;
 	exit_code = 0;
 	while (args[i] != NULL)
 	{
-		if (!builtin_is_identifier_valid(args[i]))
-		{
-			printf("minishell: export: '%s': ", args[i]);
-			printf("not a valid identifier\n");
-			exit_code = ERROR_BUILTIN_EXPORT_INV_VAR;
-		}
-		else
+		exit_code = export_error_check(args[i], i);
+		if (i == 0 && exit_code == ERROR_INVALID_OPTION)
+			return (exit_code);
+		if (exit_code == 0)
 			exit_code = env_add(args[i], env);
 		i++;
 	}
@@ -75,7 +78,7 @@ static int	print_sorted_export(char **var_arr, unsigned int len)
 
 	tmp = (char **) malloc(len * sizeof(char *));
 	if (!tmp)
-		return (ERROR_MALLOC_FAILS);
+		return (errno);
 	ft_memcpy(tmp, var_arr, len * sizeof(char *));
 	bubble_sort(tmp, len);
 	i = 0;
@@ -123,4 +126,24 @@ static void	bubble_sort(char **arr, unsigned int size)
 		}
 		i++;
 	}
+}
+
+static int	export_error_check(char *arg, int i)
+{
+	if (i == 0 && arg[0] == '-')
+	{
+		ft_putstr_fd("minishell: export: '", STDERR_FILENO);
+		ft_putstr_fd(arg, STDERR_FILENO);
+		ft_putstr_fd("': options are not supperted\nexport", STDERR_FILENO);
+		ft_putstr_fd(" : usage: export [name[=value] ...]\n", STDERR_FILENO);
+		return (ERROR_INVALID_OPTION);
+	}
+	if (!builtin_is_identifier_valid(arg))
+	{
+		ft_putstr_fd("minishell: export: '", STDERR_FILENO);
+		ft_putstr_fd(arg, STDERR_FILENO);
+		ft_putstr_fd("': not a valid identifier\n", STDERR_FILENO);
+		return (ERROR_GENERIC);
+	}
+	return (0);
 }

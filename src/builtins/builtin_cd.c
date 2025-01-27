@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:55:21 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/20 17:20:06 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/24 15:48:25 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	builtin_cd(char **args, t_env *env)
 {
 	if (!args || args[0] == NULL)
 		return (go_home(env));
-	if (args[1] != NULL)
+	if (args[1] != NULL && args[0][0] != '-')
 	{
 		ft_putstr_fd("minishell: cd: too many arguments\n", STDERR_FILENO);
 		return (ERROR_GENERIC);
@@ -45,8 +45,9 @@ int	builtin_cd(char **args, t_env *env)
 	{
 		ft_putstr_fd("minishell: cd: ", STDERR_FILENO);
 		ft_putstr_fd(args[0], STDERR_FILENO);
-		ft_putstr_fd("options aren't supported\n", STDERR_FILENO);
-		return (ERROR_GENERIC);
+		ft_putstr_fd(": invalid option\n", STDERR_FILENO);
+		ft_putstr_fd("cd: usage: cd [dir]\n", STDERR_FILENO);
+		return (ERROR_INVALID_OPTION);
 	}
 	return (go_path(args[0], env));
 }
@@ -95,16 +96,16 @@ static int	go_path(const char *path, t_env *env)
 	if (!old_path || chdir(path) == -1)
 	{
 		free(old_path);
-		perror("minishell: cd: getcwd fails");
-		return (errno);
+		perror("minishell: cd");
+		return (ERROR_GENERIC);
 	}
 	builtin_update_env_var("OLDPWD", old_path, env);
 	free(old_path);
 	new_path = getcwd(NULL, 0);
 	if (!new_path)
 	{
-		perror("minishell: cd: getcwd fails");
-		return (errno);
+		perror("minishell: cd");
+		return (ERROR_GENERIC);
 	}
 	builtin_update_env_var("PWD", new_path, env);
 	free(new_path);

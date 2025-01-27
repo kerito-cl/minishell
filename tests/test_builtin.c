@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 12:52:30 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/20 18:55:42 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/24 23:51:51 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ void test_builtin(t_env *env) {
 	ms.env.len = env->len;
 	ms.env.capacity = env->capacity;
 	ms.exit_code = 0;
-	ms.is_parent = TRUE;
 
 	char *exit_args[] = {"ghk", "123", "-125", "214f", NULL};
 	// builtin_exit(&(exit_args[1]), &ms);	// output $? = 123 + 'exit' message

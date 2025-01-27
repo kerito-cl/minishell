@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 14:57:22 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/20 16:15:47 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/24 15:33:28 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	builtin_update_env_var(const char *name, const char *value, t_env *env)
 	if (!tmp)
 		return (perror("minishell: cd: "));
 	len = 0;
-	i= 0;
+	i = 0;
 	while (name[i] != '=' && name[i] != '\0')
 		tmp[len++] = name[i++];
 	tmp[len++] = '=';
