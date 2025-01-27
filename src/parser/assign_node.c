@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   assign_node.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 08:54:30 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/21 18:29:29 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/22 13:52:59 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "minishell.h"
 
 bool    assign_pipe(t_ast *root, t_token *tokens, t_index *i)
 {

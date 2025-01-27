@@ -1,37 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   efe.c                                              :+:      :+:    :+:   */
+/*   sig_handler.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/21 19:02:55 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/22 13:55:28 by ipersids         ###   ########.fr       */
+/*   Created: 2025/01/15 07:41:24 by ipersids          #+#    #+#             */
+/*   Updated: 2025/01/22 12:57:17 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void    free_tokens(t_token *tokens, int len)
+void	sig_handler_main(int sig, siginfo_t *info, void *context)
 {
-    int i;
-
-    i = 0;
-    while (i <= len)
-   {
-        free(tokens[i].value);
-        tokens[i].value = NULL;
-        i++;
-    }
-    free(tokens);
-}
-
-void free_ast(t_ast *node) {
-    if (node == NULL)
-        return;
-    free_ast(node->left);
-    free_ast(node->right);
-    if (node->value != NULL)
-        free(node->value);
-    free(node);
+	(void)context;
+	(void)info;
+	if (SIGINT == sig)
+	{
+		g_status = sig;
+		write(1, "\n", 1);
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		rl_redisplay();
+	}
+	else if (SIGQUIT == sig)
+	{
+		g_status = sig;
+		return ;
+	}
 }
