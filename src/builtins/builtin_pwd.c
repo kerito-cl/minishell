@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 17:52:52 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/19 00:35:36 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/24 22:42:18 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,13 @@ int	builtin_pwd(char **args)
 	{
 		printf("minishell: pwd: options and arguments aren't supported\n");
 		printf("pwd: usage: pwd\n");
-		return (ERROR_BUILTIN_PWD_ARGS);
+		return (ERROR_GENERIC);
 	}
 	buf = getcwd(NULL, 0);
 	if (!buf)
 	{
-		perror("getcwd: ");
-		return (ERROR_BUILTIN_GETCWD_FAILS);
+		perror("minishell: getcwd");
+		return (errno);
 	}
 	printf("%s\n", buf);
 	free(buf);

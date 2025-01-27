@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 13:33:05 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/18 11:32:58 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/24 23:18:46 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,9 @@ int	builtin_env(char **args, t_env *env)
 
 	if (!args || args[0] != NULL)
 	{
-		ft_putstr_fd("minishell: env: option or argument aren't supported", 2);
-		return (ERROR_BUILTIN_ENV_ARGS);
+		ft_putstr_fd("minishell: env: ", STDERR_FILENO);
+		ft_putstr_fd("options or arguments are not supported\n", STDERR_FILENO);
+		return (ERROR_GENERIC);
 	}
 	i = 0;
 	while (i < env->len)

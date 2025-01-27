@@ -6,50 +6,50 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 10:40:48 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/22 13:53:21 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/26 19:19:55 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// char	*ft_strjoin_slash(char const *s1, char const *s2)
+// size_t	ft_strlen(char *str)
 // {
-// 	int		i;
-// 	int		j;
-// 	char	*dest;
+// 	size_t	i;
 
 // 	i = 0;
-// 	j = 0;
-// 	dest = (char *)malloc(ft_strlen(s1) + ft_strlen(s2) + 2);
-// 	if (dest == NULL)
-// 		return (NULL);
-// 	while (s1[i] != '\0')
-// 	{
-// 		dest[i] = s1[i];
+// 	while (str[i])
 // 		i++;
-// 	}
-// 	dest[i] = '/';
-// 	i++;
-// 	while (s2[j] != '\0')
-// 	{
-// 		if (s2[j] == ' ')
-// 			break ;
-// 		dest[i + j] = s2[j];
-// 		j++;
-// 	}
-// 	dest[i + j] = '\0';
-// 	return (dest);
+// 	return (i);
 // }
 
-char	*ft_strndup(const char *s, size_t n)
-{
-	size_t		len;
-	char	*des;
+// size_t	ft_strlcpy(char *dst, const char *src, size_t size)
+// {
+// 	size_t	i;
+// 	size_t	len;
 
-	len = ft_strlen(s);
-	des = (char *)malloc((n + 1) * sizeof(char));
+// 	i = 0;
+// 	len = 0;
+// 	while (src[len])
+// 		len++;
+// 	if (size == 0)
+// 		return (len);
+// 	while (src[i] && i < (size - 1))
+// 	{
+// 		dst[i] = src[i];
+// 		i++;
+// 	}
+// 	dst[i] = '\0';
+// 	return (len);
+// }
+
+char	*ft_strndup(char *s, size_t n)
+{
+	char	*des;
+	size_t	len;
+
+	des = (char *)malloc(sizeof(char) * (n + 3));
 	if (des == NULL)
-		return (NULL);
+		exit(1);
 	len = 0;
 	while (len < n)
 	{

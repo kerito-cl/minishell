@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_free.c                                         :+:      :+:    :+:   */
+/*   free_environment.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 17:24:37 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/17 11:54:44 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/24 23:52:55 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
  * 
  * @param env Pointer to the environment struct containing an array of strings.
  */
-void	env_free(t_env *env)
+void	free_environment(t_env *env)
 {
 	unsigned int	i;
 

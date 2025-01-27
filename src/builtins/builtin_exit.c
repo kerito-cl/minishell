@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 19:58:44 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/19 01:14:35 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/24 22:32:49 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	builtin_exit(char **args, t_mshell *ms)
 	if (len > 1)
 	{
 		ft_putstr_fd("minishell: exit: too many arguments\n", STDERR_FILENO);
-		ms->exit_code = ERROR_BUILTIN_EXIT_TOO_MANY_ARGS;
+		ms->exit_code = ERROR_GENERIC;
 		return (ms->exit_code);
 	}
 	ft_putstr_fd("exit\n", STDOUT_FILENO);
@@ -60,9 +60,8 @@ int	builtin_exit(char **args, t_mshell *ms)
 		ft_putstr_fd(args[0], STDERR_FILENO);
 		ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
 	}
-	if (ms->is_parent == TRUE)
-		exit_destroy_minishell(ms);
-	exit(ms->exit_code);
+	exit_destroy_minishell(ms);
+	return (ms->exit_code);
 }
 
 /* ------------------- Private Function Implementation --------------------- */
@@ -88,7 +87,7 @@ static t_bool	is_exit_code_valid(const char *str, int *exit_code)
 		}
 		if (!ft_isdigit(str[i]))
 		{
-			*exit_code = ERROR_BUILTIN_EXIT_INVALID_ARG;
+			*exit_code = ERROR_INVALID_EXIT_CODE;
 			return (FALSE);
 		}
 		i++;
