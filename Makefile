@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+         #
+#    By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/15 07:44:51 by ipersids          #+#    #+#              #
-#    Updated: 2025/01/24 23:48:38 by ipersids         ###   ########.fr        #
+#    Updated: 2025/01/27 11:18:30 by mquero           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -68,6 +68,9 @@ SRCS			:= $(SRCS_DIR)/signals/sig_handler.c \
 				   $(SRCS_DIR)/parser/parse.c \
 				   $(SRCS_DIR)/parser/tokenize.c \
 				   $(SRCS_DIR)/parser/utils.c \
+				   $(SRCS_DIR)/parser/parse_utils.c \
+				   $(SRCS_DIR)/parser/create_cmd.c \
+				   $(SRCS_DIR)/parser/quote_handler.c \
 				   \
 				   $(SRCS_DIR)/execution/utils/exe_close_fd.c \
 				   $(SRCS_DIR)/execution/utils/exe_wait_children.c \

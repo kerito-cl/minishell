@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exe_command.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 16:41:21 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/25 02:35:53 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/27 11:14:09 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,23 +28,9 @@ static int	run_external(char **args, t_mshell *ms);
  */
 int	exe_command(t_ast *node, t_mshell *ms)
 {
-	char		**parse_input;
-
 	if (!node || !ms)
 		return (0);
-	parse_input = ft_split(node->value, ' ');
-	if (!parse_input)
-	{
-		perror("minishell: ft_split");
-		return (ERROR_MALLOC_FAILS);
-	}
-	if (parse_input[0] == NULL || parse_input[0][0] == '\0')
-	{
-		free_2d_array(parse_input, 0);
-		return (0);
-	}
-	ms->exit_code = run_command(parse_input, ms);
-	free_2d_array(parse_input, 0);
+	ms->exit_code = run_command(node->value, ms);
 	return (ms->exit_code);
 }
 
