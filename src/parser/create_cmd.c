@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   create_cmd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 11:25:19 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/26 20:09:50 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/27 11:18:31 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "minishell.h"
 
 void	increase_counter(int *counter, char *s, int *i, char *quote)
 {

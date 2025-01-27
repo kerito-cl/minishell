@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 08:53:14 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/25 00:01:41 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/27 11:32:49 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,15 @@
 
 volatile sig_atomic_t	g_status = 0;
 
-void print_values(char *values) 
+void print_values(char **values) 
 {
     if (values) {
-            printf("%s", values);
+        for (int i = 0; values[i] != NULL; i++) {
+            printf("%s", values[i]);
+            if (values[i + 1] != NULL) {
+                printf(", "); // Separate multiple values with a comma
+            }
+        }
     }
 }
 
@@ -63,12 +68,11 @@ int	main(int argc, char **argv, char **envp)
 			continue;
 		}
         root = parse_input(line); /** @bug if nothing allocated better to return NULL; case ./minishell <ENTER> (line is empty) */
-        //print_ast(root, 0);
+        // print_ast(root, 0);
 		printf("\n------------\n");
 		exe_ast_tree(root, &ms);
 		printf("exit code: %d\n", ms.exit_code);
 		add_history(line);
-		free(line);
 		free_ast(root); /** @bug set root to NULL in free_ast to avoid segfault in ./minishell <cntr+D> case */
 	}
 	rl_clear_history(); // call from exit_destroy_minishell(&ms)

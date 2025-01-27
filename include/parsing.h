@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 16:34:08 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/26 19:07:15 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/27 11:16:59 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ typedef struct s_index
 
 void				ft_bzero(void *s, size_t n);
 char				*ft_strndup(char *s, size_t n);
-// size_t			ft_strlen(char *str);
 t_ast				*create_node(char **s1, t_tokentype type);
 int					tokenize(t_token *tokens, char *input);
 t_ast				*parse_input(char *input);
