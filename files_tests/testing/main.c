@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 08:53:14 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/26 19:37:35 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/27 09:23:53 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,17 +48,13 @@ void print_ast(t_ast *node, int depth)
 
 int main(int argc, char const **argv)
 {
-   // char *input;
-    char *input = strdup("cat | ls | grep e > out");
+    char *input;
     t_ast *root;
     rl_hook_func_t sig;
     (void )argc;
     if (argv)
         
-    root = parse_input(input);
-    print_ast(root, 0);
-    free_ast(root);
-    /*rl_catch_signals = 0;
+    rl_catch_signals = 0;
     signal(SIGINT, continue_signal);
     signal(SIGQUIT, slash_signal);
     rl_event_hook = hook_signal;
@@ -79,6 +75,6 @@ int main(int argc, char const **argv)
         // childr(&t_sdfg)
         // childr(&t_sdfg)
     }
-    rl_clear_history();*/
+    rl_clear_history();
     return 0;
 }

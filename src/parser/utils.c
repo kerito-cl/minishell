@@ -6,13 +6,13 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 10:40:48 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/21 19:26:22 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/26 19:19:55 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-size_t	ft_strlen(const char *str)
+size_t	ft_strlen(char *str)
 {
 	size_t	i;
 
@@ -42,44 +42,14 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 	return (len);
 }
 
-char	*ft_strjoin_slash(char const *s1, char const *s2)
+char	*ft_strndup(char *s, size_t n)
 {
-	int		i;
-	int		j;
-	char	*dest;
-
-	i = 0;
-	j = 0;
-	dest = (char *)malloc(ft_strlen(s1) + ft_strlen(s2) + 2);
-	if (dest == NULL)
-		return (NULL);
-	while (s1[i] != '\0')
-	{
-		dest[i] = s1[i];
-		i++;
-	}
-	dest[i] = '/';
-	i++;
-	while (s2[j] != '\0')
-	{
-		if (s2[j] == ' ')
-			break ;
-		dest[i + j] = s2[j];
-		j++;
-	}
-	dest[i + j] = '\0';
-	return (dest);
-}
-
-char	*ft_strndup(const char *s, size_t n)
-{
-	size_t		len;
 	char	*des;
+	size_t	len;
 
-	len = ft_strlen(s);
-	des = (char *)malloc((n + 1) * sizeof(char));
+	des = (char *)malloc(sizeof(char) * (n + 3));
 	if (des == NULL)
-		return (NULL);
+		exit(1);
 	len = 0;
 	while (len < n)
 	{
