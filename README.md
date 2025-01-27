@@ -7,7 +7,7 @@
 
 #### 1. Signals, command line prompt, data management.   
 - [x] Support `Ctrl-C`, `Ctrl-D`, and `Ctrl-\` for interactive mode  
-- [ ] Non-interactive mode  
+- [x] Non-interactive mode  
 
 | Key    | Interactive Mode        | Non-Interactive Mode                        |
 | :-----: | ------------------      | ----------------------                     |
@@ -17,7 +17,7 @@
 
 - [x] Display a prompt when waiting for a new command (`readline`).  
 - [x] Have a working history.  
-- [ ] Data management:  
+- [x] Data management:  
     * Region-based memory management - arena?  
     * Basic struct with pointer to array (environment copy) and AST linked-list?  
     * Define key structures and error system  
@@ -36,7 +36,7 @@ Built-in commands are executed directly by the shell and are part of the shell i
 It takes an array of array of chars as argument (the command should be skipped, ex: `"echo Hello!"` -> `char **args = ["echo", "Hello!", NULL]` -> `builtin_echo(&args[1])`).  
 
 - [x] `echo` with option `-n`. Outputs text to the terminal with new lin or without (if `-n` was used).  
-- [ ] `cd` with only a relative or absolute path changes the current working directory.  
+- [x] `cd` with only a relative or absolute path changes the current working directory.  
 - [x] `pwd` with no options  
 - [x] `export` with no options sets environment variables.  
 - [x] `unset` with no options unsets environment variables.  
@@ -45,8 +45,8 @@ It takes an array of array of chars as argument (the command should be skipped, 
 
 #### 4. External commands  
 The shell must search for the executable in directories specified in the PATH variable and spawn a new process to run it: search the `PATH`, create a new process (`fork()`) and execute (`execve()`) to run the command.   
-- [ ] Search and launch the right executable (based on the PATH variable or using a relative or an absolute path).  
-- [ ] Pipes (`|`)  
+- [x] Search and launch the right executable (based on the PATH variable or using a relative or an absolute path).  
+- [x] Pipes (`|`)  
 - [ ] Implement redirections:
     * `<` should redirect input.  
     * `>` should redirect output.
