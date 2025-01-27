@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 16:28:29 by mquero            #+#    #+#             */
 /*   Updated: 2025/01/26 19:24:37 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "minishell.h"
 
 t_ast	*create_node(char **s1, t_tokentype type)
 {

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   efe.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 19:02:55 by mquero            #+#    #+#             */
 /*   Updated: 2025/01/27 09:43:20 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "minishell.h"
 
 void	free_tokens(t_token *tokens, int len)
 {

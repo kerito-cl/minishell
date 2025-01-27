@@ -3,14 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 16:34:08 by mquero            #+#    #+#             */
 /*   Updated: 2025/01/26 19:07:15 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include "minishell.h"
 
 #ifndef PARSING_H
 # define PARSING_H
@@ -70,10 +68,9 @@ typedef struct s_index
 
 }					t_index;
 
-int					ft_strcmp(const char *s1, char *s2);
 void				ft_bzero(void *s, size_t n);
 char				*ft_strndup(char *s, size_t n);
-size_t				ft_strlen(char *str);
+// size_t			ft_strlen(char *str);
 t_ast				*create_node(char **s1, t_tokentype type);
 int					tokenize(t_token *tokens, char *input);
 t_ast				*parse_input(char *input);

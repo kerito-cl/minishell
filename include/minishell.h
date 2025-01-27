@@ -3,106 +3,96 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/09 16:50:40 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/21 17:18:55 by mquero           ###   ########.fr       */
+/*   Created: 2025/01/15 07:36:18 by ipersids          #+#    #+#             */
+/*   Updated: 2025/01/25 00:16:25 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+/**
+ * @note Small things to do:
+ * 
+ * 1) Add function to init t_mshell minishell structure.
+ * 2) exe_wait_children() should we specify the error message?
+ * 3) builtins echo $? handler
+ * 4) $ARG check when it is str or variable
+ * 5) check if rl_replace_line() or rl_redisplay() fail?
+ * 6) exe_search_cmd_path should we add current directory to search?
+ *    (case to run `minishell> ./minishell`)
+ * 
+ */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include <errno.h>
-# include <fcntl.h>
-# include <limits.h>
-# include <readline/history.h>
+# include <signal.h>	// sigaction(), sigemptyset(), sigaddset(), kill()
+# include <stdio.h>		// printf(), perror
+# include <string.h>	// strerror()
+# include <errno.h>		// errno
 # include <readline/readline.h>
-# include <signal.h>
+# include <readline/history.h>
+# include <stdlib.h>	// malloc()
+# include <unistd.h>	// write(), fork()
+# include <sys/wait.h>	// waitpid()
 # include <stdbool.h>
-# include <stdint.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <string.h>
-# include <sys/wait.h>
-# include <unistd.h>
+
+# include "constants.h"
+# include "structures.h"
 # include "parsing.h"
+# include "libft.h"
 
-/*typedef enum {
-    PIPE = 22,
-    REIN,
-    REIN2,
-    REOUT,
-    REOUT2,
-    SQUOTE,
-    DQUOTE,
-    ARG,
-    CMD,
-} tokentype;*/
+/* -------------------------------- Signals -------------------------------- */
 
-typedef struct s_fd
-{
-	int		pipe[2];
-	char	*path1;
-	char	*path2;
-	char	**split;
-	int		input;
-	int		output;
-	int		status;
-	int		pid1;
-	int		pid2;
-}			t_fd;
+void		sig_handler_main(int sig, siginfo_t *info, void *context);
+void		sig_sigaction_init(struct sigaction *sa, \
+								void (*handler) (int, siginfo_t *, void *));
+void		sig_child_process_handler(int is_interactive_mode);
 
-/*typedef struct s_index
-{
-	int		pip;
-	int		key;
-	int		min;
-	int		max;
-	int		len;
+/* ------------------------------ Environment ------------------------------ */
 
-}			t_index;
+char		*env_find_variable(const char *var, t_env *env, size_t	*i);
+const char	*env_find_value(const char *var, t_env *env);
+int			env_add(const char *var, t_env *env);
+int			env_remove(const char *var, t_env *env);
 
+/* -------------------------------- Builtins ------------------------------- */
 
-typedef struct s_token
-{
-	char *value;
-	tokentype type;
-	bool lock;
-}			t_token;
+/// A command that is implemented internally by the shell itself, 
+/// rather than by an executable program somewhere in the file system.
 
-typedef struct s_ast
-{
-	char	*value;
-	tokentype type;          
-	struct s_ast *left;  
-	struct s_ast *right;
-}			t_ast;*/
+int			builtin_echo(char **args);
+int			builtin_env(char **args, t_env *env);
+int 		builtin_unset(char **args, t_env *env);
+int			builtin_export(char **args, t_env *env);
+int			builtin_pwd(char **args);
+int			builtin_exit(char **args, t_mshell *ms);
+int			builtin_cd(char **args, t_env *env);
 
-char		*ft_strjoin_slash(char const *s1, char const *s2);
-void		freesplit(char **strs);
-char		**ft_split(char const *s, char c);
-size_t		ft_strlcpy(char *dst, const char *src, size_t size);
-void		child1(t_fd fd, char **argv, char **envp);
-void		child2(t_fd fd, char **argv, char **envp);
-void		close_all(t_fd *fd);
-void		throw_error_child(char *path, t_fd *fd, char *arg);
-void		error_ifdir(char *str);
-void		e_free_e(char *str, char **split);
-char		*find_path(char *argv, char **envp, int i);
-void		parse(char *input);
-void		slash_signal(int sig);
-int			hook_signal(void);
-void		continue_signal(int sig);
-char		*ft_strjoin(char *s1, char const *s2);
-int			ft_strcmp(const char *s1, char *s2);
-char		*ft_strdup(const char *s, size_t n);
-size_t	ft_strlen(const char *str);
-t_ast* create_node(char *s1 , tokentype type);
-int tokenize(t_token *tokens, char *input);
-t_ast *parse_input(t_ast *root, t_token *tokens, int len);
-void    assign_to_right(t_ast *root, t_token *tokens, t_index *i, bool flag);
-void    assign_to_left(t_ast *root, t_token *tokens, t_index *i, bool flag);
-void    find_root(t_ast **root, t_token *tokens, t_index *i);
+int			builtin_is_identifier_valid(const char *var);
+void		builtin_update_env_var(const char *name, const char *value, \
+									t_env *env);
+
+/* -------------------------------- Execution ------------------------------ */
+
+int			exe_ast_tree(t_ast *node, t_mshell *ms);
+int			exe_pipe(t_ast *root, t_mshell *ms);
+int			exe_command(t_ast *node, t_mshell *ms);
+
+int			exe_wait_children(pid_t *pids, int amount);
+void		exe_close_fd(int *fd);
+char		*exe_search_cmd_path(const char *cmd, const char *env_path, \
+								char *path);
+
+/* ------------------------- Exit, errors and memory ----------------------- */
+
+void		exit_destroy_minishell(t_mshell *ms);
+void		free_environment(t_env *env);
+void		free_2d_array(char **arr, int count);
+
+/* ------------------------------ Initialisation --------------------------- */
+
+int			init_environment(char **envp_arr, t_env *env);
+void		init_minishell_struct(t_mshell *ms, char **envp);
 
 #endif
