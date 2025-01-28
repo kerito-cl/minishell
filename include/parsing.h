@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 16:34:08 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/27 16:20:21 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/28 17:39:19 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ typedef struct s_elem
 	int				k;
 	int				y;
 	int				j;
+	size_t			len;
+	size_t			new_len;
 	char			quote;
 }					t_elem;
 
@@ -85,8 +87,8 @@ char				**create_cmd(char *s);
 bool				compare_token(char *buffer, int i, bool flag, char quote);
 char				quote_value(char c);
 char				**cpy_cmds(char **strs);
-void    			handle_dollar_sign(char **envp, t_token *tokens, int len);
+char    			*handle_dollar_sign(char *input, char **envp);
 char				*env_find_variable_v2(const char *var, t_env *env, size_t *i);
-const char			*env_find_value_v2(const char *var, t_env *env);
+char				*env_find_value_v2(const char *var, t_env *env);
 
 #endif

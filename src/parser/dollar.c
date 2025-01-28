@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 12:10:10 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/27 17:42:02 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/28 18:40:51 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,34 +14,54 @@
 
 //static void    dollar_to_value(char *s1, char *var)
 
-void    handle_dollar_sign(char **envp, t_token *tokens, int len)
+char    *handle_dollar_sign(char *input, char **envp)
 {
     t_env   envir;
     t_elem   elem;
-    //char    *var;
+    char    *var;
     char    *temp;
 
     envir.envp = envp;
     elem.i = 0;
-    while (elem.i <= len)
+    elem.len = ft_strlen(input);
+    elem.new_len = ft_strlen(input);
+    var = ft_calloc(sizeof(char) , (elem.len + 1));
+    temp = NULL;
+    while (*input)
     {
-        elem.j = 0;
-        if (tokens[elem.i].cmd)
+        while (*input != '$' &&  *input)
         {
-            while(tokens[elem.i].cmd[elem.j])
-            {
-                if (tokens[elem.i].cmd[elem.j][0] == '\"' ||
-                tokens[elem.i].cmd[elem.j][0] == '$')
-                {
-                    temp = tokens[elem.i].cmd[elem.j];
-                    //printf("%s\n", temp);
-                    env_find_value_v2(temp, &envir);
-                    //printf("%s\n", var);
-                    //dollar_to_value(temp, var);
-                }
-                elem.j++;
-            }
+            var[elem.i] = *input;
+            elem.i++;
+            input++;
         }
-        elem.i++;
+        if (*input == '$' && *input + 1 == '\0')
+        {
+            printf("DASADSASD\n");
+            var[elem.i] = *input;
+            elem.i++;
+        }
+        else if (*input == '$' && *input + 1 != '\0')
+        {
+            temp = env_find_value_v2(input, &envir);
+            if (temp != NULL)
+            {
+                elem.new_len = elem.len + ft_strlen(temp);
+                var = ft_realloc(var, elem.len, elem.new_len);
+                elem.len = elem.new_len;
+                while (*temp)
+                {
+                    var[elem.i] = *temp;
+                    elem.i++;
+                    temp++;
+                }
+            }
+            while (*input != '\0' && !ft_strchr(" \"'<>|", *input))
+                input++;
+        }
+        else if (*input != '\0')
+            input++;
+        printf("%s\n", var);
     }
+    return (var);
 }
