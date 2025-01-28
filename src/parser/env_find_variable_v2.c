@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 19:21:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/28 18:25:09 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/28 20:11:55 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,7 @@ char	*env_find_variable_v2(const char *var, t_env *env, size_t *i)
 	if (!var || !env || !env->envp || !i)
 		return (NULL);
 	*i = 0;
-	len_var = strlen_until_char(var, ' ');
-	/*if (var[len_var - 1] == '\"')
-		len_var--;*/
+	len_var = strlen_until_char(var, 0);
 	while (env->envp[*i] != NULL)
 	{
 		len_env = strlen_until_char(env->envp[*i], '=');
@@ -62,7 +60,7 @@ static size_t	strlen_until_char(const char *s, const char ch)
 	size_t	len;
 
 	len = 0;
-	while (*s != '\0' && *s != ch && *s != '\"')
+    while (*s != '\0' && !ft_strchr(" \"'<>|", *s) && *s != ch)
 	{
 		len++;
 		s++;

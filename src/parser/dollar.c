@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 12:10:10 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/28 18:40:51 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/28 21:05:27 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,17 +31,32 @@ char    *handle_dollar_sign(char *input, char **envp)
     {
         while (*input != '$' &&  *input)
         {
+            if (*input == '\'')
+            {
+                var[elem.i] = *input;
+                elem.i++;
+                input++;
+                while (*input  &&  *input != '\'')
+                {
+                    var[elem.i] = *input;
+                    elem.i++;
+                    input++;
+                }
+            }
+            else
+            {
+                var[elem.i] = *input;
+                elem.i++;
+                input++;
+            }
+        }
+        if (*input == '$' && input[1] == '\0')
+        {
             var[elem.i] = *input;
             elem.i++;
             input++;
         }
-        if (*input == '$' && *input + 1 == '\0')
-        {
-            printf("DASADSASD\n");
-            var[elem.i] = *input;
-            elem.i++;
-        }
-        else if (*input == '$' && *input + 1 != '\0')
+        else if (*input == '$' && input[1] != '\0')
         {
             temp = env_find_value_v2(input, &envir);
             if (temp != NULL)
@@ -61,7 +76,8 @@ char    *handle_dollar_sign(char *input, char **envp)
         }
         else if (*input != '\0')
             input++;
-        printf("%s\n", var);
     }
+    var[elem.i] = '\0';
+    //free(in);
     return (var);
 }

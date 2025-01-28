@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 11:04:55 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/28 18:13:07 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/28 20:12:04 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,4 @@ char	*env_find_value_v2(const char *var, t_env *env)
 		return (NULL);
 	else 
 		return (++res);
-	//res = ft_memchr(env->envp[i], '\0', ft_strlen(env->envp[i]) + 1);
 }

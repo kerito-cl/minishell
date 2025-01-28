@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 16:28:29 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/28 16:42:10 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/28 21:06:19 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,14 +62,14 @@ t_ast	*parse_input(char *input, char **envp)
 	t_token	*tokens;
 	t_ast	*root;
 	t_index	i;
+	char	*var;
 	int		len;
 
-	handle_dollar_sign(input, envp);
-	tokens = (t_token *)malloc(sizeof(t_token) * ft_strlen(input) + 1);
+	var = handle_dollar_sign(input, envp);
+	tokens = (t_token *)ft_calloc(sizeof(t_token) , ft_strlen(var) + 1);
 	if (!tokens)
 		exit(1);
-	ft_bzero(tokens, sizeof(t_token) * ft_strlen(input) + 1);
-	len = tokenize(tokens, input);
+	len = tokenize(tokens, var);
 	if (len == -1)
 		return (NULL);
 	i.pip = len + 1;
