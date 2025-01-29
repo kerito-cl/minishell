@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 11:25:19 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/28 20:48:19 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/29 10:58:01 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ char	**create_cmd(char *s)
 	elem.i = 0;
 	elem.j = 0;
 	counter = count_str(s);
-	cmd = (char **)malloc(sizeof(char *) * (counter + 2));
+	cmd = (char **)ft_calloc(sizeof(char *), (counter + 2));
 	if (!cmd)
 		exit(1);
 	cmd[counter] = NULL;

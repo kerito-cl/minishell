@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 16:28:29 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/28 21:06:19 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/29 10:56:58 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ t_ast	*create_node(char **s1, t_tokentype type)
 	t_ast	*new_node;
 
 	new_node = (t_ast *)malloc(sizeof(t_ast));
-	ft_bzero(new_node, sizeof(t_ast));
 	if (!new_node)
 		exit(1);
+	ft_bzero(new_node, sizeof(t_ast));
 	if (s1 != NULL)
 		new_node->value = cpy_cmds(s1);
 	else
@@ -66,7 +66,7 @@ t_ast	*parse_input(char *input, char **envp)
 	int		len;
 
 	var = handle_dollar_sign(input, envp);
-	tokens = (t_token *)ft_calloc(sizeof(t_token) , ft_strlen(var) + 1);
+	tokens = (t_token *)ft_calloc(sizeof(t_token), ft_strlen(var) * 2);
 	if (!tokens)
 		exit(1);
 	len = tokenize(tokens, var);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 10:40:48 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/26 19:19:55 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/29 10:57:50 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ char	*ft_strndup(char *s, size_t n)
 	char	*des;
 	size_t	len;
 
-	des = (char *)malloc(sizeof(char) * (n + 3));
+	des = (char *)ft_calloc(sizeof(char), (n + 2));
 	if (des == NULL)
 		exit(1);
 	len = 0;

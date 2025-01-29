@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 19:21:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/28 20:11:55 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/29 10:59:05 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static size_t	strlen_until_char(const char *s, const char ch);
 
 /**
  * @brief Finds an environment variable in the environment array.
- * 
+ *
  * @param var The variable to search for in the environment.
  * @param env Pointer to the environment struct containing an array of strings.
  * @param i Pointer to a variable to store the index of the found variable.
@@ -50,7 +50,7 @@ char	*env_find_variable_v2(const char *var, t_env *env, size_t *i)
 
 /**
  * @brief Calculates the length of a string until a specified character.
- * 
+ *
  * @param s The input string.
  * @param ch The character to stop at.
  * @return size_t The length of the string until the specified character.
@@ -60,7 +60,7 @@ static size_t	strlen_until_char(const char *s, const char ch)
 	size_t	len;
 
 	len = 0;
-    while (*s != '\0' && !ft_strchr(" \"'<>|", *s) && *s != ch)
+	while (*s != '\0' && !ft_strchr(" \"'<>|", *s) && *s != ch)
 	{
 		len++;
 		s++;
