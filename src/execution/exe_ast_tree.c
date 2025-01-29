@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 14:19:31 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/25 00:24:51 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/28 19:11:33 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ int	exe_ast_tree(t_ast *node, t_mshell *ms)
 		ms->exit_code = exe_pipe(node, ms);
 	else if (node->type == CMD)
 		ms->exit_code = exe_command(node, ms);
+	else if (node->type == REIN2)
+		ms->exit_code = exe_heredoc(node, ms);
 	else if (node->type >= REIN && node->type <= REOUT2)
 		ms->exit_code = printf("I'm redirection node (%d).\n", node->type);
 	else if (node->type == ARG)

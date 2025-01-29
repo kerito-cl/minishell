@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 18:44:20 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/25 02:41:00 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/29 11:10:29 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ int	exe_pipe(t_ast *root, t_mshell *ms)
 	ms->exit_code = run_left_fork(pipe_fd, &pid[0], root->left, ms);
 	if (ms->exit_code == 0)
 		ms->exit_code = run_right_fork(pipe_fd, &pid[1], root->right, ms);
-	ms->exit_code = exe_wait_children(pid, 2);
 	return (ms->exit_code);
 }
 
@@ -74,7 +73,7 @@ static int	run_left_fork(int pipe_fd[2], int *pid, t_ast *node, t_mshell *ms)
 	}
 	if (*pid == 0)
 	{
-		sig_child_process_handler(ms->interactive_mode);
+		sig_child_process_handler(SIG_DEFAULT_MODE);
 		exe_close_fd(&pipe_fd[FD_READ]);
 		if (dup2(pipe_fd[FD_WRITE], STDOUT_FILENO) == -1)
 		{
@@ -86,7 +85,8 @@ static int	run_left_fork(int pipe_fd[2], int *pid, t_ast *node, t_mshell *ms)
 		exit(ms->exit_code);
 	}
 	exe_close_fd(&pipe_fd[FD_WRITE]);
-	return (0);
+	ms->exit_code = exe_wait_children(pid, 1);
+	return (ms->exit_code);
 }
 
 /**
@@ -111,7 +111,7 @@ static int	run_right_fork(int pipe_fd[2], int *pid, t_ast *node, t_mshell *ms)
 	}
 	if (*pid == 0)
 	{
-		sig_child_process_handler(ms->interactive_mode);
+		sig_child_process_handler(SIG_DEFAULT_MODE);
 		exe_close_fd(&pipe_fd[FD_WRITE]);
 		if (dup2(pipe_fd[FD_READ], STDIN_FILENO) == -1)
 		{
@@ -122,6 +122,6 @@ static int	run_right_fork(int pipe_fd[2], int *pid, t_ast *node, t_mshell *ms)
 		ms->exit_code = exe_ast_tree(node, ms);
 		exit(ms->exit_code);
 	}
-	exe_close_fd(&pipe_fd[FD_READ]);
-	return (0);
+	ms->exit_code = exe_wait_children(pid, 1);
+	return (ms->exit_code);
 }

@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 18:41:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/25 02:47:03 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/29 07:56:15 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,13 @@ typedef enum e_error_code
 	ERROR_CMD_NOT_FOUND = 127,
 	ERROR_INVALID_EXIT_CODE = 255
 }	t_error_code;
+
+typedef enum e_sig_mode
+{
+	SIG_INTERACTIVE_MODE,
+	SIG_HEREDOC_MODE,
+	SIG_DEFAULT_MODE
+}	t_sig_mode;
 
 # ifndef FD_READ
 #  define FD_READ 0

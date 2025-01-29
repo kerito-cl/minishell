@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 07:36:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/25 00:16:25 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/29 08:52:55 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,15 @@
  * 1) Add function to init t_mshell minishell structure.
  * 2) exe_wait_children() should we specify the error message?
  * 3) builtins echo $? handler
- * 4) $ARG check when it is str or variable
  * 5) check if rl_replace_line() or rl_redisplay() fail?
  * 6) exe_search_cmd_path should we add current directory to search?
  *    (case to run `minishell> ./minishell`)
  * 
+ * @bug: test case (comment)
+ * 1) cat << l fgfg (parser ignores `fgfg` -> should be treated as a command)
+ * 
  */
+
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -47,7 +50,7 @@
 void		sig_handler_main(int sig, siginfo_t *info, void *context);
 void		sig_sigaction_init(struct sigaction *sa, \
 								void (*handler) (int, siginfo_t *, void *));
-void		sig_child_process_handler(int is_interactive_mode);
+void		sig_child_process_handler(t_sig_mode sig_mode);
 
 /* ------------------------------ Environment ------------------------------ */
 
@@ -78,6 +81,7 @@ void		builtin_update_env_var(const char *name, const char *value, \
 int			exe_ast_tree(t_ast *node, t_mshell *ms);
 int			exe_pipe(t_ast *root, t_mshell *ms);
 int			exe_command(t_ast *node, t_mshell *ms);
+int			exe_heredoc(t_ast *node, t_mshell *ms);
 
 int			exe_wait_children(pid_t *pids, int amount);
 void		exe_close_fd(int *fd);
