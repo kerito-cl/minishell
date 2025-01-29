@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 08:53:14 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/27 18:57:40 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/29 16:31:55 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,10 @@ int	main(int argc, char **argv, char **envp)
 		}
 		add_history(line);
         root = parse_input(line); /** @bug if nothing allocated better to return NULL; case ./minishell <ENTER> (line is empty) */
-        print_ast(root, 0, "root");
-		printf("\n------------\n");
+        // print_ast(root, 0, "root");
+		// printf("\n------------\n");
 		exe_ast_tree(root, &ms);
-		printf("exit code: %d\n", ms.exit_code);
+		// printf("exit code: %d\n", ms.exit_code);
 		// add_history(line); /** @bug smth happened with line after parsing, should be checked if it freed properly */
 		free_ast(root); /** @bug set root to NULL in free_ast to avoid segfault in ./minishell <cntr+D> case */
 	}

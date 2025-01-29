@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 07:36:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/29 08:52:55 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/29 15:24:12 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@
 # include <stdlib.h>	// malloc()
 # include <unistd.h>	// write(), fork()
 # include <sys/wait.h>	// waitpid()
+# include <fcntl.h>		// open()
 # include <stdbool.h>
 
 # include "constants.h"
@@ -82,6 +83,7 @@ int			exe_ast_tree(t_ast *node, t_mshell *ms);
 int			exe_pipe(t_ast *root, t_mshell *ms);
 int			exe_command(t_ast *node, t_mshell *ms);
 int			exe_heredoc(t_ast *node, t_mshell *ms);
+int			exe_redirection(t_ast *node, t_mshell *ms);
 
 int			exe_wait_children(pid_t *pids, int amount);
 void		exe_close_fd(int *fd);
