@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 12:10:10 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/29 10:21:22 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/29 14:43:01 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ char	*handle_dollar_sign(char *input, char **envp)
 	while (*input)
 	{
 		cpy_if_no_dollar(&input, var, &elem);
-		if (*input == '$' && (!input[1] || ft_strchr(" \"'<>|", input[1])))
+		if (*input == '$' && (!input[1] || ft_strchr(" \"'<>|$", input[1])))
 		{
 			var[elem.i] = *input;
 			elem.i++;

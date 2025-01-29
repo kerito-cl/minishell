@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 08:53:14 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/28 20:57:20 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/29 16:42:04 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,9 @@ int	main(int argc, char **argv, char **envp)
 		}
         root = parse_input(line, envp); /** @bug if nothing allocated better to return NULL; case ./minishell <ENTER> (line is empty) */
 		free(line);
-        print_ast(root, 0);
+        //print_ast(root, 0);
 		printf("\n------------\n");
-		//exe_ast_tree(root, &ms);
+		exe_ast_tree(root, &ms);
 		//printf("exit code: %d\n", ms.exit_code);
 		add_history(line);
 		//free(line);
