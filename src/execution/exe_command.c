@@ -28,9 +28,16 @@ static int	run_external(char **args, t_mshell *ms);
  */
 int	exe_command(t_ast *node, t_mshell *ms)
 {
+	char		**input;
+
 	if (!node || !ms)
 		return (0);
-	ms->exit_code = run_command(node->value, ms);
+	input = node->value;
+	if (input[0] == NULL || input[0][0] == '\0')
+		return (0);
+	ms->exit_code = exe_check_special_case(input + 1, ms);
+	if (ms->exit_code == 0)
+		ms->exit_code = run_command(input, ms);
 	return (ms->exit_code);
 }
 

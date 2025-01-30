@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:55:21 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/24 15:48:25 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/30 06:47:46 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 
 static int	go_home(t_env *env);
 static int	go_path(const char *path, t_env *env);
+static int	handle_chdir(const char *path, char	*old_path);
 
 /* --------------------------- Public Functions ---------------------------- */
 
@@ -91,23 +92,48 @@ static int	go_path(const char *path, t_env *env)
 {
 	char	*old_path;
 	char	*new_path;
+	int		exit_code;
 
 	old_path = getcwd(NULL, 0);
-	if (!old_path || chdir(path) == -1)
+	if (!old_path)
 	{
 		free(old_path);
-		perror("minishell: cd");
-		return (ERROR_GENERIC);
+		perror("minishell: cd: getcwd");
+		return (errno);
 	}
+	exit_code = handle_chdir(path, old_path);
+	if (exit_code != 0)
+		return (exit_code);
 	builtin_update_env_var("OLDPWD", old_path, env);
 	free(old_path);
 	new_path = getcwd(NULL, 0);
 	if (!new_path)
 	{
-		perror("minishell: cd");
-		return (ERROR_GENERIC);
+		perror("minishell: cd: getcwd");
+		return (errno);
 	}
 	builtin_update_env_var("PWD", new_path, env);
 	free(new_path);
+	return (exit_code);
+}
+
+/**
+ * @brief Changes the current working directory to the specified path.
+ * 
+ * If the operation fails,it frees the memory allocated for `old_path`.
+ * 
+ * @param path The path to the directory to change to.
+ * @param old_path A pointer to the old path.
+ * @return int Returns 0 on success, or ERROR_GENERIC (1) on failure.
+ */
+static int	handle_chdir(const char *path, char	*old_path)
+{
+	if (chdir(path) == -1)
+	{
+		free(old_path);
+		ft_putstr_fd("minishell: cd: ", STDERR_FILENO);
+		perror(path);
+		return (ERROR_GENERIC);
+	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 23:36:02 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/24 23:54:37 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/30 07:31:13 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,4 +31,7 @@ void	init_minishell_struct(t_mshell *ms, char **envp)
 		exit(ms->exit_code);
 	}
 	ms->interactive_mode = isatty(STDIN_FILENO);
+	ms->input = NULL;
+	ms->root = NULL;
+	ms->tmp_node = NULL;
 }

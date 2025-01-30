@@ -64,8 +64,11 @@ SRCS			:= $(SRCS_DIR)/signals/sig_handler.c \
 				   $(SRCS_DIR)/destructor/free_environment.c \
 				   \
 				   $(SRCS_DIR)/parser/assign_node.c \
+				   $(SRCS_DIR)/parser/create_cmd.c \
 				   $(SRCS_DIR)/parser/efe.c \
+				   $(SRCS_DIR)/parser/parse_utils.c \
 				   $(SRCS_DIR)/parser/parse.c \
+				   $(SRCS_DIR)/parser/quote_handler.c \
 				   $(SRCS_DIR)/parser/tokenize.c \
 				   $(SRCS_DIR)/parser/utils.c \
 				   $(SRCS_DIR)/parser/parse_utils.c \
@@ -78,9 +81,12 @@ SRCS			:= $(SRCS_DIR)/signals/sig_handler.c \
 				   $(SRCS_DIR)/execution/utils/exe_close_fd.c \
 				   $(SRCS_DIR)/execution/utils/exe_wait_children.c \
 				   $(SRCS_DIR)/execution/utils/exe_search_cmd_path.c \
+				   $(SRCS_DIR)/execution/utils/exe_check_special_case.c \
 				   $(SRCS_DIR)/execution/exe_pipe.c \
 				   $(SRCS_DIR)/execution/exe_ast_tree.c \
-				   $(SRCS_DIR)/execution/exe_command.c
+				   $(SRCS_DIR)/execution/exe_command.c \
+				   $(SRCS_DIR)/execution/exe_heredoc.c \
+				   $(SRCS_DIR)/execution/exe_redirection.c \
 				   
 SRC_MAIN		:= $(SRCS_DIR)/main.c
 

@@ -72,7 +72,6 @@ typedef struct s_index
 
 void				ft_bzero(void *s, size_t n);
 char				*ft_strndup(char *s, size_t n);
-// size_t			ft_strlen(char *str);
 t_ast				*create_node(char **s1, t_tokentype type);
 int					tokenize(t_token *tokens, char *input);
 t_ast				*parse_input(char *input, char **envp);

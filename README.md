@@ -17,14 +17,14 @@
 
 - [x] Display a prompt when waiting for a new command (`readline`).  
 - [x] Have a working history.  
-- [ ] Data management:  
+- [x] Data management:  
     * Region-based memory management - arena?  
     * Basic struct with pointer to array (environment copy) and AST linked-list?  
     * Define key structures and error system  
 
 #### 2. Parser and syntax validation   
-- [ ] Should we pre-validate syntax before actual parsing (like Backus-Naur Form (BNF))?   
-- [ ] AST (abstract syntax tree) parser vs split to linked list | array?
+- Should we pre-validate syntax before actual parsing (like Backus-Naur Form (BNF))?   
+- [x] AST (abstract syntax tree) parser vs split to linked list | array?
     * Tokenize input using spaces and special characters (`|`, `<`, `>`, `<<`, `>>`, `$`, `||` ...)  
     * Handle `’` (single quote) which should prevent the shell from interpreting the metacharacters in the quoted sequence.    
 	* Handle `"` (double quote) which should prevent the shell from interpreting the metacharacters in the quoted sequence except for `$` (dollar sign).
@@ -36,7 +36,7 @@ Built-in commands are executed directly by the shell and are part of the shell i
 It takes an array of array of chars as argument (the command should be skipped, ex: `"echo Hello!"` -> `char **args = ["echo", "Hello!", NULL]` -> `builtin_echo(&args[1])`).  
 
 - [x] `echo` with option `-n`. Outputs text to the terminal with new lin or without (if `-n` was used).  
-- [ ] `cd` with only a relative or absolute path changes the current working directory.  
+- [x] `cd` with only a relative or absolute path changes the current working directory.  
 - [x] `pwd` with no options  
 - [x] `export` with no options sets environment variables.  
 - [x] `unset` with no options unsets environment variables.  
@@ -45,15 +45,16 @@ It takes an array of array of chars as argument (the command should be skipped, 
 
 #### 4. External commands  
 The shell must search for the executable in directories specified in the PATH variable and spawn a new process to run it: search the `PATH`, create a new process (`fork()`) and execute (`execve()`) to run the command.   
-- [ ] Search and launch the right executable (based on the PATH variable or using a relative or an absolute path).  
-- [ ] Pipes (`|`)  
-- [ ] Implement redirections:
+- [x] Search and launch the right executable (based on the PATH variable or using a relative or an absolute path).  
+- [x] Pipes (`|`)  
+- [x] Implement redirections:
     * `<` should redirect input.  
     * `>` should redirect output.
     * `<<` should be given a delimiter, then read the input until a line containing the delimiter is seen. However, *it doesn’t have to update the history.*
     * `>>` should redirect output in append mode.
+- [ ] Handle `>>` with pipe
 - [x] Handle environment variables ($ followed by a sequence of characters) which should expand to their values.  
-- [ ] Handle `$?` which should expand to the exit status of the most recently executed foreground pipeline.
+- [x] Handle `$?` which should expand to the exit status of the most recently executed foreground pipeline.
 
 #### Bonus  
 - [ ] `&&` and `||` with parenthesis for priorities.  
