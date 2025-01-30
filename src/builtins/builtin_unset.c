@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 17:06:23 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/24 23:24:11 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/30 07:22:09 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 /* --------------------- Private function prototypes ----------------------- */
 
-static int	unset_error_check(char *arg, int i);
+static int	unset_error_check(char *arg, int i, int *is_ignored);
 
 /* --------------------------- Public Functions ---------------------------- */
 
@@ -34,6 +34,7 @@ int	builtin_unset(char **args, t_env *env)
 {
 	size_t	i;
 	int		exit_code;
+	int		is_ignored;
 
 	exit_code = 0;
 	if (!args || args[0] == NULL)
@@ -41,10 +42,11 @@ int	builtin_unset(char **args, t_env *env)
 	i = 0;
 	while (args[i] != NULL)
 	{
-		exit_code = unset_error_check(args[i], i);
+		is_ignored = 0;
+		exit_code = unset_error_check(args[i], i, &is_ignored);
 		if (i == 0 && exit_code == ERROR_INVALID_OPTION)
 			return (exit_code);
-		if (exit_code == 0)
+		if (exit_code == 0 && is_ignored == 0)
 			exit_code = env_remove(args[i], env);
 		i++;
 	}
@@ -61,7 +63,7 @@ int	builtin_unset(char **args, t_env *env)
  * @return int Returns 0 if no error, or an error code if an invalid option 
  * 			   or identifier is found.
  */
-static int	unset_error_check(char *arg, int i)
+static int	unset_error_check(char *arg, int i, int *is_ignored)
 {
 	if (i == 0 && arg[0] == '-')
 	{
@@ -78,5 +80,7 @@ static int	unset_error_check(char *arg, int i)
 		ft_putstr_fd("': not a valid identifier\n", STDERR_FILENO);
 		return (ERROR_GENERIC);
 	}
+	if (arg[0] == '_' && (arg[1] == '\0' || arg[1] == '='))
+		*is_ignored = 1;
 	return (0);
 }

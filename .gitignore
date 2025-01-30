@@ -67,4 +67,4 @@ dkms.conf
 !.vscode/extensions.json 
 .history.vscode/settings.json
 files_tests/*
-tests/*
+*test*

@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 18:41:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/25 02:47:03 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/30 06:54:44 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,16 @@ typedef enum e_error_code
 	ERROR_INVALID_OPTION = 2,
 	ERROR_MALLOC_FAILS = 12,
 	ERROR_CMD_NOT_FOUND = 127,
-	ERROR_INVALID_EXIT_CODE = 255
+	ERROR_INVALID_EXIT_CODE = 255,
+	ERROR_IGNORE = 1024,
 }	t_error_code;
+
+typedef enum e_sig_mode
+{
+	SIG_INTERACTIVE_MODE,
+	SIG_HEREDOC_MODE,
+	SIG_DEFAULT_MODE
+}	t_sig_mode;
 
 # ifndef FD_READ
 #  define FD_READ 0
@@ -44,6 +52,10 @@ typedef enum e_error_code
 
 # ifndef FORK_RIGHT
 #  define FORK_RIGHT 1
+# endif
+
+# ifndef EXIT_CODE_CASE
+#  define EXIT_CODE_CASE "$?"
 # endif
 
 #endif

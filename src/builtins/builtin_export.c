@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:34:58 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/24 23:29:45 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/30 07:16:21 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 static int	print_sorted_export(char **var_arr, unsigned int len);
 static void	bubble_sort(char **arr, unsigned int size);
-static int	export_error_check(char *arg, int i);
+static int	export_error_check(char *arg, int i, int *is_ignored);
 
 /* --------------------------- Public Functions ---------------------------- */
 
@@ -36,6 +36,7 @@ int	builtin_export(char **args, t_env *env)
 {
 	size_t	i;
 	int		exit_code;
+	int		is_ignored;
 
 	if (!args || args[0] == NULL)
 	{
@@ -48,10 +49,11 @@ int	builtin_export(char **args, t_env *env)
 	exit_code = 0;
 	while (args[i] != NULL)
 	{
-		exit_code = export_error_check(args[i], i);
+		is_ignored = 0;
+		exit_code = export_error_check(args[i], i, &is_ignored);
 		if (i == 0 && exit_code == ERROR_INVALID_OPTION)
 			return (exit_code);
-		if (exit_code == 0)
+		if (exit_code == 0 && is_ignored == 0)
 			exit_code = env_add(args[i], env);
 		i++;
 	}
@@ -81,21 +83,22 @@ static int	print_sorted_export(char **var_arr, unsigned int len)
 		return (errno);
 	ft_memcpy(tmp, var_arr, len * sizeof(char *));
 	bubble_sort(tmp, len);
-	i = 0;
-	while (i < len)
+	i = -1;
+	while (++i < len)
 	{
 		j = 0;
-		printf("declare -x ");
-		while (tmp[i][j] != '=' && tmp[i][j] != '\0')
-			printf("%c", tmp[i][j++]);
-		if (tmp[i][j] == '=')
-			printf("=\"%s\"\n", &tmp[i][j + 1]);
-		else
-			printf("\n");
-		i++;
+		if (!(tmp[i][0] == '_' && (tmp[i][1] == '\0' || tmp[i][1] == '=')))
+		{
+			printf("declare -x ");
+			while (tmp[i][j] != '=' && tmp[i][j] != '\0')
+				printf("%c", tmp[i][j++]);
+			if (tmp[i][j] == '=')
+				printf("=\"%s\"\n", &tmp[i][j + 1]);
+			else
+				printf("\n");
+		}
 	}
-	free(tmp);
-	return (0);
+	return (free(tmp), 0);
 }
 
 /**
@@ -128,7 +131,7 @@ static void	bubble_sort(char **arr, unsigned int size)
 	}
 }
 
-static int	export_error_check(char *arg, int i)
+static int	export_error_check(char *arg, int i, int *is_ignored)
 {
 	if (i == 0 && arg[0] == '-')
 	{
@@ -145,5 +148,7 @@ static int	export_error_check(char *arg, int i)
 		ft_putstr_fd("': not a valid identifier\n", STDERR_FILENO);
 		return (ERROR_GENERIC);
 	}
+	if (arg[0] == '_' && (arg[1] == '\0' || arg[1] == '='))
+		*is_ignored = 1;
 	return (0);
 }

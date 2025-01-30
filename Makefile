@@ -6,7 +6,7 @@
 #    By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/15 07:44:51 by ipersids          #+#    #+#              #
-#    Updated: 2025/01/27 11:16:56 by ipersids         ###   ########.fr        #
+#    Updated: 2025/01/30 06:25:23 by ipersids         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -63,21 +63,24 @@ SRCS			:= $(SRCS_DIR)/signals/sig_handler.c \
 				   $(SRCS_DIR)/destructor/free_2d_array.c \
 				   $(SRCS_DIR)/destructor/free_environment.c \
 				   \
-				   src/parser/assign_node.c \
-				   src/parser/create_cmd.c \
-				   src/parser/efe.c \
-				   src/parser/parse_utils.c \
-				   src/parser/parse.c \
-				   src/parser/quote_handler.c \
-				   src/parser/tokenize.c \
-				   src/parser/utils.c \
+				   $(SRCS_DIR)/parser/assign_node.c \
+				   $(SRCS_DIR)/parser/create_cmd.c \
+				   $(SRCS_DIR)/parser/efe.c \
+				   $(SRCS_DIR)/parser/parse_utils.c \
+				   $(SRCS_DIR)/parser/parse.c \
+				   $(SRCS_DIR)/parser/quote_handler.c \
+				   $(SRCS_DIR)/parser/tokenize.c \
+				   $(SRCS_DIR)/parser/utils.c \
 				   \
 				   $(SRCS_DIR)/execution/utils/exe_close_fd.c \
 				   $(SRCS_DIR)/execution/utils/exe_wait_children.c \
 				   $(SRCS_DIR)/execution/utils/exe_search_cmd_path.c \
+				   $(SRCS_DIR)/execution/utils/exe_check_special_case.c \
 				   $(SRCS_DIR)/execution/exe_pipe.c \
 				   $(SRCS_DIR)/execution/exe_ast_tree.c \
-				   $(SRCS_DIR)/execution/exe_command.c
+				   $(SRCS_DIR)/execution/exe_command.c \
+				   $(SRCS_DIR)/execution/exe_heredoc.c \
+				   $(SRCS_DIR)/execution/exe_redirection.c \
 				   
 SRC_MAIN		:= $(SRCS_DIR)/main.c
 

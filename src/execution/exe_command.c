@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 16:41:21 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/27 11:46:21 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/30 06:27:11 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,16 @@ static int	run_external(char **args, t_mshell *ms);
  */
 int	exe_command(t_ast *node, t_mshell *ms)
 {
-	char		**parse_input;
+	char		**input;
 
 	if (!node || !ms)
 		return (0);
-	parse_input = node->value;
-	if (parse_input[0] == NULL || parse_input[0][0] == '\0')
+	input = node->value;
+	if (input[0] == NULL || input[0][0] == '\0')
 		return (0);
-	ms->exit_code = run_command(parse_input, ms);
+	ms->exit_code = exe_check_special_case(input + 1, ms);
+	if (ms->exit_code == 0)
+		ms->exit_code = run_command(input, ms);
 	return (ms->exit_code);
 }
 
