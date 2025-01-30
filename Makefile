@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+         #
+#    By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/15 07:44:51 by ipersids          #+#    #+#              #
-#    Updated: 2025/01/30 13:21:30 by ipersids         ###   ########.fr        #
+#    Updated: 2025/01/30 17:32:27 by mquero           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 

@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 12:10:10 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/30 12:13:40 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/30 17:26:57 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,12 @@ static void	cpy_if_no_dollar(char **input, char *var, t_elem *elem)
 				elem->i++;
 				*input += 1;
 			}
+			if (**input == '\'')
+			{
+				var[elem->i] = **input;
+				elem->i++;
+				*input += 1;
+			}
 		}
 		else
 		{
@@ -87,6 +93,11 @@ char	*handle_dollar_sign(char *input, char **envp)
 			expand_env_var(&var, &elem, &input, envp);
 		else if (*input != '\0')
 			input++;
+	}
+	if (var[0] == 0)
+	{
+		free(var);
+		return (NULL);
 	}
 	var[elem.i] = '\0';
 	return (var);

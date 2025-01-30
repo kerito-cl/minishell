@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 16:28:29 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/29 13:11:51 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/30 17:25:22 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ t_ast	*parse_input(char *input, char **envp)
 	int		len;
 
 	var = handle_dollar_sign(input, envp);
+	if (!var)
+		return (NULL);
 	tokens = (t_token *)ft_calloc(sizeof(t_token), ft_strlen(var) * 2);
 	if (!tokens)
 		exit(1);
