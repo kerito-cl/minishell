@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 00:54:49 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/25 00:21:45 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/30 16:02:09 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 /* --------------------- Private function prototypes ----------------------- */
 
 static char	*get_full_path(const char *cmd, const char *root, char *dst);
+static int	check_own_path(const char *cmd, char *path);
 
 /* --------------------------- Public Functions ---------------------------- */
 
@@ -36,13 +37,15 @@ char	*exe_search_cmd_path(const char *cmd, const char *env_path, char *path)
 
 	if (!cmd || !env_path || env_path[0] == '\0' || !path)
 		return (NULL);
+	if (check_own_path(cmd, path) == 0)
+		return (path);
 	arr = ft_split(env_path, ':');
 	if (!arr)
 		return (NULL);
 	i = 0;
 	while (arr[i] != NULL)
 	{
-		if (get_full_path(cmd, arr[i], path) != NULL)
+		if (get_full_path(cmd, arr[i++], path) != NULL)
 		{
 			if (access(path, X_OK) == 0)
 			{
@@ -50,11 +53,24 @@ char	*exe_search_cmd_path(const char *cmd, const char *env_path, char *path)
 				return (path);
 			}
 		}
-		i++;
 	}
 	path[0] = '\0';
 	free_2d_array(arr, 0);
 	return (NULL);
+}
+
+static int	check_own_path(const char *cmd, char *path)
+{
+	size_t	len;
+
+	len = ft_strlen(cmd);
+	if (access(cmd, X_OK) == 0 && len < PATH_MAX)
+	{
+		ft_memcpy(path, cmd, len);
+		path[len] = '\0';
+		return (0);
+	}
+	return (1);
 }
 
 /* ------------------- Private Function Implementation --------------------- */

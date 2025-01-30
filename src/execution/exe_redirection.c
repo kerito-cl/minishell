@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 14:47:55 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/29 16:50:45 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/30 16:07:17 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,14 @@ int	exe_redirection(t_ast *node, t_mshell *ms)
 			ms->exit_code = handle_redir_output(node);
 		else if (node->type == REOUT2)
 			ms->exit_code = handle_redir_append(node);
-		ms->exit_code = exe_ast_tree(node->right, ms);
+		if (ms->exit_code == 0)
+		{
+			ms->exit_code = exe_ast_tree(node->left, ms);
+			ms->exit_code = exe_ast_tree(node->right, ms);
+		}
 		exit(ms->exit_code);
 	}
 	ms->exit_code = exe_wait_children(&pid, 1);
-	ms->exit_code = exe_ast_tree(node->left, ms);
 	return (ms->exit_code);
 }
 

@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 18:41:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/30 06:54:44 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/30 13:13:56 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,17 @@ typedef enum e_sig_mode
 	SIG_HEREDOC_MODE,
 	SIG_DEFAULT_MODE
 }	t_sig_mode;
+
+typedef enum e_tokentype
+{
+	PIPE = 22,
+	REIN,
+	REIN2,
+	REOUT,
+	REOUT2,
+	ARG,
+	CMD,
+}					t_tokentype;
 
 # ifndef FD_READ
 #  define FD_READ 0

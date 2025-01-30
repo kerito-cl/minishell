@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 11:37:38 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/30 10:13:48 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/30 14:21:28 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ char	**cpy_cmds(char **strs)
 	return (cmd);
 }
 
-static void	write_parse_error(t_tokentype type)
+/*static void	write_parse_error(t_tokentype type)
 {
 	if (type == PIPE)
 		write (2, "minishell: syntax error near unexpected token `|'\n", 51);
@@ -74,7 +74,7 @@ static void	write_parse_error(t_tokentype type)
 		write (2, "minishell: syntax error near unexpected token `>'\n", 51);
 	if (type == REOUT2)
 		write (2, "minishell: syntax error near unexpected token `>>'\n", 52);
-}
+}*/
 
 bool	check_parse_error(t_token *tokens, int len)
 {
@@ -83,12 +83,14 @@ bool	check_parse_error(t_token *tokens, int len)
 	i = 0;
 	while (i < len)
 	{
-		if (tokens[i].type != ARG && tokens[i + 1].type != ARG)
-		{
+
+		if ( i != 0 && tokens[i].type != ARG && tokens[i - 1].type != ARG)
+			return (true);
+		/*{
 			write_parse_error(tokens[i].type);
 			free_tokens(tokens, len);
 			return (false);
-		}
+		}*/
 		i++;
 	}
 	return (true);

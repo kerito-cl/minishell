@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exe_command.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 16:41:21 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/27 11:14:09 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/30 15:43:32 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	exe_command(t_ast *node, t_mshell *ms)
 	input = node->value;
 	if (input[0] == NULL || input[0][0] == '\0')
 		return (0);
-	ms->exit_code = exe_check_special_case(input + 1, ms);
+	ms->exit_code = exe_check_special_case(input, ms);
 	if (ms->exit_code == 0)
 		ms->exit_code = run_command(input, ms);
 	return (ms->exit_code);
@@ -67,6 +67,8 @@ static int	run_command(char **args, t_mshell *ms)
 		ms->exit_code = builtin_export(args + 1, &ms->env);
 	else if (ft_strcmp(cmd, "unset") == 0)
 		ms->exit_code = builtin_unset(args + 1, &ms->env);
+	else if (ft_strcmp(cmd, "env") == 0)
+		ms->exit_code = builtin_env(args + 1, &ms->env);
 	else
 		ms->exit_code = run_external(args, ms);
 	return (ms->exit_code);
@@ -91,8 +93,9 @@ static int	run_external(char **args, t_mshell *ms)
 	if (!exe_search_cmd_path(*args, env_find_value("PATH", &ms->env), path))
 	{
 		ft_putstr_fd("minishell: ", STDERR_FILENO);
-		ft_putstr_fd(args[0], STDERR_FILENO);
-		ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
+		// ft_putstr_fd(args[0], STDERR_FILENO);
+		// ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
+		perror(args[0]);
 		return (ERROR_CMD_NOT_FOUND);
 	}
 	pid = fork();

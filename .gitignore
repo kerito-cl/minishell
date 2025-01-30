@@ -68,3 +68,4 @@ dkms.conf
 .history.vscode/settings.json
 files_tests/*
 *test*
+out*

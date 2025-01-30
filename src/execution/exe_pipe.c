@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 18:44:20 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/30 09:27:20 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/30 16:06:05 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,8 @@ int	exe_pipe(t_ast *root, t_mshell *ms)
 	}
 	pid[0] = 0;
 	pid[1] = 0;
-	
 	ms->exit_code = run_left_fork(pipe_fd, &pid[0], root->left, ms);
-	if (ms->exit_code == 0)
-		ms->exit_code = run_right_fork(pipe_fd, &pid[1], root->right, ms);
+	ms->exit_code = run_right_fork(pipe_fd, &pid[1], root->right, ms);
 	return (ms->exit_code);
 }
 
@@ -165,7 +163,6 @@ static void	handle_heredoc(int pipe_fd[2], t_mshell *ms)
 	ms->exit_code = exe_heredoc(ms->tmp_node, ms);
 	exit(ms->exit_code);
 }
-
 
 /**
  * 		ms->tmp_node = node;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 08:53:14 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/29 16:42:04 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/30 14:32:17 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,11 @@ int	main(int argc, char **argv, char **envp)
 			free(ms.input);
 			continue;
 		}
-		add_history(ms.input);
-        ms.root = parse_input(ms.input); /** @bug if nothing allocated better to return NULL; case ./minishell <ENTER> (line is empty) */
-        // print_ast(ms.root, 0, "ms.root");
+        ms.root = parse_input(ms.input, ms.env.envp); /** @bug if nothing allocated better to return NULL; case ./minishell <ENTER> (line is empty) */
+        //print_ast(ms.root, 0, "ms.root");
 		exe_ast_tree(ms.root, &ms);
 		// printf("exit code: %d\n", ms.exit_code);
-		// add_history(ms.input); /** @bug smth happened with line after parsing, should be checked if it freed properly */
+		add_history(ms.input);
 		free_ast(ms.root); /** @bug set ms.root to NULL in free_ast to avoid segfault in ./minishell <cntr+D> case */
 	}
 	exit_destroy_minishell(&ms);
