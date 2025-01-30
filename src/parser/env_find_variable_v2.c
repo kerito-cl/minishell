@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 19:21:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/29 10:59:05 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/30 12:06:34 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static size_t	strlen_until_char(const char *s, const char ch)
 	size_t	len;
 
 	len = 0;
-	while (*s != '\0' && !ft_strchr(" \"'<>|", *s) && *s != ch)
+	while (*s != '\0' && !ft_strchr(" \"'<>|$", *s) && *s != ch)
 	{
 		len++;
 		s++;

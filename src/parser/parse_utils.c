@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 11:37:38 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/29 16:44:53 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/30 10:13:48 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,15 +65,15 @@ char	**cpy_cmds(char **strs)
 static void	write_parse_error(t_tokentype type)
 {
 	if (type == PIPE)
-		write (2, "minishell: parse error near `|'\n", 31);
+		write (2, "minishell: syntax error near unexpected token `|'\n", 51);
 	if (type == REIN)
-		write (2, "minishell: parse error near `<'\n", 31);
+		write (2, "minishell: syntax error near unexpected token `<'\n", 51);
 	if (type == REIN2)
-		write (2, "minishell: parse error near `<<'\n", 32);
+		write (2, "minishell: syntax error near unexpected token `<<'\n", 52);
 	if (type == REOUT)
-		write (2, "minishell: parse error near `>'\n", 31);
+		write (2, "minishell: syntax error near unexpected token `>'\n", 51);
 	if (type == REOUT2)
-		write (2, "minishell: parse error near `>>'\n", 32);
+		write (2, "minishell: syntax error near unexpected token `>>'\n", 52);
 }
 
 bool	check_parse_error(t_token *tokens, int len)
