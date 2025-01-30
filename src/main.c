@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 08:53:14 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/30 14:32:17 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/30 20:26:38 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,12 @@ int	main(int argc, char **argv, char **envp)
 	{
 		ms.root = NULL;
 		ms.input = readline("minishell> ");
+		sig_to_exit_code(&ms);
 		if (ms.input == NULL)
+		{
+			ms.exit_code = 0;
 			break ;
+		}
 		if (ms.input[0] == '\0')
 		{
 			free(ms.input);
@@ -72,7 +76,7 @@ int	main(int argc, char **argv, char **envp)
 		add_history(ms.input);
 		free_ast(ms.root); /** @bug set ms.root to NULL in free_ast to avoid segfault in ./minishell <cntr+D> case */
 	}
+	// write(1, "Good luck!\n", 11);
 	exit_destroy_minishell(&ms);
-	write(1, "Good luck!\n", 11);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:55:21 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/30 06:47:46 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/30 22:08:21 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 static int	go_home(t_env *env);
 static int	go_path(const char *path, t_env *env);
 static int	handle_chdir(const char *path, char	*old_path);
+static int	check_special_case(const char *arg, t_env *env, const char *tmp);  // tmp
 
 /* --------------------------- Public Functions ---------------------------- */
 
@@ -35,6 +36,8 @@ static int	handle_chdir(const char *path, char	*old_path);
  */
 int	builtin_cd(char **args, t_env *env)
 {
+	const char	*tmp = NULL; // tmp
+
 	if (!args || args[0] == NULL)
 		return (go_home(env));
 	if (args[1] != NULL && args[0][0] != '-')
@@ -50,10 +53,32 @@ int	builtin_cd(char **args, t_env *env)
 		ft_putstr_fd("cd: usage: cd [dir]\n", STDERR_FILENO);
 		return (ERROR_INVALID_OPTION);
 	}
+	if (check_special_case(args[0], env, tmp) == 0)
+		return (0);
 	return (go_path(args[0], env));
 }
 
 /* ------------------- Private Function Implementation --------------------- */
+
+static int	check_special_case(const char *arg, t_env *env, const char *tmp)
+{
+	const char	*oldpwd = env_find_value("OLDPWD", env);
+
+	tmp = arg;
+	if (tmp == NULL)
+		return (chdir(".")); // handle OLDPWD and PWD
+	if (tmp[0] == '.' && tmp[1] == '.' && \
+		(tmp[2] == '/' || tmp[2] == '\0') && oldpwd)
+	{
+		if (chdir(oldpwd) != -1)
+			tmp = &tmp[2]; // handle OLDPWD and PWD
+		else
+			return (errno);
+		if (tmp[2] == '\0')
+			return (0);
+	}
+	return (1);
+}
 
 /**
  * @brief Changes the directory to the home directory.
@@ -97,7 +122,6 @@ static int	go_path(const char *path, t_env *env)
 	old_path = getcwd(NULL, 0);
 	if (!old_path)
 	{
-		free(old_path);
 		perror("minishell: cd: getcwd");
 		return (errno);
 	}

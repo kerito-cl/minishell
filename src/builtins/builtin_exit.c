@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 19:58:44 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/24 22:32:49 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/30 18:35:31 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,21 +47,22 @@ int	builtin_exit(char **args, t_mshell *ms)
 	len = 0;
 	while (args && args[len])
 		len++;
-	if (len > 1)
+	ft_putstr_fd("exit\n", STDOUT_FILENO);
+	if (len > 1 && is_exit_code_valid(args[0], &ms->exit_code))
 	{
 		ft_putstr_fd("minishell: exit: too many arguments\n", STDERR_FILENO);
 		ms->exit_code = ERROR_GENERIC;
 		return (ms->exit_code);
 	}
-	ft_putstr_fd("exit\n", STDOUT_FILENO);
 	if (args[0] != NULL && !is_exit_code_valid(args[0], &ms->exit_code))
 	{
 		ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
 		ft_putstr_fd(args[0], STDERR_FILENO);
 		ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
+		ms->exit_code = ERROR_INVALID_OPTION;
 	}
 	exit_destroy_minishell(ms);
-	return (ms->exit_code);
+	exit(ms->exit_code);
 }
 
 /* ------------------- Private Function Implementation --------------------- */
@@ -92,6 +93,6 @@ static t_bool	is_exit_code_valid(const char *str, int *exit_code)
 		}
 		i++;
 	}
-	*exit_code = ft_abc(ft_atol(str) % 255);
+	*exit_code = (unsigned short int)ft_atol(str) % 256;
 	return (TRUE);
 }

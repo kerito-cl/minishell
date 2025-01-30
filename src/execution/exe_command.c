@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 16:41:21 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/30 15:43:32 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/30 22:15:16 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 
 static int	run_command(char **args, t_mshell *ms);
 static int	run_external(char **args, t_mshell *ms);
+static int	is_directory(const char *path, char *arg);
+static int	handle_command_error(char *arg);
 
 /* --------------------------- Public Functions ---------------------------- */
 
@@ -86,24 +88,60 @@ static int	run_command(char **args, t_mshell *ms)
  */
 static int	run_external(char **args, t_mshell *ms)
 {
-	char	path[PATH_MAX];
-	pid_t	pid;
+	char		path[PATH_MAX];
+	pid_t		pid;
 
 	path[0] = '\0';
 	if (!exe_search_cmd_path(*args, env_find_value("PATH", &ms->env), path))
 	{
-		ft_putstr_fd("minishell: ", STDERR_FILENO);
-		// ft_putstr_fd(args[0], STDERR_FILENO);
-		// ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
-		perror(args[0]);
-		return (ERROR_CMD_NOT_FOUND);
+		ms->exit_code = handle_command_error(args[0]);
+		return (ms->exit_code);
 	}
+	ms->exit_code = is_directory(path, args[0]);
+	if (ms->exit_code)
+		return (ms->exit_code);
 	pid = fork();
 	if (pid == 0 && execve(path, args, ms->env.envp) == -1)
 	{
 		perror("minishell: execve");
-		return (errno);
+		exit(errno);
 	}
 	ms->exit_code = exe_wait_children(&pid, 1);
 	return (ms->exit_code);
+}
+
+static int	handle_command_error(char *arg)
+{
+	if (ft_strchr(arg, '/') != NULL)
+	{
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd(arg, STDERR_FILENO);
+		ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
+		return (ERROR_CMD_NOT_FOUND);
+	}
+	ft_putstr_fd(arg, STDERR_FILENO);
+	ft_putstr_fd(": command not found\n", STDERR_FILENO);
+	return (ERROR_CMD_NOT_FOUND);
+}
+
+static int	is_directory(const char *path, char *arg)
+{
+	struct stat	path_stat;
+
+	if (stat(path, &path_stat) == -1)
+		return (0);
+	if (S_ISDIR(path_stat.st_mode))
+	{
+		if (ft_strchr(arg, '/') != NULL)
+		{
+			ft_putstr_fd("minishell: ", STDERR_FILENO);
+			ft_putstr_fd(arg, STDERR_FILENO);
+			ft_putstr_fd(": Is a directory\n", STDERR_FILENO);
+			return (ERROR_ISDIR);
+		}
+		ft_putstr_fd(arg, STDERR_FILENO);
+		ft_putstr_fd(": command not found\n", STDERR_FILENO);
+		return (ERROR_CMD_NOT_FOUND);
+	}
+	return (0);
 }

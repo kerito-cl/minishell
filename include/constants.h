@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 18:41:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/30 13:13:56 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/30 19:39:23 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,10 @@ typedef enum e_error_code
 	ERROR_GENERIC = 1,
 	ERROR_INVALID_OPTION = 2,
 	ERROR_MALLOC_FAILS = 12,
+	ERROR_ISDIR = 126,
 	ERROR_CMD_NOT_FOUND = 127,
 	ERROR_INVALID_EXIT_CODE = 255,
-	ERROR_IGNORE = 1024,
+	ERROR_IGNORE = 1024
 }	t_error_code;
 
 typedef enum e_sig_mode

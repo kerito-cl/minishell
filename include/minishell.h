@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 07:36:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/30 13:14:20 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/30 20:25:55 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@
 # include <unistd.h>	// write(), fork()
 # include <sys/wait.h>	// waitpid()
 # include <fcntl.h>		// open()
+# include <sys/stat.h>	// stat()
 # include <stdbool.h>
 
 # include "libft.h"
@@ -119,6 +120,7 @@ void		sig_handler_main(int sig, siginfo_t *info, void *context);
 void		sig_sigaction_init(struct sigaction *sa, \
 								void (*handler) (int, siginfo_t *, void *));
 void		sig_child_process_handler(t_sig_mode sig_mode);
+void		sig_to_exit_code(t_mshell *ms);
 
 /* ------------------------------ Environment ------------------------------ */
 
@@ -171,25 +173,25 @@ void		init_minishell_struct(t_mshell *ms, char **envp);
 
 /* ------------------------------ Parsing --------------------------- */
 
-void				ft_bzero(void *s, size_t n);
-char				*ft_strndup(char *s, size_t n);
-t_ast				*create_node(char **s1, t_tokentype type);
-int					tokenize(t_token *tokens, char *input);
-t_ast				*parse_input(char *input, char **envp);
-void				assign_to_right(t_ast *root, t_token *tokens, t_index *i);
-void				assign_to_left(t_ast *root, t_token *tokens, t_index *i,
-						bool flag);
-void				find_root(t_ast **root, t_token *tokens, t_index *i);
-void				free_tokens(t_token *tokens, int len);
-void				free_ast(t_ast *node);
-char				*deal_with_quotes(char *input);
-char				**create_cmd(char *s);
-bool				compare_token(char *buffer, int i, bool flag, char quote);
-char				quote_value(char c);
-char				**cpy_cmds(char **strs);
-char    			*handle_dollar_sign(char *input, char **envp);
-char				*env_find_variable_v2(const char *var, t_env *env, size_t *i);
-char				*env_find_value_v2(const char *var, t_env *env);
-bool				check_parse_error(t_token *tokens, int len);
+void		ft_bzero(void *s, size_t n);
+char		*ft_strndup(char *s, size_t n);
+t_ast		*create_node(char **s1, t_tokentype type);
+int			tokenize(t_token *tokens, char *input);
+t_ast		*parse_input(char *input, char **envp);
+void		assign_to_right(t_ast *root, t_token *tokens, t_index *i);
+void		assign_to_left(t_ast *root, t_token *tokens, t_index *i, \
+							bool flag);
+void		find_root(t_ast **root, t_token *tokens, t_index *i);
+void		free_tokens(t_token *tokens, int len);
+void		free_ast(t_ast *node);
+char		*deal_with_quotes(char *input);
+char		**create_cmd(char *s);
+bool		compare_token(char *buffer, int i, bool flag, char quote);
+char		quote_value(char c);
+char		**cpy_cmds(char **strs);
+char		*handle_dollar_sign(char *input, char **envp);
+char		*env_find_variable_v2(const char *var, t_env *env, size_t *i);
+char		*env_find_value_v2(const char *var, t_env *env);
+bool		check_parse_error(t_token *tokens, int len);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 07:41:24 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/25 02:44:41 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/30 20:15:53 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,5 @@ void	sig_handler_main(int sig, siginfo_t *info, void *context)
 		rl_redisplay();
 	}
 	else if (SIGQUIT == sig)
-	{
 		g_status = sig;
-		return ;
-	}
 }
