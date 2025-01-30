@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 18:41:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/29 07:56:15 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/30 06:18:24 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,10 @@ typedef enum e_sig_mode
 
 # ifndef FORK_RIGHT
 #  define FORK_RIGHT 1
+# endif
+
+# ifndef EXIT_CODE_CASE
+#  define EXIT_CODE_CASE "$?"
 # endif
 
 #endif
