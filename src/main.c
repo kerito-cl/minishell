@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 08:53:14 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/29 16:31:55 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/30 07:36:42 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,6 @@ void print_ast(t_ast *node, int depth, char *type)
 int	main(int argc, char **argv, char **envp)
 {
 	struct sigaction	sa;
-	char				*line; // add to t_mshell as input
-    t_ast				*root; // add to t_mshell as root
 	t_mshell			ms;
 
 	if (argc != 1 || !argv || !envp)
@@ -58,28 +56,24 @@ int	main(int argc, char **argv, char **envp)
 	sig_sigaction_init(&sa, sig_handler_main);
 	while (1)
 	{
-		root = NULL;
-		line = readline("minishell> ");
-		if (line == NULL)
+		ms.root = NULL;
+		ms.input = readline("minishell> ");
+		if (ms.input == NULL)
 			break ;
-		if (line[0] == '\0')
+		if (ms.input[0] == '\0')
 		{
-			free(line);
+			free(ms.input);
 			continue;
 		}
-		add_history(line);
-        root = parse_input(line); /** @bug if nothing allocated better to return NULL; case ./minishell <ENTER> (line is empty) */
-        // print_ast(root, 0, "root");
-		// printf("\n------------\n");
-		exe_ast_tree(root, &ms);
+		add_history(ms.input);
+        ms.root = parse_input(ms.input); /** @bug if nothing allocated better to return NULL; case ./minishell <ENTER> (line is empty) */
+        // print_ast(ms.root, 0, "ms.root");
+		exe_ast_tree(ms.root, &ms);
 		// printf("exit code: %d\n", ms.exit_code);
-		// add_history(line); /** @bug smth happened with line after parsing, should be checked if it freed properly */
-		free_ast(root); /** @bug set root to NULL in free_ast to avoid segfault in ./minishell <cntr+D> case */
+		// add_history(ms.input); /** @bug smth happened with line after parsing, should be checked if it freed properly */
+		free_ast(ms.root); /** @bug set ms.root to NULL in free_ast to avoid segfault in ./minishell <cntr+D> case */
 	}
-	rl_clear_history(); // call from exit_destroy_minishell(&ms)
-	free(line); // call from exit_destroy_minishell(&ms)
 	exit_destroy_minishell(&ms);
-	free_ast(root); // call from exit_destroy_minishell(&ms)
 	write(1, "Good luck!\n", 11);
 	return (0);
 }

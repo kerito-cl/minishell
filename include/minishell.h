@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 07:36:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/30 06:41:57 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/30 07:38:06 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
  * 5) check if rl_replace_line() or rl_redisplay() fail?
  * 6) exe_search_cmd_path should we add current directory to search?
  *    (case to run `minishell> ./minishell`)
- * 7) export _ seems to do nothing and return 0
  * 8) exe_ast_tree() - do we nee ARG node?
  * 
  * @bug: test case (comment)
@@ -44,9 +43,29 @@
 # include <stdbool.h>
 
 # include "constants.h"
-# include "structures.h"
 # include "parsing.h"
 # include "libft.h"
+
+/* ------------------------------ Environment ------------------------------ */
+
+typedef struct s_env
+{
+	char			**envp;
+	unsigned int	len;
+	unsigned int	capacity;	
+}	t_env;
+
+/* ------------------------------- Minishell ------------------------------- */
+
+typedef struct s_mshell
+{
+	t_env	env;
+	int		exit_code;
+	int		interactive_mode;
+	char	*input;
+	t_ast	*root;
+	t_ast	*tmp_node;
+}			t_mshell;
 
 /* -------------------------------- Signals -------------------------------- */
 
