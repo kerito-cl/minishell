@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 07:36:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/30 06:24:56 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/30 06:41:57 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
  * 
  * 1) Add function to init t_mshell minishell structure.
  * 2) exe_wait_children() should we specify the error message?
- * 3) builtins echo $? handler
  * 4) heredoc: handle quotes and $ expansion
  * 5) check if rl_replace_line() or rl_redisplay() fail?
  * 6) exe_search_cmd_path should we add current directory to search?

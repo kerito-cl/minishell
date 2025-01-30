@@ -6,12 +6,19 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 06:09:43 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/30 06:25:47 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/30 06:49:35 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/**
+ * @brief Checks for special cases `$?` in the execution of commands.
+ * 
+ * @param args The arguments passed to the command.
+ * @param ms The current state of the minishell.
+ * @return int Returns 1 if a special case is detected, 0 otherwise.
+ */
 int	exe_check_special_case(char **args, t_mshell *ms)
 {
 	char		*tmp;
