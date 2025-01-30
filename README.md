@@ -7,7 +7,7 @@
 
 #### 1. Signals, command line prompt, data management.   
 - [x] Support `Ctrl-C`, `Ctrl-D`, and `Ctrl-\` for interactive mode  
-- [x] Non-interactive mode  
+- [ ] Non-interactive mode  
 
 | Key    | Interactive Mode        | Non-Interactive Mode                        |
 | :-----: | ------------------      | ----------------------                     |
@@ -23,8 +23,8 @@
     * Define key structures and error system  
 
 #### 2. Parser and syntax validation   
-- [ ] Should we pre-validate syntax before actual parsing (like Backus-Naur Form (BNF))?   
-- [ ] AST (abstract syntax tree) parser vs split to linked list | array?
+- Should we pre-validate syntax before actual parsing (like Backus-Naur Form (BNF))?   
+- [x] AST (abstract syntax tree) parser vs split to linked list | array?
     * Tokenize input using spaces and special characters (`|`, `<`, `>`, `<<`, `>>`, `$`, `||` ...)  
     * Handle `’` (single quote) which should prevent the shell from interpreting the metacharacters in the quoted sequence.    
 	* Handle `"` (double quote) which should prevent the shell from interpreting the metacharacters in the quoted sequence except for `$` (dollar sign).
@@ -47,13 +47,14 @@ It takes an array of array of chars as argument (the command should be skipped, 
 The shell must search for the executable in directories specified in the PATH variable and spawn a new process to run it: search the `PATH`, create a new process (`fork()`) and execute (`execve()`) to run the command.   
 - [x] Search and launch the right executable (based on the PATH variable or using a relative or an absolute path).  
 - [x] Pipes (`|`)  
-- [ ] Implement redirections:
+- [x] Implement redirections:
     * `<` should redirect input.  
     * `>` should redirect output.
     * `<<` should be given a delimiter, then read the input until a line containing the delimiter is seen. However, *it doesn’t have to update the history.*
     * `>>` should redirect output in append mode.
+- [ ] Handle `>>` with pipe
 - [x] Handle environment variables ($ followed by a sequence of characters) which should expand to their values.  
-- [ ] Handle `$?` which should expand to the exit status of the most recently executed foreground pipeline.
+- [x] Handle `$?` which should expand to the exit status of the most recently executed foreground pipeline.
 
 #### Bonus  
 - [ ] `&&` and `||` with parenthesis for priorities.  

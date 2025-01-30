@@ -6,14 +6,14 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 07:36:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/30 07:38:06 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/30 07:44:58 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /**
  * @note Small things to do:
  * 
- * 1) Add function to init t_mshell minishell structure.
+ * 1) Update signals handler for child processes
  * 2) exe_wait_children() should we specify the error message?
  * 4) heredoc: handle quotes and $ expansion
  * 5) check if rl_replace_line() or rl_redisplay() fail?
