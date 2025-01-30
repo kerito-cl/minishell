@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 16:49:00 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/27 11:19:36 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/29 16:16:36 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,11 @@ static void	second_loop(char *input, char *buffer, t_elem *el, t_flags *flag)
 		}
 		if (input[el->i] != el->quote)
 		{
-			buffer[el->j] = input[el->i];
-			el->j++;
+			if (input[el->i] != '\"' && input[el->i] != '\'')
+			{
+				buffer[el->j] = input[el->i];
+				el->j++;
+			}
 		}
 		if (input[el->i] == el->quote)
 		{
@@ -126,10 +129,9 @@ char	*deal_with_quotes(char *input)
 	elem.quote = 0;
 	flag.a = false;
 	flag.b = false;
-	buffer = (char *)malloc(sizeof(char) * (ft_strlen(input) * 2));
+	buffer = (char *)ft_calloc((ft_strlen(input) * 2), sizeof(char));
 	if (!buffer)
 		exit(1);
-	ft_bzero(buffer, sizeof(char) * (ft_strlen(input) * 2));
 	while (input[elem.i] != '\n' && input[elem.i])
 		logic_loop(input, buffer, &elem, &flag);
 	if (flag.a == true)

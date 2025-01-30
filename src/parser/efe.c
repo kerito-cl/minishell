@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   efe.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 19:02:55 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/27 09:43:20 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/29 16:35:32 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ void	free_tokens(t_token *tokens, int len)
 		}
 		i++;
 	}
-	free(tokens[i].cmd);
 	free(tokens);
 }
 
