@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 11:37:38 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/30 17:31:02 by mquero           ###   ########.fr       */
+/*   Updated: 2025/01/31 13:14:58 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,18 +62,19 @@ char	**cpy_cmds(char **strs)
 	return (cmd);
 }
 
-static void	write_parse_error(t_tokentype type)
+static void	write_parse_error(t_token *tokens, t_tokentype type, int len)
 {
 	if (type == PIPE)
-		write (2, "minishell: syntax error near unexpected token `|'\n", 51);
+		write(2, "minishell: syntax error near unexpected token `|'\n", 51);
 	if (type == REIN)
-		write (2, "minishell: syntax error near unexpected token `<'\n", 51);
+		write(2, "minishell: syntax error near unexpected token `<'\n", 51);
 	if (type == REIN2)
-		write (2, "minishell: syntax error near unexpected token `<<'\n", 52);
+		write(2, "minishell: syntax error near unexpected token `<<'\n", 52);
 	if (type == REOUT)
-		write (2, "minishell: syntax error near unexpected token `>'\n", 51);
+		write(2, "minishell: syntax error near unexpected token `>'\n", 51);
 	if (type == REOUT2)
-		write (2, "minishell: syntax error near unexpected token `>>'\n", 52);
+		write(2, "minishell: syntax error near unexpected token `>>'\n", 52);
+	free_tokens(tokens, len);
 }
 
 bool	check_parse_error(t_token *tokens, int len)
@@ -83,11 +84,20 @@ bool	check_parse_error(t_token *tokens, int len)
 	i = 0;
 	while (i < len)
 	{
-
-		if ( i != 0 && tokens[i].type != ARG && tokens[i - 1].type != ARG)
+		if (tokens[0].type == PIPE)
 		{
-			write_parse_error(tokens[i].type);
-			free_tokens(tokens, len);
+			write_parse_error(tokens, tokens[0].type, len);
+			return (false);
+		}
+		if (i != 0 && tokens[i].type == PIPE && tokens[i - 1].type != ARG)
+		{
+			write_parse_error(tokens, tokens[i].type, len);
+			return (false);
+		}
+		if (tokens[i].type != PIPE && tokens[i].type != ARG && tokens[i
+			+ 1].type != ARG)
+		{
+			write_parse_error(tokens, tokens[i].type, len);
 			return (false);
 		}
 		i++;
