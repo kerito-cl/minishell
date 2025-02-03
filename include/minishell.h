@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 07:36:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/03 22:40:44 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/03 22:52:49 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ typedef struct s_ast
 
 typedef struct s_token
 {
-	t_ast			*root;
+	t_ast			**root;
 	int				len;
 	char			*value;
 	char			**cmd;

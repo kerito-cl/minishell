@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 16:28:29 by mquero            #+#    #+#             */
-/*   Updated: 2025/02/03 22:42:52 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/03 22:55:54 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ t_ast	*divide_input(t_token *tokens, int len, t_index *i)
 	t_ast	*root;
 
 	root = NULL;
-	tokens[0].root = root;
+	tokens[0].root = &root;
 	while (i->pip > 0)
 	{
 		if (tokens[i->pip].type == PIPE)
