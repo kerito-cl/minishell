@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 07:36:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/30 20:25:55 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/01 14:01:58 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,14 @@
 
 # include "libft.h"
 # include "constants.h"
+
+typedef struct s_arena
+{
+    char *arena_start;
+    char *current;
+    size_t total_size;
+    size_t used_size;
+}	t_arena;
 
 typedef struct s_token
 {
@@ -165,6 +173,7 @@ int			exe_check_special_case(char **args, t_mshell *ms);
 void		exit_destroy_minishell(t_mshell *ms);
 void		free_environment(t_env *env);
 void		free_2d_array(char **arr, int count);
+void		exit_free(t_token *tokens, int len, char *buffer);
 
 /* ------------------------------ Initialisation --------------------------- */
 

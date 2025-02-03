@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exe_pipe.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 18:44:20 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/30 16:06:05 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/01/30 22:09:04 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ int	exe_pipe(t_ast *root, t_mshell *ms)
 	pid[1] = 0;
 	ms->exit_code = run_left_fork(pipe_fd, &pid[0], root->left, ms);
 	ms->exit_code = run_right_fork(pipe_fd, &pid[1], root->right, ms);
+	ms->exit_code = exe_wait_children(&pid[0], 1);
+	ms->exit_code = exe_wait_children(&pid[1], 1);
 	return (ms->exit_code);
 }
 
@@ -81,7 +83,7 @@ static int	run_left_fork(int pipe_fd[2], int *pid, t_ast *node, t_mshell *ms)
 		handle_heredoc(pipe_fd, ms);
 	}
 	exe_close_fd(&pipe_fd[FD_WRITE]);
-	ms->exit_code = exe_wait_children(pid, 1);
+	//ms->exit_code = exe_wait_children(pid, 1);
 	return (ms->exit_code);
 }
 
@@ -112,7 +114,7 @@ static int	run_right_fork(int pipe_fd[2], int *pid, t_ast *node, t_mshell *ms)
 			handle_pipe(pipe_fd, ms, FD_WRITE, FD_READ);
 		handle_heredoc(pipe_fd, ms);
 	}
-	ms->exit_code = exe_wait_children(pid, 1);
+	//ms->exit_code = exe_wait_children(pid, 1);
 	return (ms->exit_code);
 }
 

@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 16:49:00 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/30 16:43:14 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/01 15:21:07 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,10 @@ char	*deal_with_quotes(char *input)
 	flag.b = false;
 	buffer = (char *)ft_calloc((ft_strlen(input) * 2), sizeof(char));
 	if (!buffer)
+	{
+		free(input);
 		exit(1);
+	}
 	while (input[elem.i] != '\n' && input[elem.i])
 		logic_loop(input, buffer, &elem, &flag);
 	if (flag.a == true)

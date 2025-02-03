@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 16:28:29 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/30 17:25:22 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/02 19:42:58 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,14 @@ t_ast	*create_node(char **s1, t_tokentype type)
 
 	new_node = (t_ast *)malloc(sizeof(t_ast));
 	if (!new_node)
-		exit(1);
+		return (NULL);
 	ft_bzero(new_node, sizeof(t_ast));
 	if (s1 != NULL)
+	{
 		new_node->value = cpy_cmds(s1);
+		if (!new_node->value)
+			return (NULL);
+	}
 	else
 		new_node->value = NULL;
 	new_node->type = type;

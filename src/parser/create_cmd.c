@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_cmd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 11:25:19 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/29 10:58:01 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/02 17:16:00 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,32 +55,30 @@ int	count_str(char *s)
 	return (counter);
 }
 
-bool	dupvalues(char *s, char **cmd, t_elem *elem, char quote)
+static bool		dupvalues(char *s, char **cmd, t_elem *elem, char quote)
 {
 	if (s[elem->i] == quote && quote != 0)
 	{
 		cmd[elem->j] = ft_strndup(s + elem->k, elem->i - elem->k + elem->y);
-		elem->j++;
-		elem->i++;
 		return (false);
 	}
 	else if (quote == '\0' && s[elem->i] == ' ')
 	{
 		cmd[elem->j] = ft_strndup(s + elem->k, elem->i - elem->k);
-		elem->j++;
-		elem->i++;
 		return (false);
 	}
 	elem->i++;
 	if (s[elem->i] == '\0' && quote == 0)
 	{
 		cmd[elem->j] = ft_strndup(s + elem->k, elem->i - elem->k);
+		if (!cmd[elem->j])
+			return (false);
 		elem->j++;
 	}
 	return (true);
 }
 
-void	loop_val(char *s, char **cmd, t_elem elem)
+bool	loop_val(char *s, char **cmd, t_elem elem)
 {
 	char	quote;
 
@@ -95,9 +93,16 @@ void	loop_val(char *s, char **cmd, t_elem elem)
 		while (s[elem.i])
 		{
 			if (!dupvalues(s, cmd, &elem, quote))
+			{
+				if (!cmd[elem.j])
+					return (false);
+				elem.j++;
+				elem.i++;
 				break ;
+			}
 		}
 	}
+	return (true);
 }
 
 char	**create_cmd(char *s)
@@ -106,15 +111,25 @@ char	**create_cmd(char *s)
 	int		counter;
 	t_elem	elem;
 
+	if (!s)
+		return (NULL);
 	elem.y = 0;
 	elem.i = 0;
 	elem.j = 0;
 	counter = count_str(s);
 	cmd = (char **)ft_calloc(sizeof(char *), (counter + 2));
 	if (!cmd)
+	{
+		free(s);
 		exit(1);
+	}
 	cmd[counter] = NULL;
-	loop_val(s, cmd, elem);
+	if (!loop_val(s, cmd, elem))
+	{
+		free_2d_array(cmd, 0);
+		return (NULL);
+	}
+	
 	free(s);
 	return (cmd);
 }

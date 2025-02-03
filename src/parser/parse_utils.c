@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 11:37:38 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/31 13:14:58 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/02 18:15:20 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,16 +47,19 @@ char	**cpy_cmds(char **strs)
 	i = 0;
 	while (strs[i] != NULL)
 		i++;
-	cmd = (char **)malloc(sizeof(char *) * (i + 1));
+	cmd = (char **)ft_calloc((i + 1), sizeof(char *));
 	if (!cmd)
-		exit(1);
+		return (NULL);
 	cmd[i] = NULL;
 	i = 0;
 	while (strs[i])
 	{
 		cmd[i] = ft_strndup(strs[i], ft_strlen(strs[i]));
 		if (!cmd[i])
-			exit(1);
+		{
+			free_2d_array(cmd, i);
+			return (NULL);
+		}
 		i++;
 	}
 	return (cmd);

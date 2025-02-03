@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 16:15:29 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/26 19:42:17 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/02 17:12:08 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ bool	add_redirval(t_token *tokens, char *buffer, int *i, int j)
 		{
 			tokens[j].value = ft_strndup(buffer + k, (size_t)(*i - k));
 			tokens[j].cmd = create_cmd(tokens[j].value);
+			if (!tokens[j].cmd)
+				exit_free(tokens, j, buffer);
 			tokens[j].type = ARG;
 			*i -= 1;
 			return (true);
@@ -58,6 +60,8 @@ bool	add_redirval(t_token *tokens, char *buffer, int *i, int j)
 	}
 	tokens[j].value = ft_strndup(buffer + k, (size_t)(*i - k));
 	tokens[j].cmd = create_cmd(tokens[j].value);
+	if (!tokens[j].cmd)
+		exit_free(tokens, j, buffer);
 	tokens[j].type = ARG;
 	return (false);
 }
@@ -73,6 +77,8 @@ bool	add_cmd(t_token *tokens, char *buffer, int *i, int j)
 		{
 			tokens[j].value = ft_strndup(buffer + k, (size_t)(*i - k));
 			tokens[j].cmd = create_cmd(tokens[j].value);
+			if (!tokens[j].cmd)
+				exit_free(tokens, j, buffer);
 			tokens[j].type = ARG;
 			*i -= 1;
 			return (true);
@@ -83,6 +89,8 @@ bool	add_cmd(t_token *tokens, char *buffer, int *i, int j)
 	}
 	tokens[j].value = ft_strndup(buffer + k, (size_t)(*i - k));
 	tokens[j].cmd = create_cmd(tokens[j].value);
+	if (!tokens[j].cmd)
+		exit_free(tokens, j, buffer);
 	tokens[j].type = ARG;
 	return (false);
 }
@@ -126,9 +134,9 @@ int	tokenize(t_token *tokens, char *input)
 	elem.j = 0;
 	flag = false;
 	buffer = deal_with_quotes(input);
+	free(input);
 	if (!buffer)
 		return (-1);
-	free(input);
 	while (buffer[elem.i] != '\0')
 	{
 		if (!add_all(tokens, buffer, &elem, &flag))
