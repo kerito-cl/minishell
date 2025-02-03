@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 07:36:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/01 14:01:58 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/03 22:40:44 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,23 +46,6 @@
 # include "libft.h"
 # include "constants.h"
 
-typedef struct s_arena
-{
-    char *arena_start;
-    char *current;
-    size_t total_size;
-    size_t used_size;
-}	t_arena;
-
-typedef struct s_token
-{
-	char			*value;
-	char			**cmd;
-	t_tokentype		type;
-	bool			lock;
-	bool			has_dollar;
-	char			quote;
-}					t_token;
 
 typedef struct s_ast
 {
@@ -71,6 +54,18 @@ typedef struct s_ast
 	struct s_ast	*left;
 	struct s_ast	*right;
 }					t_ast;
+
+typedef struct s_token
+{
+	t_ast			*root;
+	int				len;
+	char			*value;
+	char			**cmd;
+	t_tokentype		type;
+	bool			lock;
+	bool			has_dollar;
+	char			quote;
+}					t_token;
 
 typedef struct s_flags
 {
@@ -184,7 +179,7 @@ void		init_minishell_struct(t_mshell *ms, char **envp);
 
 void		ft_bzero(void *s, size_t n);
 char		*ft_strndup(char *s, size_t n);
-t_ast		*create_node(char **s1, t_tokentype type);
+t_ast		*create_node(char **s1, t_tokentype type, t_token *tokens);
 int			tokenize(t_token *tokens, char *input);
 t_ast		*parse_input(char *input, char **envp);
 void		assign_to_right(t_ast *root, t_token *tokens, t_index *i);

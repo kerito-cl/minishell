@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 08:53:14 by mquero            #+#    #+#             */
-/*   Updated: 2025/02/01 12:39:30 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/03 22:44:53 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ int	main(int argc, char **argv, char **envp)
 			continue;
 		}
         ms.root = parse_input(ms.input, ms.env.envp); /** @bug if nothing allocated better to return NULL; case ./minishell <ENTER> (line is empty) */
+		free(ms.input);
         //print_ast(ms.root, 0, "ms.root");
 		exe_ast_tree(ms.root, &ms);
 		// printf("exit code: %d\n", ms.exit_code);

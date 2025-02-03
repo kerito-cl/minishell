@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   assign_node.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 08:54:30 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/26 19:16:06 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/03 22:42:01 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ bool	assign_pipe(t_ast *root, t_token *tokens, t_index *i)
 	{
 		if (PIPE == tokens[i->key].type)
 		{
-			root->left = create_node(NULL, PIPE);
+			root->left = create_node(NULL, PIPE, tokens);
 			i->max = i->key;
 			assign_to_left(root->left, tokens, i, false);
 			i->min = i->key + 1;
@@ -40,7 +40,7 @@ bool	assign_node(t_ast **root, t_token *tokens, t_index *i, t_tokentype n)
 	{
 		if (n == tokens[i->key].type && !tokens[i->key].lock)
 		{
-			*root = create_node(tokens[i->key + 1].cmd, n);
+			*root = create_node(tokens[i->key + 1].cmd, n, tokens);
 			tokens[i->key].lock = true;
 			tokens[i->key + 1].lock = true;
 			assign_to_left(*root, tokens, i, true);
@@ -67,7 +67,7 @@ void	assign_to_right(t_ast *root, t_token *tokens, t_index *i)
 	{
 		if (ARG == tokens[i->key].type && !tokens[i->key].lock)
 		{
-			root->right = create_node(tokens[i->key].cmd, CMD);
+			root->right = create_node(tokens[i->key].cmd, CMD, tokens);
 			tokens[i->key].lock = true;
 			return ;
 		}
@@ -93,9 +93,9 @@ void	assign_to_left(t_ast *root, t_token *tokens, t_index *i, bool flag)
 		if (ARG == tokens[i->key].type && !tokens[i->key].lock)
 		{
 			if (!flag)
-				root->left = create_node(tokens[i->key].cmd, CMD);
+				root->left = create_node(tokens[i->key].cmd, CMD, tokens);
 			else
-				root->right = create_node(tokens[i->key].cmd, CMD);
+				root->right = create_node(tokens[i->key].cmd, CMD, tokens);
 			tokens[i->key].lock = true;
 			return ;
 		}
@@ -118,7 +118,7 @@ void	find_root(t_ast **root, t_token *tokens, t_index *i)
 	{
 		if (ARG == tokens[i->key].type && !tokens[i->key].lock)
 		{
-			*root = create_node(tokens[i->key].cmd, CMD);
+			*root = create_node(tokens[i->key].cmd, CMD, tokens);
 			tokens[i->key].lock = true;
 			return ;
 		}

@@ -6,25 +6,25 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 16:28:29 by mquero            #+#    #+#             */
-/*   Updated: 2025/02/02 19:42:58 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/03 22:42:52 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_ast	*create_node(char **s1, t_tokentype type)
+t_ast	*create_node(char **s1, t_tokentype type, t_token *tokens)
 {
 	t_ast	*new_node;
 
 	new_node = (t_ast *)malloc(sizeof(t_ast));
 	if (!new_node)
-		return (NULL);
+		exit_free(tokens, tokens[0].len, NULL);
 	ft_bzero(new_node, sizeof(t_ast));
 	if (s1 != NULL)
 	{
 		new_node->value = cpy_cmds(s1);
 		if (!new_node->value)
-			return (NULL);
+			exit_free(tokens, tokens[0].len, NULL);
 	}
 	else
 		new_node->value = NULL;
@@ -38,11 +38,13 @@ t_ast	*divide_input(t_token *tokens, int len, t_index *i)
 {
 	t_ast	*root;
 
+	root = NULL;
+	tokens[0].root = root;
 	while (i->pip > 0)
 	{
 		if (tokens[i->pip].type == PIPE)
 		{
-			root = create_node(NULL, PIPE);
+			root = create_node(NULL, PIPE, tokens);
 			break ;
 		}
 		i->pip--;
@@ -80,6 +82,7 @@ t_ast	*parse_input(char *input, char **envp)
 		return (NULL);
 	if (len == -1)
 		return (NULL);
+	tokens[0].len = len;
 	i.pip = len + 1;
 	i.min = 0;
 	i.len = len;
