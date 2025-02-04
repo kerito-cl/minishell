@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 11:25:19 by mquero            #+#    #+#             */
-/*   Updated: 2025/02/02 17:16:00 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/04 11:42:30 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	count_str(char *s)
 	return (counter);
 }
 
-static bool		dupvalues(char *s, char **cmd, t_elem *elem, char quote)
+static bool	dupvalues(char *s, char **cmd, t_elem *elem, char quote)
 {
 	if (s[elem->i] == quote && quote != 0)
 	{
@@ -121,7 +121,7 @@ char	**create_cmd(char *s)
 	if (!cmd)
 	{
 		free(s);
-		exit(1);
+		return (NULL);
 	}
 	cmd[counter] = NULL;
 	if (!loop_val(s, cmd, elem))
@@ -129,7 +129,6 @@ char	**create_cmd(char *s)
 		free_2d_array(cmd, 0);
 		return (NULL);
 	}
-	
 	free(s);
 	return (cmd);
 }

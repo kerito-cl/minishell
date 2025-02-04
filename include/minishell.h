@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 07:36:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/03 22:52:49 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/04 15:19:18 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,5 +197,6 @@ char		*handle_dollar_sign(char *input, char **envp);
 char		*env_find_variable_v2(const char *var, t_env *env, size_t *i);
 char		*env_find_value_v2(const char *var, t_env *env);
 bool		check_parse_error(t_token *tokens, int len);
+char		*ft_strdup_no_op(char *str, size_t n);
 
 #endif

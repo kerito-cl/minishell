@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 16:15:29 by mquero            #+#    #+#             */
-/*   Updated: 2025/02/02 17:12:08 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/04 17:02:31 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ bool	add_cmd(t_token *tokens, char *buffer, int *i, int j)
 	{
 		if (!compare_token(buffer, *i, false, tokens[j].quote))
 		{
-			tokens[j].value = ft_strndup(buffer + k, (size_t)(*i - k));
+			tokens[j].value = ft_strdup_no_op(buffer + k, (size_t)(*i - k));
 			tokens[j].cmd = create_cmd(tokens[j].value);
 			if (!tokens[j].cmd)
 				exit_free(tokens, j, buffer);
@@ -87,7 +87,7 @@ bool	add_cmd(t_token *tokens, char *buffer, int *i, int j)
 			tokens[j].quote = 0;
 		*i += 1;
 	}
-	tokens[j].value = ft_strndup(buffer + k, (size_t)(*i - k));
+	tokens[j].value = ft_strdup_no_op(buffer + k, (size_t)(*i - k));
 	tokens[j].cmd = create_cmd(tokens[j].value);
 	if (!tokens[j].cmd)
 		exit_free(tokens, j, buffer);

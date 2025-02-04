@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 11:37:38 by mquero            #+#    #+#             */
-/*   Updated: 2025/02/03 22:56:39 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/04 11:25:07 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ bool	check_parse_error(t_token *tokens, int len)
 			return (false);
 		}
 		if (tokens[i].type != PIPE && tokens[i].type != ARG && tokens[i
-			+ 1].type != ARG)
+				+ 1].type != ARG)
 		{
 			write_parse_error(tokens, tokens[i].type, len);
 			return (false);
