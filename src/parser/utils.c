@@ -6,71 +6,70 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 10:40:48 by mquero            #+#    #+#             */
-/*   Updated: 2025/02/04 16:57:25 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/05 13:18:47 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char    *ft_strdup_no_op(char *str, size_t n)
+static void	check_if_quotes(char *str, char *dest, size_t *i, size_t *j)
 {
-        char    *dest;
-        size_t i = 0;
-        size_t j = 0;
-        char    quote = 0;
+	char	quote;
 
-        dest = ft_calloc((ft_strlen(str) + 1), sizeof(char));
-        while (i < n)
-        {
-                dest[j] = str[i];
-                j++;
-                i++;
-        }
-        while (str[i] && str[i] != '|')
-        {
-                if (str[i] == '\'' || str[i] == '\"')
-                {
-                        quote = str[i];
-                        dest[j] = str[i];
-                        j++;
-                        i++;
-                        while (str[i] != quote)
-                        {
-                                dest[j] = str[i];
-                                j++;
-                                i++;
-                        }
-                        dest[j] = str[i];
-                        j++;
-                        i++;
-                }
-                else if (str[i] == '>' || str[i] == '<')
-                {
-                        i++;
-                        while (str[i] == ' ' || str[i] == '<' || str[i] == '>')
-                                i++;
-                        while (str[i] != ' ' && str[i] != '|' && str[i])
-                        {
-                                if (str[i] == '\'' || str[i] == '\"')
-                                {
-                                        quote = str[i];
-                                        i++;
-                                        while (str[i] != quote)
-                                                i++;
-                                }
-                                i++;
-                        }
-                }
-                else
-                {
-                        if (str[i] == '|')
-                                break;
-                        dest[j] = str[i];
-                        j++;
-                        i++;
-                }
-        }
-        return (dest);
+	quote = str[*i];
+	dest[(*j)++] = str[(*i)++];
+	while (str[*i] != quote)
+		dest[(*j)++] = str[(*i)++];
+	dest[(*j)++] = str[(*i)++];
+}
+
+static void	check_if_op(char *str, size_t *i)
+{
+	char	quote;
+
+	quote = 0;
+	(*i)++;
+	while (str[*i] == ' ' || str[*i] == '<' || str[*i] == '>')
+		(*i)++;
+	while (str[*i] != ' ' && str[*i] != '|' && str[*i])
+	{
+		if (str[*i] == '\'' || str[*i] == '\"')
+		{
+			quote = str[(*i)++];
+			while (str[*i] != quote)
+				(*i)++;
+		}
+		(*i)++;
+	}
+}
+
+char	*ft_strdup_no_op(char *str, size_t n)
+{
+	char	*dest;
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	j = 0;
+	dest = ft_calloc((ft_strlen(str) + 1), sizeof(char));
+	if (!dest)
+		return (NULL);
+	while (i < n)
+		dest[j++] = str[i++];
+	while (str[i] && str[i] != '|')
+	{
+		if (str[i] == '\'' || str[i] == '\"')
+			check_if_quotes(str, dest, &i, &j);
+		if (str[i] == '>' || str[i] == '<')
+			check_if_op(str, &i);
+		else
+		{
+			if (str[i] == '|')
+				break ;
+			dest[j++] = str[i++];
+		}
+	}
+	return (dest);
 }
 
 char	*ft_strndup(char *s, size_t n)
