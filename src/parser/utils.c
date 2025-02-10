@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 10:40:48 by mquero            #+#    #+#             */
-/*   Updated: 2025/02/05 13:18:47 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/06 23:35:41 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ char	*ft_strdup_no_op(char *str, size_t n)
 
 	i = 0;
 	j = 0;
-	dest = ft_calloc((ft_strlen(str) + 1), sizeof(char));
+	dest = ft_calloc((ft_strlen(str) + 2), sizeof(char));
 	if (!dest)
 		return (NULL);
 	while (i < n)
