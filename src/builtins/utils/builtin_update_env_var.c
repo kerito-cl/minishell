@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 14:57:22 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/24 15:33:28 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/10 14:39:19 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	builtin_update_env_var(const char *name, const char *value, t_env *env)
 	capacity = ft_strlen(name) + ft_strlen(value) + 2;
 	tmp = (char *) malloc(capacity * sizeof(char));
 	if (!tmp)
-		return (perror("minishell: cd: "));
+		return (perror("minishell: malloc"));
 	len = 0;
 	i = 0;
 	while (name[i] != '=' && name[i] != '\0')
