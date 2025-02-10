@@ -6,13 +6,13 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 12:10:10 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/30 17:26:57 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/02 17:08:50 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	expand_env_var(char **var, t_elem *elem, char **input, char **envp)
+static void	expand_env_var(char **var, t_elem *elem, char **input, char **envp)
 {
 	t_env	envir;
 	char	*temp;
@@ -44,26 +44,22 @@ static void	cpy_if_no_dollar(char **input, char *var, t_elem *elem)
 	{
 		if (**input == '\'')
 		{
-			var[elem->i] = **input;
-			elem->i++;
+			var[elem->i++] = **input;
 			*input += 1;
 			while (**input && **input != '\'')
 			{
-				var[elem->i] = **input;
-				elem->i++;
+				var[elem->i++] = **input;
 				*input += 1;
 			}
 			if (**input == '\'')
 			{
-				var[elem->i] = **input;
-				elem->i++;
+				var[elem->i++] = **input;
 				*input += 1;
 			}
 		}
 		else
 		{
-			var[elem->i] = **input;
-			elem->i++;
+			var[elem->i++] = **input;
 			*input += 1;
 		}
 	}
@@ -77,28 +73,21 @@ char	*handle_dollar_sign(char *input, char **envp)
 	elem.i = 0;
 	elem.len = ft_strlen(input);
 	elem.new_len = ft_strlen(input);
-	var = ft_calloc(sizeof(char), (elem.len + 1));
+	var = ft_calloc(sizeof(char), (elem.len + 2));
 	if (!var)
 		exit(1);
 	while (*input)
 	{
 		cpy_if_no_dollar(&input, var, &elem);
 		if (*input == '$' && (!input[1] || ft_strchr(" \"'<>|$?", input[1])))
-		{
-			var[elem.i] = *input;
-			elem.i++;
-			input++;
-		}
+			var[elem.i++] = *input++;
 		else if (*input == '$' && input[1] != '\0')
 			expand_env_var(&var, &elem, &input, envp);
 		else if (*input != '\0')
 			input++;
 	}
-	if (var[0] == 0)
-	{
-		free(var);
-		return (NULL);
-	}
 	var[elem.i] = '\0';
+	if (var[0] == 0)
+		return (free(var), NULL);
 	return (var);
 }

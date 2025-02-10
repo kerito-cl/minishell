@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 16:49:00 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/30 16:43:14 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/06 23:27:38 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,21 +38,19 @@ static void	second_loop(char *input, char *buffer, t_elem *el, t_flags *flag)
 {
 	while (input[el->i])
 	{
-		if (input[el->i] == ' ')
+		if (input[el->i] == ' ' && flag->a == false)
 		{
 			flag->b = true;
 			break ;
 		}
-		if (input[el->i] != el->quote)
+		if (input[el->i] != '\"' && input[el->i] != '\'')
 		{
-			if (input[el->i] != '\"' && input[el->i] != '\'')
-			{
-				buffer[el->j] = input[el->i];
-				el->j++;
-			}
+			buffer[el->j] = input[el->i];
+			el->j++;
 		}
-		if (input[el->i] == el->quote)
+		else if (input[el->i] == '\"' || input[el->i] == '\'')
 		{
+			el->quote = input[el->i];
 			flag->a = true;
 			el->i++;
 			break ;
@@ -76,7 +74,7 @@ static bool	check_quote(char *input, char *buffer, t_elem *el, t_flags *flag)
 		second_loop(input, buffer, el, flag);
 		if (flag->a == false)
 		{
-			buffer[el->j] = el->quote;
+			buffer[el->j] = '\'';
 			el->j++;
 			if (flag->a == false && input[el->i] != '\0')
 			{
@@ -92,16 +90,12 @@ static bool	check_quote(char *input, char *buffer, t_elem *el, t_flags *flag)
 static void	logic_loop(char *input, char *buffer, t_elem *el, t_flags *flag)
 {
 	while (input[el->i] == '<' || input[el->i] == '>' || input[el->i] == '|')
-	{
-		buffer[el->j] = input[el->i];
-		el->j++;
-		el->i++;
-	}
+		buffer[el->j++] = input[el->i++];
 	el->k = el->i;
 	first_loop(input, el, flag);
 	if (flag->a)
 	{
-		buffer[el->j] = el->quote;
+		buffer[el->j] = '\'';
 		el->j++;
 		while (input[el->i])
 		{
@@ -131,7 +125,10 @@ char	*deal_with_quotes(char *input)
 	flag.b = false;
 	buffer = (char *)ft_calloc((ft_strlen(input) * 2), sizeof(char));
 	if (!buffer)
+	{
+		free(input);
 		exit(1);
+	}
 	while (input[elem.i] != '\n' && input[elem.i])
 		logic_loop(input, buffer, &elem, &flag);
 	if (flag.a == true)

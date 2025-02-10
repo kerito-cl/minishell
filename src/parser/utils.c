@@ -6,41 +6,71 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 10:40:48 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/29 10:57:50 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/06 23:35:41 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// size_t	ft_strlen(char *str)
-// {
-// 	size_t	i;
+static void	check_if_quotes(char *str, char *dest, size_t *i, size_t *j)
+{
+	char	quote;
 
-// 	i = 0;
-// 	while (str[i])
-// 		i++;
-// 	return (i);
-// }
+	quote = str[*i];
+	dest[(*j)++] = str[(*i)++];
+	while (str[*i] != quote)
+		dest[(*j)++] = str[(*i)++];
+	dest[(*j)++] = str[(*i)++];
+}
 
-// size_t	ft_strlcpy(char *dst, const char *src, size_t size)
-// {
-// 	size_t	i;
-// 	size_t	len;
+static void	check_if_op(char *str, size_t *i)
+{
+	char	quote;
 
-// 	i = 0;
-// 	len = 0;
-// 	while (src[len])
-// 		len++;
-// 	if (size == 0)
-// 		return (len);
-// 	while (src[i] && i < (size - 1))
-// 	{
-// 		dst[i] = src[i];
-// 		i++;
-// 	}
-// 	dst[i] = '\0';
-// 	return (len);
-// }
+	quote = 0;
+	(*i)++;
+	while (str[*i] == ' ' || str[*i] == '<' || str[*i] == '>')
+		(*i)++;
+	while (str[*i] != ' ' && str[*i] != '|' && str[*i])
+	{
+		if (str[*i] == '\'' || str[*i] == '\"')
+		{
+			quote = str[(*i)++];
+			while (str[*i] != quote)
+				(*i)++;
+		}
+		(*i)++;
+	}
+}
+
+char	*ft_strdup_no_op(char *str, size_t n)
+{
+	char	*dest;
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	j = 0;
+	dest = ft_calloc((ft_strlen(str) + 2), sizeof(char));
+	if (!dest)
+		return (NULL);
+	while (i < n)
+		dest[j++] = str[i++];
+	while (str[i] && str[i] != '|')
+	{
+		if (str[i] == '\'' || str[i] == '\"')
+			check_if_quotes(str, dest, &i, &j);
+		if (str[i] == '>' || str[i] == '<')
+			check_if_op(str, &i);
+		else
+		{
+			if (str[i] == '|')
+				break ;
+			dest[j++] = str[i++];
+		}
+	}
+	return (dest);
+}
 
 char	*ft_strndup(char *s, size_t n)
 {
@@ -49,7 +79,7 @@ char	*ft_strndup(char *s, size_t n)
 
 	des = (char *)ft_calloc(sizeof(char), (n + 2));
 	if (des == NULL)
-		exit(1);
+		return (NULL);
 	len = 0;
 	while (len < n)
 	{

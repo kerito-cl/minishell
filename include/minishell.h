@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 07:36:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/30 20:25:55 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/04 15:19:18 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,15 +46,6 @@
 # include "libft.h"
 # include "constants.h"
 
-typedef struct s_token
-{
-	char			*value;
-	char			**cmd;
-	t_tokentype		type;
-	bool			lock;
-	bool			has_dollar;
-	char			quote;
-}					t_token;
 
 typedef struct s_ast
 {
@@ -63,6 +54,18 @@ typedef struct s_ast
 	struct s_ast	*left;
 	struct s_ast	*right;
 }					t_ast;
+
+typedef struct s_token
+{
+	t_ast			**root;
+	int				len;
+	char			*value;
+	char			**cmd;
+	t_tokentype		type;
+	bool			lock;
+	bool			has_dollar;
+	char			quote;
+}					t_token;
 
 typedef struct s_flags
 {
@@ -165,6 +168,7 @@ int			exe_check_special_case(char **args, t_mshell *ms);
 void		exit_destroy_minishell(t_mshell *ms);
 void		free_environment(t_env *env);
 void		free_2d_array(char **arr, int count);
+void		exit_free(t_token *tokens, int len, char *buffer);
 
 /* ------------------------------ Initialisation --------------------------- */
 
@@ -175,7 +179,7 @@ void		init_minishell_struct(t_mshell *ms, char **envp);
 
 void		ft_bzero(void *s, size_t n);
 char		*ft_strndup(char *s, size_t n);
-t_ast		*create_node(char **s1, t_tokentype type);
+t_ast		*create_node(char **s1, t_tokentype type, t_token *tokens);
 int			tokenize(t_token *tokens, char *input);
 t_ast		*parse_input(char *input, char **envp);
 void		assign_to_right(t_ast *root, t_token *tokens, t_index *i);
@@ -193,5 +197,6 @@ char		*handle_dollar_sign(char *input, char **envp);
 char		*env_find_variable_v2(const char *var, t_env *env, size_t *i);
 char		*env_find_value_v2(const char *var, t_env *env);
 bool		check_parse_error(t_token *tokens, int len);
+char		*ft_strdup_no_op(char *str, size_t n);
 
 #endif

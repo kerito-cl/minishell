@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 19:02:55 by mquero            #+#    #+#             */
-/*   Updated: 2025/01/29 16:35:32 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/03 22:54:55 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,4 +52,14 @@ void	free_ast(t_ast *node)
 		free(node->value);
 	}
 	free(node);
+}
+
+void	exit_free(t_token *tokens, int len, char *buffer)
+{
+	if (buffer)
+		free(buffer);
+	if (*tokens[0].root)
+		free_ast(*tokens[0].root);
+	free_tokens(tokens, len);
+	exit(1);
 }
