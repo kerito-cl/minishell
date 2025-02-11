@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 07:41:24 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/11 14:41:08 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/11 15:54:29 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ void	sig_sigint_main(int sig)
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
-		write(STDOUT_FILENO, "\n\033[1A", 6);
 	}
 }
 

@@ -6,11 +6,13 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 19:27:47 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/11 14:45:46 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/11 15:55:39 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	display_message(int signo);
 
 /**
  * @brief Waits for all child processes to finish execution.
@@ -40,14 +42,43 @@ int	exe_wait_children(pid_t *pids, int amount)
 		}
 		i++;
 	}
-	if (WIFSIGNALED(exit_code))
-	{
-		ft_putstr_fd("minishell: process terminated by signal ", STDERR_FILENO);
-		ft_putnbr_fd(WTERMSIG(exit_code), STDERR_FILENO);
-		ft_putstr_fd("\n", STDERR_FILENO);
-		return (EXIT_FAILURE);
-	}
 	if (WIFEXITED(exit_code))
 		return (WEXITSTATUS(exit_code));
+	if (WIFSIGNALED(exit_code))
+	{
+		exit_code = WTERMSIG(exit_code);
+		display_message(exit_code);
+		exit_code += 128;
+		return (exit_code);
+	}
 	return (EXIT_FAILURE);
+}
+
+static void	display_message(int signo)
+{
+	if (signo == SIGINT)
+	{
+		ft_putstr_fd("\n", STDERR_FILENO);
+		write(STDERR_FILENO, "\033[1A", 5);
+		return ;
+	}
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
+	if (signo == SIGABRT)
+		ft_putstr_fd("Abort signal from abort(3)\n", STDERR_FILENO);
+	else if (signo == SIGBUS)
+		ft_putstr_fd("Bus error (bad memory access)\n", STDERR_FILENO);
+	else if (signo == SIGKILL)
+		ft_putstr_fd("Kill signal\n", STDERR_FILENO);
+	else if (signo == SIGPIPE)
+		;
+	else if (signo == SIGQUIT)
+		ft_putstr_fd("Quit from keyboard\n", STDERR_FILENO);
+	else if (signo == SIGSEGV)
+		ft_putstr_fd("Segmentation fault: Invalid memory reference\n", STDERR_FILENO);
+	else
+	{
+		ft_putstr_fd("Process terminated by signal: ", STDERR_FILENO);
+		ft_putnbr_fd(signo, STDERR_FILENO);
+		ft_putstr_fd("\n", STDERR_FILENO);
+	}
 }
