@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 19:20:10 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/25 00:10:14 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/10 14:20:51 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	env_add(const char *var, t_env *env)
 	tmp = ft_strdup(var);
 	if (!tmp)
 	{
-		perror("minishell: ft_calloc");
+		perror("minishell: malloc");
 		return (ERROR_MALLOC_FAILS);
 	}
 	i = 0;

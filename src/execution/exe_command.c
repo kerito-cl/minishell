@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 16:41:21 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/30 22:15:16 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/10 14:48:04 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static int	run_command(char **args, t_mshell *ms)
 	else if (ft_strcmp(cmd, "exit") == 0)
 		ms->exit_code = builtin_exit(args + 1, ms);
 	else if (ft_strcmp(cmd, "pwd") == 0)
-		ms->exit_code = builtin_pwd(args + 1);
+		ms->exit_code = builtin_pwd(args + 1, &ms->env);
 	else if (ft_strcmp(cmd, "export") == 0)
 		ms->exit_code = builtin_export(args + 1, &ms->env);
 	else if (ft_strcmp(cmd, "unset") == 0)

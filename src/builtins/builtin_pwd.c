@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 17:52:52 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/24 22:42:18 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/10 14:52:05 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,22 @@
  * @return int Returns 0 on success, or an error code if arguments 
  * 			   or options are provided.
  */
-int	builtin_pwd(char **args)
+int	builtin_pwd(char **args, t_env *env)
 {
-	char	*buf;
+	const char	*pwd_value;
+	char		*buf;
 
 	if (args && args[0] != NULL)
 	{
 		printf("minishell: pwd: options and arguments aren't supported\n");
 		printf("pwd: usage: pwd\n");
 		return (ERROR_GENERIC);
+	}
+	pwd_value = env_find_value("PWD", env);
+	if (pwd_value)
+	{
+		printf("%s\n", pwd_value);
+		return (0);
 	}
 	buf = getcwd(NULL, 0);
 	if (!buf)
