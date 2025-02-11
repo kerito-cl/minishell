@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:55:21 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/30 22:08:21 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/10 14:39:40 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,7 @@
 
 static int	go_home(t_env *env);
 static int	go_path(const char *path, t_env *env);
-static int	handle_chdir(const char *path, char	*old_path);
-static int	check_special_case(const char *arg, t_env *env, const char *tmp);  // tmp
+static void	update_env_path(t_env *env, char *curr_path, const char *path);
 
 /* --------------------------- Public Functions ---------------------------- */
 
@@ -36,10 +35,8 @@ static int	check_special_case(const char *arg, t_env *env, const char *tmp);  //
  */
 int	builtin_cd(char **args, t_env *env)
 {
-	const char	*tmp = NULL; // tmp
-
 	if (!args || args[0] == NULL)
-		return (go_home(env));
+		return ((go_home(env)));
 	if (args[1] != NULL && args[0][0] != '-')
 	{
 		ft_putstr_fd("minishell: cd: too many arguments\n", STDERR_FILENO);
@@ -53,32 +50,10 @@ int	builtin_cd(char **args, t_env *env)
 		ft_putstr_fd("cd: usage: cd [dir]\n", STDERR_FILENO);
 		return (ERROR_INVALID_OPTION);
 	}
-	if (check_special_case(args[0], env, tmp) == 0)
-		return (0);
 	return (go_path(args[0], env));
 }
 
 /* ------------------- Private Function Implementation --------------------- */
-
-static int	check_special_case(const char *arg, t_env *env, const char *tmp)
-{
-	const char	*oldpwd = env_find_value("OLDPWD", env);
-
-	tmp = arg;
-	if (tmp == NULL)
-		return (chdir(".")); // handle OLDPWD and PWD
-	if (tmp[0] == '.' && tmp[1] == '.' && \
-		(tmp[2] == '/' || tmp[2] == '\0') && oldpwd)
-	{
-		if (chdir(oldpwd) != -1)
-			tmp = &tmp[2]; // handle OLDPWD and PWD
-		else
-			return (errno);
-		if (tmp[2] == '\0')
-			return (0);
-	}
-	return (1);
-}
 
 /**
  * @brief Changes the directory to the home directory.
@@ -103,61 +78,67 @@ static int	go_home(t_env *env)
 }
 
 /**
- * @brief Changes the current directory to the specified path.
+ * @brief Changes the cwd to the specified path and updates the env variables.
  * 
- * Changes to the provided path and updates the `PWD` 
- * and `OLDPWD` environment variables. Returns error codes 
- * if the directory change fails.
- * 
- * @param path The target directory.
- * @param env Pointer to the environment structure.
- * @return `0` on success, error code on failure.
+ * @param path The path to the directory to change to.
+ * @param env The environment structure to update.
+ * @return int Returns 0 on success, or an error code on failure.
  */
 static int	go_path(const char *path, t_env *env)
 {
-	char	*old_path;
-	char	*new_path;
-	int		exit_code;
+	char	*curr_path;
 
-	old_path = getcwd(NULL, 0);
-	if (!old_path)
+	if (chdir(path) != 0)
 	{
-		perror("minishell: cd: getcwd");
-		return (errno);
-	}
-	exit_code = handle_chdir(path, old_path);
-	if (exit_code != 0)
-		return (exit_code);
-	builtin_update_env_var("OLDPWD", old_path, env);
-	free(old_path);
-	new_path = getcwd(NULL, 0);
-	if (!new_path)
-	{
-		perror("minishell: cd: getcwd");
-		return (errno);
-	}
-	builtin_update_env_var("PWD", new_path, env);
-	free(new_path);
-	return (exit_code);
-}
-
-/**
- * @brief Changes the current working directory to the specified path.
- * 
- * If the operation fails,it frees the memory allocated for `old_path`.
- * 
- * @param path The path to the directory to change to.
- * @param old_path A pointer to the old path.
- * @return int Returns 0 on success, or ERROR_GENERIC (1) on failure.
- */
-static int	handle_chdir(const char *path, char	*old_path)
-{
-	if (chdir(path) == -1)
-	{
-		free(old_path);
 		ft_putstr_fd("minishell: cd: ", STDERR_FILENO);
 		perror(path);
 		return (ERROR_GENERIC);
 	}
+	curr_path = getcwd(NULL, 0);
+	if (!curr_path)
+	{
+		ft_putstr_fd("cd: error retrieving current directory: ", STDERR_FILENO);
+		perror("getcwd: cannot access parent directories");
+	}
+	update_env_path(env, curr_path, path);
+	if (curr_path)
+		free(curr_path);
 	return (0);
+}
+
+/**
+ * @brief Updates the env variables related to the current 
+ * 		  and old working directories.
+ * 
+ * This function updates the "PWD" and "OLDPWD" environment variables.
+ * 
+ * @param env Pointer to the environment structure.
+ * @param curr_path The current path to be set as the new "PWD" value.
+ * @param path The path to be appended to the previous "PWD" value 
+ * 			   if curr_path is NULL.
+ */
+static void	update_env_path(t_env *env, char *curr_path, const char *path)
+{
+	const char	*tmp;
+	char		*new_pwd;
+
+	tmp = env_find_value("PWD", env);
+	if (tmp == NULL)
+		builtin_update_env_var("OLDPWD", "", env);
+	else
+		builtin_update_env_var("OLDPWD", tmp, env);
+	if (curr_path != NULL)
+		return (builtin_update_env_var("PWD", curr_path, env));
+	if (curr_path == NULL && tmp == NULL)
+		return ;
+	new_pwd = ft_strjoin(tmp, "/");
+	if (!new_pwd)
+		return (perror("minishell: malloc"));
+	curr_path = ft_strjoin(new_pwd, path);
+	free(new_pwd);
+	if (!curr_path)
+		return (perror("minishell: malloc"));
+	builtin_update_env_var("PWD", curr_path, env);
+	free(curr_path);
+	curr_path = NULL;
 }
