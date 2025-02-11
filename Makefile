@@ -6,7 +6,7 @@
 #    By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/15 07:44:51 by ipersids          #+#    #+#              #
-#    Updated: 2025/01/30 20:26:24 by ipersids         ###   ########.fr        #
+#    Updated: 2025/02/11 13:37:01 by ipersids         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,9 +38,8 @@ OBJ_DIR			:= obj
 
 # Sources and objects
 SRCS			:= $(SRCS_DIR)/signals/sig_handler.c \
-        		   $(SRCS_DIR)/signals/sig_sigaction_init.c \
-				   $(SRCS_DIR)/signals/sig_child_process_handler.c \
 				   $(SRCS_DIR)/signals/sig_to_exit_code.c \
+				   $(SRCS_DIR)/signals/sig_interceptor.c \
 				   \
 				   $(SRCS_DIR)/environment/env_find_variable.c \
 				   $(SRCS_DIR)/environment/env_add.c \

@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 16:41:21 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/30 22:15:16 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/11 14:05:07 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,10 @@ static int	run_external(char **args, t_mshell *ms)
 	if (ms->exit_code)
 		return (ms->exit_code);
 	pid = fork();
-	if (pid == 0 && execve(path, args, ms->env.envp) == -1)
+	if (pid == 0)
 	{
+		sig_interceptor(SIG_DEFAULT_MODE);
+		execve(path, args, ms->env.envp);
 		perror("minishell: execve");
 		exit(errno);
 	}

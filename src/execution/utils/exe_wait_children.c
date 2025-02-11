@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 19:27:47 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/25 00:23:25 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/11 14:45:46 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,9 @@ int	exe_wait_children(pid_t *pids, int amount)
 	{
 		if (waitpid(pids[i], &exit_code, 0) == -1)
 		{
-			perror("minishell: waitpid");
-			return (errno);
+			if (errno == EINTR)
+				continue ;
+			return (perror("minishell: waitpid"), errno);
 		}
 		i++;
 	}

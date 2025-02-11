@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 07:36:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/04 15:19:18 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/11 14:47:09 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,12 @@
  * 
  * 1) Update signals handler for child processes
  * 2) exe_wait_children() should we specify the error message?
- * 4) heredoc: handle quotes and $ expansion
- * 5) check if rl_replace_line() or rl_redisplay() fail?
- * 6) exe_search_cmd_path should we add current directory to search?
- *    (case to run `minishell> ./minishell`)
- * 8) exe_ast_tree() - do we nee ARG node?
+ * 3) heredoc: handle quotes and $ expansion
+ * 4) @note cursor up "\033[1A" and ioctl(STDIN_FILENO, TIOCSTI, "\n");
+ * 
  * 
  * @bug: test case (comment)
- * 1) cat << l fgfg (parser ignores `fgfg` -> should be treated as a command)
+ * 1) heredoc doesn't work with pipes and signal interoption, need to be redo
  * 
  */
 
@@ -41,11 +39,11 @@
 # include <sys/wait.h>	// waitpid()
 # include <fcntl.h>		// open()
 # include <sys/stat.h>	// stat()
+# include <sys/ioctl.h> // ioctl()
 # include <stdbool.h>
 
 # include "libft.h"
 # include "constants.h"
-
 
 typedef struct s_ast
 {
@@ -95,7 +93,6 @@ typedef struct s_index
 
 }					t_index;
 
-
 /* ------------------------------ Environment ------------------------------ */
 
 typedef struct s_env
@@ -111,7 +108,6 @@ typedef struct s_mshell
 {
 	t_env	env;
 	int		exit_code;
-	int		interactive_mode;
 	char	*input;
 	t_ast	*root;
 	t_ast	*tmp_node;
@@ -119,11 +115,10 @@ typedef struct s_mshell
 
 /* -------------------------------- Signals -------------------------------- */
 
-void		sig_handler_main(int sig, siginfo_t *info, void *context);
-void		sig_sigaction_init(struct sigaction *sa, \
-								void (*handler) (int, siginfo_t *, void *));
-void		sig_child_process_handler(t_sig_mode sig_mode);
 void		sig_to_exit_code(t_mshell *ms);
+void		sig_interceptor(t_sig_mode mode);
+void		sig_sigint_main(int sig);
+void		sig_sigint_heredoc(int sig);
 
 /* ------------------------------ Environment ------------------------------ */
 
@@ -139,7 +134,7 @@ int			env_remove(const char *var, t_env *env);
 
 int			builtin_echo(char **args);
 int			builtin_env(char **args, t_env *env);
-int 		builtin_unset(char **args, t_env *env);
+int			builtin_unset(char **args, t_env *env);
 int			builtin_export(char **args, t_env *env);
 int			builtin_pwd(char **args);
 int			builtin_exit(char **args, t_mshell *ms);
