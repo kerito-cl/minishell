@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 08:53:14 by mquero            #+#    #+#             */
-/*   Updated: 2025/02/06 23:33:59 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/11 14:02:41 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ void print_ast(t_ast *node, int depth, char *type)
 }
 int	main(int argc, char **argv, char **envp)
 {
-	struct sigaction	sa;
 	t_mshell			ms;
 
 	if (argc != 1 || !argv || !envp)
@@ -53,7 +52,7 @@ int	main(int argc, char **argv, char **envp)
 		exit(EXIT_FAILURE);
 	}
 	init_minishell_struct(&ms, envp);
-	sig_sigaction_init(&sa, sig_handler_main);
+	sig_interceptor(SIG_INTERACTIVE_MODE);
 	while (1)
 	{
 		ms.root = NULL;

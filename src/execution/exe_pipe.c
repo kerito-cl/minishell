@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exe_pipe.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 18:44:20 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/30 22:09:04 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/11 14:08:05 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,7 @@ int	exe_pipe(t_ast *root, t_mshell *ms)
 	pid[1] = 0;
 	ms->exit_code = run_left_fork(pipe_fd, &pid[0], root->left, ms);
 	ms->exit_code = run_right_fork(pipe_fd, &pid[1], root->right, ms);
-	ms->exit_code = exe_wait_children(&pid[0], 1);
-	ms->exit_code = exe_wait_children(&pid[1], 1);
+	ms->exit_code = exe_wait_children(pid, 2);
 	return (ms->exit_code);
 }
 
@@ -83,7 +82,6 @@ static int	run_left_fork(int pipe_fd[2], int *pid, t_ast *node, t_mshell *ms)
 		handle_heredoc(pipe_fd, ms);
 	}
 	exe_close_fd(&pipe_fd[FD_WRITE]);
-	//ms->exit_code = exe_wait_children(pid, 1);
 	return (ms->exit_code);
 }
 
@@ -114,7 +112,6 @@ static int	run_right_fork(int pipe_fd[2], int *pid, t_ast *node, t_mshell *ms)
 			handle_pipe(pipe_fd, ms, FD_WRITE, FD_READ);
 		handle_heredoc(pipe_fd, ms);
 	}
-	//ms->exit_code = exe_wait_children(pid, 1);
 	return (ms->exit_code);
 }
 
@@ -125,7 +122,7 @@ static void	handle_pipe(int pipe_fd[2], t_mshell *ms, int fd_close, int fd_dup)
 	new_fd = STDOUT_FILENO;
 	if (fd_dup == FD_READ)
 		new_fd = STDIN_FILENO;
-	sig_child_process_handler(SIG_DEFAULT_MODE);
+	sig_interceptor(SIG_DEFAULT_MODE);
 	exe_close_fd(&pipe_fd[fd_close]);
 	if (dup2(pipe_fd[fd_dup], new_fd) == -1)
 	{
@@ -138,52 +135,11 @@ static void	handle_pipe(int pipe_fd[2], t_mshell *ms, int fd_close, int fd_dup)
 	exit(ms->exit_code);
 }
 
-// static void	run_heredoc_loop(int pipe_fd[2], t_mshell *ms)
-// {
-// 	char *input;
-
-// 	while (TRUE)
-// 	{
-// 		input = readline("> ");
-// 		if (!input)
-// 			return ;
-// 		if (ft_strcmp(input, ms->tmp_node->value[0]) == 0)
-// 		{
-// 			free(input);
-// 			return ;
-// 		}
-// 		write(pipe_fd[FD_WRITE], input, ft_strlen(input));
-// 		write(pipe_fd[FD_WRITE], "\n", 1);
-// 		free(input);
-// 	}
-// }
-
 static void	handle_heredoc(int pipe_fd[2], t_mshell *ms)
 {
 	exe_close_fd(&pipe_fd[FD_READ]);
 	exe_close_fd(&pipe_fd[FD_WRITE]);
+	sig_interceptor(SIG_HEREDOC_MODE);
 	ms->exit_code = exe_heredoc(ms->tmp_node, ms);
 	exit(ms->exit_code);
 }
-
-/**
- * 		ms->tmp_node = node;
-		if (ms->tmp_node->type == REIN2)
-		{
-			t_ast *node_right = ms->tmp_node->right;
-			while (ms->tmp_node->type == REIN2)
-			{
-				node_right = ms->tmp_node->right;
-				char *input = NULL;
-				while (TRUE)
-				{
-					if (!run_heredoc_prompt(ms->tmp_node, pipe_fd[FD_WRITE], input))
-						break ;
-				}
-				ms->tmp_node = ms->tmp_node->left;
-			}
-			exe_close_fd(&pipe_fd[FD_WRITE]);
-			ms->exit_code = exe_ast_tree(node_right, ms);
-		}
- * 
- */

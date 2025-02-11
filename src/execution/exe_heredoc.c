@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 11:12:25 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/30 15:12:18 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/11 14:06:19 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static int	run_left_fork(int doc_fd[2], int *pid, t_ast *node, t_mshell *ms)
 	}
 	if (*pid == 0)
 	{
-		sig_child_process_handler(SIG_HEREDOC_MODE);
+		sig_interceptor(SIG_HEREDOC_MODE);
 		exe_close_fd(&doc_fd[FD_READ]);
 		while (TRUE)
 		{
@@ -90,7 +90,7 @@ static int	run_right_fork(int doc_fd[2], int *pid, t_ast *node, t_mshell *ms)
 	}
 	if (*pid == 0)
 	{
-		sig_child_process_handler(SIG_DEFAULT_MODE);
+		sig_interceptor(SIG_DEFAULT_MODE);
 		exe_close_fd(&doc_fd[FD_WRITE]);
 		if (dup2(doc_fd[FD_READ], STDIN_FILENO) == -1)
 		{
