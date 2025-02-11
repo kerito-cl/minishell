@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 19:27:47 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/11 15:55:39 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/11 16:02:40 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ static void	display_message(int signo)
 	else if (signo == SIGQUIT)
 		ft_putstr_fd("Quit from keyboard\n", STDERR_FILENO);
 	else if (signo == SIGSEGV)
-		ft_putstr_fd("Segmentation fault: Invalid memory reference\n", STDERR_FILENO);
+		ft_putstr_fd("Segmentation fault: Invalid memory reference\n", 2);
 	else
 	{
 		ft_putstr_fd("Process terminated by signal: ", STDERR_FILENO);
