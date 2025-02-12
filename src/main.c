@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 08:53:14 by mquero            #+#    #+#             */
-/*   Updated: 2025/02/11 14:02:41 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/12 12:49:33 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	main(int argc, char **argv, char **envp)
 			continue;
 		}
         ms.root = parse_input(ms.input, ms.env.envp); /** @bug if nothing allocated better to return NULL; case ./minishell <ENTER> (line is empty) */
-        //print_ast(ms.root, 0, "ms.root");
+        print_ast(ms.root, 0, "ms.root");
 		exe_ast_tree(ms.root, &ms);
 		// printf("exit code: %d\n", ms.exit_code);
 		add_history(ms.input);

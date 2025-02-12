@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 07:41:24 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/11 15:54:29 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/12 19:18:16 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,6 @@ void	sig_sigint_heredoc(int sig)
 	{
 		g_status = sig;
 		write(STDOUT_FILENO, "\n", 1);
-		close(STDIN_FILENO);
+		// write(STDOUT_FILENO, "\033[1A", 5);
 	}
 }
