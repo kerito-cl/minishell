@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 08:53:14 by mquero            #+#    #+#             */
-/*   Updated: 2025/02/13 16:41:12 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/13 18:56:43 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ void print_values(char **values, char *type)
             }
         }
     }
+	else
+		printf("(%s)", type);
 }
 
 void print_ast(t_ast *node, int depth, char *type)
@@ -69,14 +71,13 @@ int	main(int argc, char **argv, char **envp)
 			continue;
 		}
         ms.root = parse_input(ms.input, ms.env.envp); /** @bug if nothing allocated better to return NULL; case ./minishell <ENTER> (line is empty) */
-        //print_ast(ms.root, 0, "ms.root");
+		// print_ast(ms.root, 0, "ms.root");
+		exe_heredoc_preprocessor(ms.root, &ms);
 		exe_ast_tree(ms.root, &ms);
-		// printf("exit code: %d\n", ms.exit_code);
 		add_history(ms.input);
 		free(ms.input);
 		free_ast(ms.root); /** @bug set ms.root to NULL in free_ast to avoid segfault in ./minishell <cntr+D> case */
-	}
-	// write(1, "Good luck!\n", 11);
+	
 	exit_destroy_minishell(&ms);
 	return (0);
 }

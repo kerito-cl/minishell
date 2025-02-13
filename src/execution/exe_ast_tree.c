@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exe_ast_tree.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 14:19:31 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/30 22:05:00 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/13 18:17:56 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,6 @@ int	exe_ast_tree(t_ast *node, t_mshell *ms)
 		ms->exit_code = exe_pipe(node, ms);
 	else if (node->type == CMD)
 		ms->exit_code = exe_command(node, ms);
-	else if (node->type == REIN2)
-		ms->exit_code = exe_heredoc(node, ms);
 	else if (node->type >= REIN && node->type <= REOUT2)
 		ms->exit_code = exe_redirection(node, ms);
 	return (ms->exit_code);

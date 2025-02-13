@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 18:44:20 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/11 14:08:05 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/13 18:52:10 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@
 static int	run_left_fork(int pipe_fd[2], int *pid, t_ast *node, t_mshell *ms);
 static int	run_right_fork(int pipe_fd[2], int *pid, t_ast *node, t_mshell *ms);
 static void	handle_pipe(int pipe_fd[2], t_mshell *ms, int fd_close, int fd_dup);
-static void	handle_heredoc(int pipe_fd[2], t_mshell *ms);
-// static void	run_heredoc_loop(int pipe_fd[2], t_mshell *ms);
 
 /* --------------------------- Public Functions ---------------------------- */
 
@@ -77,9 +75,7 @@ static int	run_left_fork(int pipe_fd[2], int *pid, t_ast *node, t_mshell *ms)
 	if (*pid == 0)
 	{
 		ms->tmp_node = node;
-		if (node->type != REIN2)
-			handle_pipe(pipe_fd, ms, FD_READ, FD_WRITE);
-		handle_heredoc(pipe_fd, ms);
+		handle_pipe(pipe_fd, ms, FD_READ, FD_WRITE);
 	}
 	exe_close_fd(&pipe_fd[FD_WRITE]);
 	return (ms->exit_code);
@@ -108,9 +104,7 @@ static int	run_right_fork(int pipe_fd[2], int *pid, t_ast *node, t_mshell *ms)
 	if (*pid == 0)
 	{
 		ms->tmp_node = node;
-		if (ms->tmp_node->type != REIN2)
-			handle_pipe(pipe_fd, ms, FD_WRITE, FD_READ);
-		handle_heredoc(pipe_fd, ms);
+		handle_pipe(pipe_fd, ms, FD_WRITE, FD_READ);
 	}
 	return (ms->exit_code);
 }
@@ -132,14 +126,5 @@ static void	handle_pipe(int pipe_fd[2], t_mshell *ms, int fd_close, int fd_dup)
 	}
 	exe_close_fd(&pipe_fd[fd_dup]);
 	ms->exit_code = exe_ast_tree(ms->tmp_node, ms);
-	exit(ms->exit_code);
-}
-
-static void	handle_heredoc(int pipe_fd[2], t_mshell *ms)
-{
-	exe_close_fd(&pipe_fd[FD_READ]);
-	exe_close_fd(&pipe_fd[FD_WRITE]);
-	sig_interceptor(SIG_HEREDOC_MODE);
-	ms->exit_code = exe_heredoc(ms->tmp_node, ms);
 	exit(ms->exit_code);
 }

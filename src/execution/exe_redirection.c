@@ -6,13 +6,14 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 14:47:55 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/11 14:09:09 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/13 18:22:57 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 static int	handle_redir_input(t_ast *node);
+static int	handle_redir_heredoc(t_ast *node);
 static int	handle_redir_output(t_ast *node);
 static int	handle_redir_append(t_ast *node);
 
@@ -38,6 +39,8 @@ int	exe_redirection(t_ast *node, t_mshell *ms)
 		sig_interceptor(SIG_DEFAULT_MODE);
 		if (node->type == REIN)
 			ms->exit_code = handle_redir_input(node);
+		if (node->type == REIN2)
+			ms->exit_code = handle_redir_heredoc(node);
 		else if (node->type == REOUT)
 			ms->exit_code = handle_redir_output(node);
 		else if (node->type == REOUT2)
@@ -77,6 +80,19 @@ static int	handle_redir_input(t_ast *node)
 		return (errno);
 	}
 	close(fd);
+	return (0);
+}
+
+static int	handle_redir_heredoc(t_ast *node)
+{
+	if (dup2(node->fd, STDIN_FILENO) == -1)
+	{
+		close(node->fd);
+		node->fd = -1;
+		perror("minishell: dup2");
+		return (errno);
+	}
+	close(node->fd);
 	return (0);
 }
 

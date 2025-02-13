@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 18:41:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/11 14:11:59 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/13 18:14:15 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ typedef enum e_error_code
 	ERROR_MALLOC_FAILS = 12,
 	ERROR_ISDIR = 126,
 	ERROR_CMD_NOT_FOUND = 127,
+	ERROR_INTERUPTED_SIGINT = 130,
 	ERROR_INVALID_EXIT_CODE = 255,
 	ERROR_IGNORE = 1024
 }	t_error_code;
@@ -48,7 +49,7 @@ typedef enum e_tokentype
 	REOUT2,
 	ARG,
 	CMD,
-}					t_tokentype;
+}	t_tokentype;
 
 # ifndef FD_READ
 #  define FD_READ 0
@@ -68,6 +69,10 @@ typedef enum e_tokentype
 
 # ifndef EXIT_CODE_CASE
 #  define EXIT_CODE_CASE "$?"
+# endif
+
+# ifndef HEREDOC_NAME
+#  define HEREDOC_NAME "./obj/tmp/.heredoc_"
 # endif
 
 #endif
