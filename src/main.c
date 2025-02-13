@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 08:53:14 by mquero            #+#    #+#             */
-/*   Updated: 2025/02/13 18:56:43 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/13 19:04:22 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,8 @@ int	main(int argc, char **argv, char **envp)
 		add_history(ms.input);
 		free(ms.input);
 		free_ast(ms.root); /** @bug set ms.root to NULL in free_ast to avoid segfault in ./minishell <cntr+D> case */
-	
+	}	
 	exit_destroy_minishell(&ms);
 	return (0);
 }
+
