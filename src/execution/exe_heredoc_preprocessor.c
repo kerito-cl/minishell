@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 11:12:25 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/13 18:51:54 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/13 23:38:06 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,25 @@ static int	run_heredoc_prompt(t_ast *node, int fd_write);
 
 int exe_heredoc_preprocessor(t_ast *node, t_mshell *ms)
 {
-	ms->exit_code = 0;
+	int	exit_code;
+
+	exit_code = 0;
     if (node == NULL)
-        return (ms->exit_code);
+        return (exit_code);
+	if (node->type == REIN2 && (!node->value || !node->value[0]))
+	{
+		ft_putstr_fd("minishell: syntax error ", STDERR_FILENO);
+		ft_putstr_fd("near unexpected token `newline'\n", STDERR_FILENO);
+		ms->exit_code = ERROR_SYNTAX_HEREDOC;
+		return (ERROR_SYNTAX_HEREDOC);
+	}
     if (node->type == REIN2)
-		ms->exit_code = exe_heredoc(node, ms); //handle_heredoc(node, ms);
-	if (ms->exit_code != 0)
-		return (ms->exit_code);
-	ms->exit_code = exe_heredoc_preprocessor(node->left, ms);
-	if (ms->exit_code == 0)
-		ms->exit_code = exe_heredoc_preprocessor(node->right, ms);
-	return (ms->exit_code);
+		exit_code = exe_heredoc(node, ms);
+	if (exit_code != 0)
+		return (exit_code);
+	exit_code += exe_heredoc_preprocessor(node->left, ms);
+	exit_code += exe_heredoc_preprocessor(node->right, ms);
+	return (exit_code);
 }
 
 static int	exe_heredoc(t_ast *node, t_mshell *ms)

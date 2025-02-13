@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 07:36:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/13 18:50:01 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/13 23:40:47 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,14 @@
  * 
  * 1) @note cursor up "\033[1A" and ioctl(STDIN_FILENO, TIOCSTI, "\n");
  * 2) handle $VARIABLE in heredoc input
+ * 3) pacer should return error code ('cat <<' -> ERROR_SYNTAX_HEREDOC (258))
  * 
  * 
  * @bug: test case (comment)
  * 1) Handle readline signal bug
+ * 2) Bug in syntax handling in case 'cat << ' (with space) 
+ *    and 'cat << l <<' (without space, error came too early). 
+ *    Partly handle it in exe_heredoc_preprocessor.c
  * 
  */
 

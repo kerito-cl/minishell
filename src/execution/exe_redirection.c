@@ -6,16 +6,20 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 14:47:55 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/13 18:22:57 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/13 22:20:29 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/* --------------------- Private function prototypes ----------------------- */
+
 static int	handle_redir_input(t_ast *node);
 static int	handle_redir_heredoc(t_ast *node);
 static int	handle_redir_output(t_ast *node);
 static int	handle_redir_append(t_ast *node);
+
+/* --------------------------- Public Functions ---------------------------- */
 
 /**
  * @brief Executes the redirection commands.
@@ -53,6 +57,8 @@ int	exe_redirection(t_ast *node, t_mshell *ms)
 	return (ms->exit_code);
 }
 
+/* ------------------- Private Function Implementation --------------------- */
+
 /**
  * @brief Handles input redirection.
  * 
@@ -83,6 +89,15 @@ static int	handle_redir_input(t_ast *node)
 	return (0);
 }
 
+/**
+ * @brief Handles the redirection for a heredoc.
+ * 
+ * This function duplicates the file descriptor stored in the node 
+ * to the standard input (STDIN_FILENO).
+ * 
+ * @param node A pointer to the AST node.
+ * @return int Returns 0 on success, or the error number on failure.
+ */
 static int	handle_redir_heredoc(t_ast *node)
 {
 	if (dup2(node->fd, STDIN_FILENO) == -1)
