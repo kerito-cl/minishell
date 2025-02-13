@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 08:54:30 by mquero            #+#    #+#             */
-/*   Updated: 2025/02/03 22:42:01 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/13 16:15:17 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ bool	assign_pipe(t_ast *root, t_token *tokens, t_index *i)
 			root->left = create_node(NULL, PIPE, tokens);
 			i->max = i->key;
 			assign_to_left(root->left, tokens, i, false);
-			i->min = i->key + 1;
+			i->min = i->max + 1;
 			i->max = i->len;
 			assign_to_right(root->left, tokens, i);
 			return (true);
