@@ -6,7 +6,7 @@
 #    By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/15 07:44:51 by ipersids          #+#    #+#              #
-#    Updated: 2025/02/13 01:10:53 by ipersids         ###   ########.fr        #
+#    Updated: 2025/02/13 18:17:28 by ipersids         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -82,7 +82,7 @@ SRCS			:= $(SRCS_DIR)/signals/sig_handler.c \
 				   $(SRCS_DIR)/execution/exe_pipe.c \
 				   $(SRCS_DIR)/execution/exe_ast_tree.c \
 				   $(SRCS_DIR)/execution/exe_command.c \
-				   $(SRCS_DIR)/execution/exe_heredoc.c \
+				   $(SRCS_DIR)/execution/exe_heredoc_preprocessor.c \
 				   $(SRCS_DIR)/execution/exe_redirection.c \
 				   
 SRC_MAIN		:= $(SRCS_DIR)/main.c

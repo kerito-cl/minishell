@@ -6,21 +6,19 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 07:36:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/13 01:58:34 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/13 18:50:01 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /**
  * @note Small things to do:
  * 
- * 1) Update signals handler for child processes
- * 2) exe_wait_children() should we specify the error message?
- * 3) heredoc: handle quotes and $ expansion
- * 4) @note cursor up "\033[1A" and ioctl(STDIN_FILENO, TIOCSTI, "\n");
+ * 1) @note cursor up "\033[1A" and ioctl(STDIN_FILENO, TIOCSTI, "\n");
+ * 2) handle $VARIABLE in heredoc input
  * 
  * 
  * @bug: test case (comment)
- * 1) heredoc doesn't work with pipes and signal interoption, need to be redo
+ * 1) Handle readline signal bug
  * 
  */
 
@@ -49,6 +47,7 @@ typedef struct s_ast
 {
 	char			**value;
 	t_tokentype		type;
+	int				fd;
 	struct s_ast	*left;
 	struct s_ast	*right;
 }					t_ast;
@@ -149,7 +148,7 @@ void		builtin_update_env_var(const char *name, const char *value, \
 int			exe_ast_tree(t_ast *node, t_mshell *ms);
 int			exe_pipe(t_ast *root, t_mshell *ms);
 int			exe_command(t_ast *node, t_mshell *ms);
-int			exe_heredoc(t_ast *node, t_mshell *ms);
+int 		exe_heredoc_preprocessor(t_ast *node, t_mshell *ms);
 int			exe_redirection(t_ast *node, t_mshell *ms);
 
 int			exe_wait_children(pid_t *pids, int amount);

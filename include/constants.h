@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 18:41:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/13 01:13:15 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/13 18:14:15 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,11 +72,7 @@ typedef enum e_tokentype
 # endif
 
 # ifndef HEREDOC_NAME
-#  define HEREDOC_NAME "./.mheredoc"
-# endif
-
-# ifndef HEREDOC_PATH
-#  define HEREDOC_PATH "./obj/tmp/"
+#  define HEREDOC_NAME "./obj/tmp/.heredoc_"
 # endif
 
 #endif

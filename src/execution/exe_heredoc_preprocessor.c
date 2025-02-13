@@ -5,60 +5,92 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/13 01:19:16 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/13 01:57:03 by ipersids         ###   ########.fr       */
+/*   Created: 2025/01/29 11:12:25 by ipersids          #+#    #+#             */
+/*   Updated: 2025/02/13 18:51:54 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	handle_heredoc(t_ast *node, t_mshell *ms);
-static char	**create_file_name(t_ast *node);
+static int	exe_heredoc(t_ast *node, t_mshell *ms);
+static void	handle_heredoc_fork(t_ast *node, int doc_fd[2]);
+static int	run_heredoc_prompt(t_ast *node, int fd_write);
 
 int exe_heredoc_preprocessor(t_ast *node, t_mshell *ms)
 {
 	ms->exit_code = 0;
-    if (node == NULL) {
+    if (node == NULL)
         return (ms->exit_code);
-    }
     if (node->type == REIN2)
-		ms->exit_code = handle_heredoc(node, ms);
+		ms->exit_code = exe_heredoc(node, ms); //handle_heredoc(node, ms);
 	if (ms->exit_code != 0)
-		return(ms->exit_code);
+		return (ms->exit_code);
 	ms->exit_code = exe_heredoc_preprocessor(node->left, ms);
 	if (ms->exit_code == 0)
 		ms->exit_code = exe_heredoc_preprocessor(node->right, ms);
 	return (ms->exit_code);
 }
 
-static int	handle_heredoc(t_ast *node, t_mshell *ms)
+static int	exe_heredoc(t_ast *node, t_mshell *ms)
 {
+	int		doc_fd[2];
 	pid_t	pid;
-	int		fd;
 
-	node->value = create_file_name(node);
-	if (!node->value || !node->value[0])
-		return (errno);
-	fd = open(node->value[0], O_WRONLY | O_CREAT | O_EXCL | O_TRUNC, 0600);
-	if (fd < 0)
+	if (pipe(doc_fd) == -1)
 	{
-		perror("minishell: open");
+		perror("minishell: heredoc: pipe");
 		return (errno);
 	}
 	pid = fork();
-	if (pid < 0)
+	if (pid == -1)
 	{
-		perror("minishell: fork");
+		perror("minishell: heredoc: fork");
 		return (errno);
 	}
 	if (pid == 0)
-		run_heredoc_prompt(fd);
-	close(fd);
+		handle_heredoc_fork(node, doc_fd);
+	exe_close_fd(&doc_fd[FD_WRITE]);
 	ms->exit_code = exe_wait_children(&pid, 1);
-	return (ms->exit_code);
+	if (ms->exit_code != 0)
+	{
+		exe_close_fd(&doc_fd[FD_READ]);
+		return (ms->exit_code);
+	}
+	node->fd = doc_fd[FD_READ];
+	return (EXIT_SUCCESS);
 }
 
-static char	**create_file_name(t_ast *node)
+static void	handle_heredoc_fork(t_ast *node, int doc_fd[2])
 {
-	return(NULL);
+	sig_interceptor(SIG_HEREDOC_MODE);
+	exe_close_fd(&doc_fd[FD_READ]);
+	run_heredoc_prompt(node, doc_fd[FD_WRITE]);
+	exe_close_fd(&doc_fd[FD_WRITE]);
+	exit(EXIT_SUCCESS);
+}
+
+static int	run_heredoc_prompt(t_ast *node, int fd_write)
+{
+	char	*input;
+
+	input = NULL;
+	while (TRUE)
+	{
+		if (g_status == SIGINT)
+		{
+			g_status = 0;
+			close(fd_write);
+			exit(ERROR_INTERUPTED_SIGINT);
+		}
+		input = readline("> ");
+		if (!input)
+			return (0);
+		if (ft_strcmp(input, node->value[0]) == 0)
+			break ;
+		write(fd_write, input, ft_strlen(input));
+		write(fd_write, "\n", 1);
+		free(input);
+	}
+	free(input);
+	return (0);
 }
