@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 16:28:29 by mquero            #+#    #+#             */
-/*   Updated: 2025/02/06 23:28:04 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/13 16:40:13 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ t_ast	*parse_input(char *input, char **envp)
 	if (len == -1)
 		return (NULL);
 	tokens[0].len = len;
-	i.pip = len + 1;
+	i.pip = len;
 	i.min = 0;
 	i.len = len;
 	i.max = i.len;
