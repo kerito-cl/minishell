@@ -6,7 +6,7 @@
 #    By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/15 07:44:51 by ipersids          #+#    #+#              #
-#    Updated: 2025/02/11 13:37:01 by ipersids         ###   ########.fr        #
+#    Updated: 2025/02/13 01:10:53 by ipersids         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -105,6 +105,7 @@ $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)/execution
 	@mkdir -p $(OBJ_DIR)/execution/utils
 	@mkdir -p $(OBJ_DIR)/constructor
+	@mkdir -p $(OBJ_DIR)/tmp
 
 # Rule for creating object files
 $(OBJ_DIR)/%.o: $(SRCS_DIR)/%.c

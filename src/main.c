@@ -6,13 +6,28 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 08:53:14 by mquero            #+#    #+#             */
-/*   Updated: 2025/02/12 12:49:33 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/13 01:00:25 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 volatile sig_atomic_t	g_status = 0;
+
+// minishell> cat <<EOF1 | grep hello | cat << EOF2 > out.txt | ls
+// AST before:
+// ---------
+// Type: 22, Value: 
+//   Type: 22, Value: 
+//     Type: 22, Value: 
+//       Type: 24, Value: EOF1 (left)
+//         Type: 28, Value: cat (right)
+//       Type: 24, Value: EOF2 (right)
+//         Type: 22, Value: 
+//           Type: 22, Value: 
+//             Type: 25, Value: out.txt (right)
+//               Type: 28, Value: cat (right)
+//   Type: 28, Value: ls (right)
 
 void print_values(char **values, char *type) 
 {
@@ -24,6 +39,8 @@ void print_values(char **values, char *type)
             }
         }
     }
+	else
+		printf("(%s)", type);
 }
 
 void print_ast(t_ast *node, int depth, char *type)
@@ -69,8 +86,11 @@ int	main(int argc, char **argv, char **envp)
 			continue;
 		}
         ms.root = parse_input(ms.input, ms.env.envp); /** @bug if nothing allocated better to return NULL; case ./minishell <ENTER> (line is empty) */
+		printf("AST before:\n---------\n");
         print_ast(ms.root, 0, "ms.root");
-		exe_ast_tree(ms.root, &ms);
+		printf("AST after:\n---------\n");
+		print_ast(ms.root, 0, "ms.root");
+		//exe_ast_tree(ms.root, &ms);
 		// printf("exit code: %d\n", ms.exit_code);
 		add_history(ms.input);
 		free(ms.input);

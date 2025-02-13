@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 18:41:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/12 15:37:23 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/13 01:13:15 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ typedef enum e_tokentype
 	REOUT2,
 	ARG,
 	CMD,
-}					t_tokentype;
+}	t_tokentype;
 
 # ifndef FD_READ
 #  define FD_READ 0
@@ -73,6 +73,10 @@ typedef enum e_tokentype
 
 # ifndef HEREDOC_NAME
 #  define HEREDOC_NAME "./.mheredoc"
+# endif
+
+# ifndef HEREDOC_PATH
+#  define HEREDOC_PATH "./obj/tmp/"
 # endif
 
 #endif
