@@ -6,11 +6,29 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 12:10:10 by mquero            #+#    #+#             */
-/*   Updated: 2025/02/02 17:08:50 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/13 21:24:57 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	check_if_heredoc(char **input, char *var, t_elem *elem)
+{
+	if (**input == '<' && *(*input + 1) == '<')
+	{
+		var[elem->i++] = **input;
+		*input += 1;
+		var[elem->i++] = **input;
+		*input += 1;
+		while (**input == ' ' || **input == '\t')
+			*input += 1;
+		while (**input != '\0' && !ft_strchr(" \t<>|", **input))
+		{
+			var[elem->i++] = **input;
+			*input += 1;
+		}
+	}
+}
 
 static void	expand_env_var(char **var, t_elem *elem, char **input, char **envp)
 {
@@ -34,7 +52,7 @@ static void	expand_env_var(char **var, t_elem *elem, char **input, char **envp)
 		}
 	}
 	*input += 1;
-	while (**input != '\0' && !ft_strchr(" \"'<>|$", **input))
+	while (**input != '\0' && !ft_strchr(" \t\"'<>|$", **input))
 		*input += 1;
 }
 
@@ -42,6 +60,7 @@ static void	cpy_if_no_dollar(char **input, char *var, t_elem *elem)
 {
 	while (**input != '$' && **input)
 	{
+		check_if_heredoc(input, var, elem);
 		if (**input == '\'')
 		{
 			var[elem->i++] = **input;
@@ -79,7 +98,7 @@ char	*handle_dollar_sign(char *input, char **envp)
 	while (*input)
 	{
 		cpy_if_no_dollar(&input, var, &elem);
-		if (*input == '$' && (!input[1] || ft_strchr(" \"'<>|$?", input[1])))
+		if (*input == '$' && (!input[1] || ft_strchr(" \t\"'<>|$?", input[1])))
 			var[elem.i++] = *input++;
 		else if (*input == '$' && input[1] != '\0')
 			expand_env_var(&var, &elem, &input, envp);
