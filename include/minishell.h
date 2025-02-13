@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 07:36:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/13 23:40:47 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/14 01:13:30 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
  * @note Small things to do:
  * 
  * 1) @note cursor up "\033[1A" and ioctl(STDIN_FILENO, TIOCSTI, "\n");
- * 2) handle $VARIABLE in heredoc input
- * 3) pacer should return error code ('cat <<' -> ERROR_SYNTAX_HEREDOC (258))
+ * 2) pacer should return error code ('cat <<' -> ERROR_SYNTAX_HEREDOC (258))
  * 
  * 
  * @bug: test case (comment)
@@ -23,6 +22,7 @@
  * 2) Bug in syntax handling in case 'cat << ' (with space) 
  *    and 'cat << l <<' (without space, error came too early). 
  *    Partly handle it in exe_heredoc_preprocessor.c
+ *    + test << with different $ version
  * 
  */
 
@@ -160,6 +160,7 @@ void		exe_close_fd(int *fd);
 char		*exe_search_cmd_path(const char *cmd, const char *env_path, \
 								char *path);
 int			exe_check_special_case(char **args, t_mshell *ms);
+void		exe_handle_dollar_expansion(char *input, int fd_write, t_env *env);
 
 /* ------------------------- Exit, errors and memory ----------------------- */
 
