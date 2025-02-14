@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 07:36:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/14 15:14:05 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/15 03:29:32 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,7 @@ char		*exe_search_cmd_path(const char *cmd, const char *env_path, \
 								char *path);
 int			exe_check_special_case(char **args, t_mshell *ms);
 void		exe_handle_dollar_expansion(char *input, int fd_write, t_env *env);
+int			exe_handle_cmd_error(char *path);
 
 /* ------------------------- Exit, errors and memory ----------------------- */
 
