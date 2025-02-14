@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 12:10:10 by mquero            #+#    #+#             */
-/*   Updated: 2025/02/13 21:24:57 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/14 11:20:04 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,16 @@
 
 static void	check_if_heredoc(char **input, char *var, t_elem *elem)
 {
-	if (**input == '<' && *(*input + 1) == '<')
+	var[elem->i++] = **input;
+	*input += 1;
+	var[elem->i++] = **input;
+	*input += 1;
+	while (**input == ' ' || **input == '\t')
+		*input += 1;
+	while (**input != '\0' && !ft_strchr(" \t<>|", **input))
 	{
 		var[elem->i++] = **input;
 		*input += 1;
-		var[elem->i++] = **input;
-		*input += 1;
-		while (**input == ' ' || **input == '\t')
-			*input += 1;
-		while (**input != '\0' && !ft_strchr(" \t<>|", **input))
-		{
-			var[elem->i++] = **input;
-			*input += 1;
-		}
 	}
 }
 
@@ -60,8 +57,9 @@ static void	cpy_if_no_dollar(char **input, char *var, t_elem *elem)
 {
 	while (**input != '$' && **input)
 	{
-		check_if_heredoc(input, var, elem);
-		if (**input == '\'')
+		if (**input == '<' && *(*input + 1) == '<')
+			check_if_heredoc(input, var, elem);
+		else if (**input == '\'')
 		{
 			var[elem->i++] = **input;
 			*input += 1;
