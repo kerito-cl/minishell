@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exe_redirection.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 14:47:55 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/13 22:20:29 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/14 15:11:33 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,7 @@ int	exe_redirection(t_ast *node, t_mshell *ms)
 
 	pid = fork();
 	if (pid == -1)
-	{
-		perror("minishell: fork");
-		return (errno);
-	}
+		return (perror("minishell: fork"), (errno));
 	if (pid == 0)
 	{
 		sig_interceptor(SIG_DEFAULT_MODE);
@@ -49,6 +46,8 @@ int	exe_redirection(t_ast *node, t_mshell *ms)
 			ms->exit_code = handle_redir_output(node);
 		else if (node->type == REOUT2)
 			ms->exit_code = handle_redir_append(node);
+		if (ms->exit_code != 0)
+			exit(ms->exit_code);
 		ms->exit_code = exe_ast_tree(node->left, ms);
 		ms->exit_code = exe_ast_tree(node->right, ms);
 		exit(ms->exit_code);
@@ -77,7 +76,7 @@ static int	handle_redir_input(t_ast *node)
 	{
 		ft_putstr_fd("minishell: redir_input: ", STDERR_FILENO);
 		perror(node->value[0]);
-		return (errno);
+		return (1);
 	}
 	if (dup2(fd, STDIN_FILENO) == -1)
 	{
@@ -129,7 +128,7 @@ static int	handle_redir_output(t_ast *node)
 	{
 		ft_putstr_fd("minishell: redir_output: ", STDERR_FILENO);
 		perror(node->value[0]);
-		return (errno);
+		return (1);
 	}
 	if (dup2(fd, STDOUT_FILENO) == -1)
 	{
@@ -159,7 +158,7 @@ static int	handle_redir_append(t_ast *node)
 	{
 		ft_putstr_fd("minishell: redir_append: ", STDERR_FILENO);
 		perror(node->value[0]);
-		return (errno);
+		return (1);
 	}
 	if (dup2(fd, STDOUT_FILENO) == -1)
 	{

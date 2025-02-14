@@ -3,22 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 07:36:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/14 12:17:59 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/14 15:14:05 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-/**
- * @note Small things to do:
- * 
- * @note cursor up "\033[1A" and ioctl(STDIN_FILENO, TIOCSTI, "\n");
- * 
- * @bug: test case (comment)
- * 
- */
-
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -34,7 +24,6 @@
 # include <sys/wait.h>	// waitpid()
 # include <fcntl.h>		// open()
 # include <sys/stat.h>	// stat()
-# include <sys/ioctl.h> // ioctl()
 # include <stdbool.h>
 
 # include "libft.h"
@@ -145,7 +134,7 @@ void		builtin_update_env_var(const char *name, const char *value, \
 int			exe_ast_tree(t_ast *node, t_mshell *ms);
 int			exe_pipe(t_ast *root, t_mshell *ms);
 int			exe_command(t_ast *node, t_mshell *ms);
-int 		exe_heredoc_preprocessor(t_ast *node, t_mshell *ms);
+int			exe_heredoc_preprocessor(t_ast *node, t_mshell *ms);
 int			exe_redirection(t_ast *node, t_mshell *ms);
 
 int			exe_wait_children(pid_t *pids, int amount);
@@ -173,7 +162,7 @@ void		ft_bzero(void *s, size_t n);
 char		*ft_strndup(char *s, size_t n);
 t_ast		*create_node(char **s1, t_tokentype type, t_token *tokens);
 int			tokenize(t_token *tokens, char *input);
-t_ast		*parse_input(char *input, char **envp);
+t_ast		*parse_input(char *input, char **envp, int *exit_code);
 void		assign_to_right(t_ast *root, t_token *tokens, t_index *i);
 void		assign_to_left(t_ast *root, t_token *tokens, t_index *i, \
 							bool flag);

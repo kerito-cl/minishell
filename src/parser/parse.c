@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 16:28:29 by mquero            #+#    #+#             */
-/*   Updated: 2025/02/13 20:09:00 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/14 15:06:25 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,31 +64,31 @@ t_ast	*divide_input(t_token *tokens, int len, t_index *i)
 	return (root);
 }
 
-t_ast	*parse_input(char *input, char **envp)
+t_ast	*parse_input(char *input, char **envp, int *exit_code)
 {
 	t_token	*tokens;
 	t_ast	*root;
 	t_index	i;
 	char	*var;
-	int		len;
 
 	var = handle_dollar_sign(input, envp);
 	if (!var)
+	{
+		*exit_code = 0;
 		return (NULL);
+	}
 	tokens = (t_token *)ft_calloc(sizeof(t_token), ft_strlen(var) * 2);
 	if (!tokens)
 		exit(1);
-	len = tokenize(tokens, var);
-	if (!check_parse_error(tokens, len))
+	tokens[0].len = tokenize(tokens, var);
+	if (!check_parse_error(tokens, tokens[0].len))
 		return (NULL);
-	if (len == -1)
+	if (tokens[0].len == -1)
 		return (NULL);
-	tokens[0].len = len;
-	i.pip = len;
+	i.pip = tokens[0].len;
 	i.min = 0;
-	i.len = len;
+	i.len = tokens[0].len;
 	i.max = i.len;
-	root = divide_input(tokens, len, &i);
-	free_tokens(tokens, len);
-	return (root);
+	root = divide_input(tokens, tokens[0].len, &i);
+	return (free_tokens(tokens, tokens[0].len), root);
 }
