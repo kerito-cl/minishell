@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 08:53:14 by mquero            #+#    #+#             */
-/*   Updated: 2025/02/14 14:05:00 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/14 14:35:59 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,36 +14,12 @@
 
 volatile sig_atomic_t	g_status = 0;
 
-void print_values(char **values, char *type) 
-{
-    if (values) {
-        for (int i = 0; values[i] != NULL; i++) {
-            printf("%s (%s)", values[i], type);
-            if (values[i + 1] != NULL) {
-                printf(", "); // Separate multiple values with a comma
-            }
-        }
-    }
-	else
-		printf("(%s)", type);
-}
+/* --------------------- Private function prototypes ----------------------- */
 
-void print_ast(t_ast *node, int depth, char *type)
-{
-    if (node == NULL) {
-        return;
-    }
-    for (int i = 0; i < depth; i++) {
-        printf("  ");
-    }
-    printf("Type: %d, Value: ", node->type);
-    print_values(node->value, type);
-    printf("\n");
-    if (node->left || node->right) {
-        print_ast(node->left, depth + 1, "left");
-        print_ast(node->right, depth + 1, "right");
-    }
-}
+static void	run_shell(t_mshell *ms);
+
+/* --------------------------- Public Functions ---------------------------- */
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_mshell			ms;
@@ -55,32 +31,37 @@ int	main(int argc, char **argv, char **envp)
 	}
 	init_minishell_struct(&ms, envp);
 	sig_interceptor(SIG_INTERACTIVE_MODE);
-	while (1)
-	{
-		ms.root = NULL;
-		ms.input = readline("minishell> ");
-		sig_to_exit_code(&ms);
-		if (ms.input == NULL)
-		{
-			ms.exit_code = 0;
-			break ;
-		}
-		if (ms.input[0] == '\0')
-		{
-			free(ms.input);
-			continue;
-		}
-        ms.root = parse_input(ms.input, ms.env.envp); /** @bug if nothing allocated better to return NULL; case ./minishell <ENTER> (line is empty) */
-		// print_ast(ms.root, 0, "ms.root");
-		if (!ms.root) /** @bug should store syntax error code */
-			ms.exit_code = ERROR_SYNTAX_HEREDOC;
-		if (ms.root && exe_heredoc_preprocessor(ms.root, &ms) == 0)
-			exe_ast_tree(ms.root, &ms);
-		add_history(ms.input);
-		free(ms.input);
-		free_ast(ms.root); /** @bug set ms.root to NULL in free_ast to avoid segfault in ./minishell <cntr+D> case */
-	}	
+	run_shell(&ms);
 	exit_destroy_minishell(&ms);
 	return (0);
 }
 
+/* ------------------- Private Function Implementation --------------------- */
+
+static void	run_shell(t_mshell *ms)
+{
+	while (1)
+	{
+		ms->root = NULL;
+		ms->input = readline("\033[0;35mminishell*w* \033[0m");
+		sig_to_exit_code(ms);
+		if (ms->input == NULL)
+		{
+			ms->exit_code = 0;
+			break ;
+		}
+		if (ms->input[0] == '\0')
+		{
+			free(ms->input);
+			continue ;
+		}
+		ms->root = parse_input(ms->input, ms->env.envp);
+		if (!ms->root)
+			ms->exit_code = ERROR_SYNTAX_HEREDOC;
+		if (ms->root && exe_heredoc_preprocessor(ms->root, ms) == 0)
+			exe_ast_tree(ms->root, ms);
+		add_history(ms->input);
+		free(ms->input);
+		free_ast(ms->root);
+	}
+}
