@@ -6,24 +6,28 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 11:12:25 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/14 11:38:05 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/14 14:07:38 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/* --------------------- Private function prototypes ----------------------- */
+
 static int	exe_heredoc(t_ast *node, t_mshell *ms);
 static void	handle_heredoc_fork(t_ast *node, int doc_fd[2], t_mshell *ms);
 static int	run_prompt(t_ast *node, int fd, t_bool is_dollar, t_env *env);
 
-int exe_heredoc_preprocessor(t_ast *node, t_mshell *ms)
+/* --------------------------- Public Functions ---------------------------- */
+
+int	exe_heredoc_preprocessor(t_ast *node, t_mshell *ms)
 {
 	int	exit_code;
 
 	exit_code = 0;
-    if (node == NULL)
-        return (exit_code);
-    if (node->type == REIN2)
+	if (node == NULL)
+		return (exit_code);
+	if (node->type == REIN2)
 		exit_code = exe_heredoc(node, ms);
 	if (exit_code != 0)
 		return (exit_code);
@@ -31,6 +35,8 @@ int exe_heredoc_preprocessor(t_ast *node, t_mshell *ms)
 	exit_code += exe_heredoc_preprocessor(node->right, ms);
 	return (exit_code);
 }
+
+/* ------------------- Private Function Implementation --------------------- */
 
 static int	exe_heredoc(t_ast *node, t_mshell *ms)
 {
@@ -65,7 +71,8 @@ static void	handle_heredoc_fork(t_ast *node, int doc_fd[2], t_mshell *ms)
 {
 	sig_interceptor(SIG_HEREDOC_MODE);
 	exe_close_fd(&doc_fd[FD_READ]);
-	run_prompt(node, doc_fd[FD_WRITE], node->value[0][0] == '$', &ms->env);
+	run_prompt(node, doc_fd[FD_WRITE], \
+				ft_strchr(node->value[0], '$') != NULL, &ms->env);
 	exe_close_fd(&doc_fd[FD_WRITE]);
 	exit(EXIT_SUCCESS);
 }

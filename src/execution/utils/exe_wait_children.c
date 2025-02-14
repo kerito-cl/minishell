@@ -6,13 +6,17 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 19:27:47 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/11 16:02:40 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/14 14:07:03 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/* --------------------- Private function prototypes ----------------------- */
+
 static void	display_message(int signo);
+
+/* --------------------------- Public Functions ---------------------------- */
 
 /**
  * @brief Waits for all child processes to finish execution.
@@ -54,12 +58,14 @@ int	exe_wait_children(pid_t *pids, int amount)
 	return (EXIT_FAILURE);
 }
 
+/* ------------------- Private Function Implementation --------------------- */
+
 static void	display_message(int signo)
 {
 	if (signo == SIGINT)
 	{
-		ft_putstr_fd("\n", STDERR_FILENO);
-		write(STDERR_FILENO, "\033[1A", 5);
+		write(STDOUT_FILENO, "\n", 1);
+		write(STDOUT_FILENO, "\033[1A", 4);
 		return ;
 	}
 	ft_putstr_fd("minishell: ", STDERR_FILENO);

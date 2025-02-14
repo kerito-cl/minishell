@@ -6,23 +6,16 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 07:36:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/14 01:13:30 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/14 12:17:59 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /**
  * @note Small things to do:
  * 
- * 1) @note cursor up "\033[1A" and ioctl(STDIN_FILENO, TIOCSTI, "\n");
- * 2) pacer should return error code ('cat <<' -> ERROR_SYNTAX_HEREDOC (258))
- * 
+ * @note cursor up "\033[1A" and ioctl(STDIN_FILENO, TIOCSTI, "\n");
  * 
  * @bug: test case (comment)
- * 1) Handle readline signal bug
- * 2) Bug in syntax handling in case 'cat << ' (with space) 
- *    and 'cat << l <<' (without space, error came too early). 
- *    Partly handle it in exe_heredoc_preprocessor.c
- *    + test << with different $ version
  * 
  */
 
