@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 08:53:14 by mquero            #+#    #+#             */
-/*   Updated: 2025/02/14 01:12:22 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/14 11:31:57 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,10 @@ int	main(int argc, char **argv, char **envp)
 			continue;
 		}
         ms.root = parse_input(ms.input, ms.env.envp); /** @bug if nothing allocated better to return NULL; case ./minishell <ENTER> (line is empty) */
+		// print_ast(ms.root, 0, "ms.root");
 		if (!ms.root) /** @bug should store syntax error code */
 			ms.exit_code = ERROR_SYNTAX_HEREDOC;
-		// print_ast(ms.root, 0, "ms.root");
-		if (exe_heredoc_preprocessor(ms.root, &ms) == 0)
+		if (ms.root && exe_heredoc_preprocessor(ms.root, &ms) == 0)
 			exe_ast_tree(ms.root, &ms);
 		add_history(ms.input);
 		free(ms.input);

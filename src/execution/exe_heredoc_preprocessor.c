@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 11:12:25 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/14 01:09:06 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/14 11:38:05 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,6 @@ int exe_heredoc_preprocessor(t_ast *node, t_mshell *ms)
 	exit_code = 0;
     if (node == NULL)
         return (exit_code);
-	// if (node->type == REIN2 && (!node->value || !node->value[0]))
-	// {
-	// 	ft_putstr_fd("minishell: syntax error ", STDERR_FILENO);
-	// 	ft_putstr_fd("near unexpected token `newline'\n", STDERR_FILENO);
-	// 	ms->exit_code = ERROR_SYNTAX_HEREDOC;
-	// 	return (ERROR_SYNTAX_HEREDOC);
-	// }
     if (node->type == REIN2)
 		exit_code = exe_heredoc(node, ms);
 	if (exit_code != 0)

@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 16:28:29 by mquero            #+#    #+#             */
-/*   Updated: 2025/02/13 16:40:13 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/13 20:09:00 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ t_ast	*create_node(char **s1, t_tokentype type, t_token *tokens)
 	}
 	else
 		new_node->value = NULL;
+	new_node->fd = -1;
 	new_node->type = type;
 	new_node->left = NULL;
 	new_node->right = NULL;
