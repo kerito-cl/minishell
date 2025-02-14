@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 08:53:14 by mquero            #+#    #+#             */
-/*   Updated: 2025/02/14 11:07:42 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/14 14:05:00 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,10 @@ int	main(int argc, char **argv, char **envp)
 		}
         ms.root = parse_input(ms.input, ms.env.envp); /** @bug if nothing allocated better to return NULL; case ./minishell <ENTER> (line is empty) */
 		// print_ast(ms.root, 0, "ms.root");
-		exe_heredoc_preprocessor(ms.root, &ms);
-		exe_ast_tree(ms.root, &ms);
+		if (!ms.root) /** @bug should store syntax error code */
+			ms.exit_code = ERROR_SYNTAX_HEREDOC;
+		if (ms.root && exe_heredoc_preprocessor(ms.root, &ms) == 0)
+			exe_ast_tree(ms.root, &ms);
 		add_history(ms.input);
 		free(ms.input);
 		free_ast(ms.root); /** @bug set ms.root to NULL in free_ast to avoid segfault in ./minishell <cntr+D> case */

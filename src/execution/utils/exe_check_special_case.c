@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 06:09:43 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/30 15:26:05 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/14 11:37:56 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	exe_check_special_case(char **args, t_mshell *ms)
 	{
 		if (ft_strcmp(args[i], EXIT_CODE_CASE) == 0)
 		{
-			tmp = ft_itoa(ms->exit_code % 255);
+			tmp = ft_itoa(ms->exit_code % 256);
 			if (!tmp)
 			{
 				perror("minishell: malloc");

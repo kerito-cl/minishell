@@ -52,13 +52,10 @@ The shell must search for the executable in directories specified in the PATH va
     * `>` should redirect output.
     * `<<` should be given a delimiter, then read the input until a line containing the delimiter is seen. However, *it doesn’t have to update the history.*
     * `>>` should redirect output in append mode.
-- [ ] Handle `>>` with pipe
+- [x] Handle `<<` with pipe
 - [x] Handle environment variables ($ followed by a sequence of characters) which should expand to their values.  
 - [x] Handle `$?` which should expand to the exit status of the most recently executed foreground pipeline.
-
-#### Bonus  
-- [ ] `&&` and `||` with parenthesis for priorities.  
-- [ ] Wildcards `*` should work for the current working directory.  
+ 
 
 **Project directories structure**  
 

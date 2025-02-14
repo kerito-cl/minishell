@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 18:41:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/13 18:14:15 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/13 22:30:02 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ typedef enum e_error_code
 	ERROR_CMD_NOT_FOUND = 127,
 	ERROR_INTERUPTED_SIGINT = 130,
 	ERROR_INVALID_EXIT_CODE = 255,
+	ERROR_SYNTAX_HEREDOC = 258,
 	ERROR_IGNORE = 1024
 }	t_error_code;
 

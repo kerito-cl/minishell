@@ -6,30 +6,37 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 11:12:25 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/13 18:51:54 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/14 14:07:38 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	exe_heredoc(t_ast *node, t_mshell *ms);
-static void	handle_heredoc_fork(t_ast *node, int doc_fd[2]);
-static int	run_heredoc_prompt(t_ast *node, int fd_write);
+/* --------------------- Private function prototypes ----------------------- */
 
-int exe_heredoc_preprocessor(t_ast *node, t_mshell *ms)
+static int	exe_heredoc(t_ast *node, t_mshell *ms);
+static void	handle_heredoc_fork(t_ast *node, int doc_fd[2], t_mshell *ms);
+static int	run_prompt(t_ast *node, int fd, t_bool is_dollar, t_env *env);
+
+/* --------------------------- Public Functions ---------------------------- */
+
+int	exe_heredoc_preprocessor(t_ast *node, t_mshell *ms)
 {
-	ms->exit_code = 0;
-    if (node == NULL)
-        return (ms->exit_code);
-    if (node->type == REIN2)
-		ms->exit_code = exe_heredoc(node, ms); //handle_heredoc(node, ms);
-	if (ms->exit_code != 0)
-		return (ms->exit_code);
-	ms->exit_code = exe_heredoc_preprocessor(node->left, ms);
-	if (ms->exit_code == 0)
-		ms->exit_code = exe_heredoc_preprocessor(node->right, ms);
-	return (ms->exit_code);
+	int	exit_code;
+
+	exit_code = 0;
+	if (node == NULL)
+		return (exit_code);
+	if (node->type == REIN2)
+		exit_code = exe_heredoc(node, ms);
+	if (exit_code != 0)
+		return (exit_code);
+	exit_code += exe_heredoc_preprocessor(node->left, ms);
+	exit_code += exe_heredoc_preprocessor(node->right, ms);
+	return (exit_code);
 }
+
+/* ------------------- Private Function Implementation --------------------- */
 
 static int	exe_heredoc(t_ast *node, t_mshell *ms)
 {
@@ -48,7 +55,7 @@ static int	exe_heredoc(t_ast *node, t_mshell *ms)
 		return (errno);
 	}
 	if (pid == 0)
-		handle_heredoc_fork(node, doc_fd);
+		handle_heredoc_fork(node, doc_fd, ms);
 	exe_close_fd(&doc_fd[FD_WRITE]);
 	ms->exit_code = exe_wait_children(&pid, 1);
 	if (ms->exit_code != 0)
@@ -60,16 +67,17 @@ static int	exe_heredoc(t_ast *node, t_mshell *ms)
 	return (EXIT_SUCCESS);
 }
 
-static void	handle_heredoc_fork(t_ast *node, int doc_fd[2])
+static void	handle_heredoc_fork(t_ast *node, int doc_fd[2], t_mshell *ms)
 {
 	sig_interceptor(SIG_HEREDOC_MODE);
 	exe_close_fd(&doc_fd[FD_READ]);
-	run_heredoc_prompt(node, doc_fd[FD_WRITE]);
+	run_prompt(node, doc_fd[FD_WRITE], \
+				ft_strchr(node->value[0], '$') != NULL, &ms->env);
 	exe_close_fd(&doc_fd[FD_WRITE]);
 	exit(EXIT_SUCCESS);
 }
 
-static int	run_heredoc_prompt(t_ast *node, int fd_write)
+static int	run_prompt(t_ast *node, int fd, t_bool is_dollar, t_env *env)
 {
 	char	*input;
 
@@ -79,7 +87,7 @@ static int	run_heredoc_prompt(t_ast *node, int fd_write)
 		if (g_status == SIGINT)
 		{
 			g_status = 0;
-			close(fd_write);
+			close(fd);
 			exit(ERROR_INTERUPTED_SIGINT);
 		}
 		input = readline("> ");
@@ -87,8 +95,11 @@ static int	run_heredoc_prompt(t_ast *node, int fd_write)
 			return (0);
 		if (ft_strcmp(input, node->value[0]) == 0)
 			break ;
-		write(fd_write, input, ft_strlen(input));
-		write(fd_write, "\n", 1);
+		if (is_dollar)
+			exe_handle_dollar_expansion(input, fd, env);
+		else
+			write(fd, input, ft_strlen(input));
+		write(fd, "\n", 1);
 		free(input);
 	}
 	free(input);

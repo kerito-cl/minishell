@@ -6,7 +6,7 @@
 #    By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/15 07:44:51 by ipersids          #+#    #+#              #
-#    Updated: 2025/02/13 18:17:28 by ipersids         ###   ########.fr        #
+#    Updated: 2025/02/14 01:03:28 by ipersids         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ SUBM_LIBFT_HDR	:= -I$(SUBM_LIBFT_DIR)/include
 
 # Compilation variables
 CC				:= clang
-CFLAGS			:= -Wall -Wextra -Werror -g
+CFLAGS			:= -Wall -Wextra -Werror #-g
 HDRS			:= -Iinclude $(SUBM_LIBFT_HDR)
 LIBS			:= -L$(SUBM_LIBFT_DIR) -lft
 
@@ -79,6 +79,7 @@ SRCS			:= $(SRCS_DIR)/signals/sig_handler.c \
 				   $(SRCS_DIR)/execution/utils/exe_wait_children.c \
 				   $(SRCS_DIR)/execution/utils/exe_search_cmd_path.c \
 				   $(SRCS_DIR)/execution/utils/exe_check_special_case.c \
+				   $(SRCS_DIR)/execution/utils/exe_handle_dollar_expansion.c \
 				   $(SRCS_DIR)/execution/exe_pipe.c \
 				   $(SRCS_DIR)/execution/exe_ast_tree.c \
 				   $(SRCS_DIR)/execution/exe_command.c \
@@ -95,7 +96,7 @@ all: update-submodule build-submodule $(OBJ_DIR) $(NAME)
 
 # Rule to create the obj/* directory
 $(OBJ_DIR):
-	mkdir -p $(OBJ_DIR)
+	@mkdir -p $(OBJ_DIR)
 	@mkdir -p $(OBJ_DIR)/signals
 	@mkdir -p $(OBJ_DIR)/environment
 	@mkdir -p $(OBJ_DIR)/builtins
@@ -105,7 +106,6 @@ $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)/execution
 	@mkdir -p $(OBJ_DIR)/execution/utils
 	@mkdir -p $(OBJ_DIR)/constructor
-	@mkdir -p $(OBJ_DIR)/tmp
 
 # Rule for creating object files
 $(OBJ_DIR)/%.o: $(SRCS_DIR)/%.c

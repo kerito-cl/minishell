@@ -6,19 +6,16 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 07:36:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/13 18:50:01 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/14 12:17:59 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /**
  * @note Small things to do:
  * 
- * 1) @note cursor up "\033[1A" and ioctl(STDIN_FILENO, TIOCSTI, "\n");
- * 2) handle $VARIABLE in heredoc input
- * 
+ * @note cursor up "\033[1A" and ioctl(STDIN_FILENO, TIOCSTI, "\n");
  * 
  * @bug: test case (comment)
- * 1) Handle readline signal bug
  * 
  */
 
@@ -156,6 +153,7 @@ void		exe_close_fd(int *fd);
 char		*exe_search_cmd_path(const char *cmd, const char *env_path, \
 								char *path);
 int			exe_check_special_case(char **args, t_mshell *ms);
+void		exe_handle_dollar_expansion(char *input, int fd_write, t_env *env);
 
 /* ------------------------- Exit, errors and memory ----------------------- */
 
