@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 16:49:00 by mquero            #+#    #+#             */
-/*   Updated: 2025/02/06 23:27:38 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/13 21:27:22 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void	first_loop(char *input, t_elem *el, t_flags *flag)
 			el->quote = '\"';
 			break ;
 		}
-		if (input[el->k] == ' ')
+		if (input[el->k] == ' ' || input[el->k] == '\t')
 			break ;
 		el->k++;
 	}
@@ -38,7 +38,7 @@ static void	second_loop(char *input, char *buffer, t_elem *el, t_flags *flag)
 {
 	while (input[el->i])
 	{
-		if (input[el->i] == ' ' && flag->a == false)
+		if ((input[el->i] == ' ' || input[el->i] == '\t') && flag->a == false)
 		{
 			flag->b = true;
 			break ;
