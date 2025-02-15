@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 03:27:45 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/15 03:30:05 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/15 04:40:48 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 /* --------------------- Private function prototypes ----------------------- */
 
-static t_bool	is_regular_file(struct stat	*st);
+static t_bool	is_regular_file(struct stat *st);
 
 /* --------------------------- Public Functions ---------------------------- */
 
@@ -45,7 +45,7 @@ int	exe_handle_cmd_error(char *path)
 
 /* ------------------- Private Function Implementation --------------------- */
 
-static t_bool	is_regular_file(struct stat	*st)
+static t_bool	is_regular_file(struct stat *st)
 {
 	if (!S_ISREG(st->st_mode))
 	{

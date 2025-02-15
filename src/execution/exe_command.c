@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 16:41:21 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/15 03:29:44 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/15 04:40:11 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ static int	run_external(char **args, t_mshell *ms)
 
 	path[0] = '\0';
 	if (!exe_search_cmd_path(*args, env_find_value("PATH", &ms->env), path))
-	{ 
+	{
 		ms->exit_code = exe_handle_cmd_error(args[0]);
 		return (ms->exit_code);
 	}

@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 17:52:52 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/15 00:29:49 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/15 04:39:50 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	builtin_pwd(char **args, t_env *env)
 	const char	*pwd_value;
 	char		*buf;
 
-	if (args && args[0] != NULL &&  args[0][0] == '-')
+	if (args && args[0] != NULL && args[0][0] == '-')
 	{
 		printf("minishell: pwd: options aren't supported\n");
 		printf("pwd: usage: pwd\n");
