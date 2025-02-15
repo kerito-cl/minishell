@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 07:41:24 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/14 13:59:22 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/15 23:47:04 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,26 +23,29 @@
 void	sig_sigint_main(int sig)
 {
 	if (sig == SIGINT)
+		g_status = SIGINT;
+}
+
+/**
+ * @brief Resets the readline state if SIGINT was received.
+ * 
+ * This function checks if the global status indicates that a SIGINT
+ * signal was received. If so, it resets the status, writes a newline
+ * to the standard output, replaces the current line in the readline
+ * buffer with an empty string, moves the cursor to a new line, and
+ * redisplays the prompt.
+ * 
+ * @return int Always returns 0.
+ */
+int	sig_reset_readline(void)
+{
+	if (g_status == SIGINT)
 	{
-		g_status = sig;
+		g_status = 0;
 		write(STDOUT_FILENO, "\n", 1);
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
-		rl_done = 1;
 	}
-}
-
-/**
- * @brief Signal SIGINT handler for the heredoc child process.
- * 
- * @param sig The signal number. 
- */
-void	sig_sigint_heredoc(int sig)
-{
-	if (sig == SIGINT)
-	{
-		g_status = sig;
-		rl_done = 1;
-	}
+	return (0);
 }

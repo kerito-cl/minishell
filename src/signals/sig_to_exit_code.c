@@ -6,15 +6,22 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 20:21:48 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/11 16:02:30 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/15 23:50:40 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/**
+ * @brief Converts signal status to exit code.
+ * 
+ * @param ms The minishell context.
+ */
 void	sig_to_exit_code(t_mshell *ms)
 {
-	if (g_status != 0)
+	if (g_status == SIGINT)
+		ms->exit_code = ERROR_INTERUPTED_SIGINT;
+	else if (g_status != 0)
 		ms->exit_code = g_status + 128;
 	g_status = 0;
 }

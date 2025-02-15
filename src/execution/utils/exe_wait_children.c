@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 19:27:47 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/14 14:07:03 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/15 23:49:07 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ int	exe_wait_children(pid_t *pids, int amount)
 			return (perror("minishell: waitpid"), errno);
 		}
 		i++;
+		g_status = 0;
 	}
 	if (WIFEXITED(exit_code))
 		return (WEXITSTATUS(exit_code));
@@ -52,8 +53,7 @@ int	exe_wait_children(pid_t *pids, int amount)
 	{
 		exit_code = WTERMSIG(exit_code);
 		display_message(exit_code);
-		exit_code += 128;
-		return (exit_code);
+		return (exit_code + 128);
 	}
 	return (EXIT_FAILURE);
 }
@@ -64,8 +64,8 @@ static void	display_message(int signo)
 {
 	if (signo == SIGINT)
 	{
-		write(STDOUT_FILENO, "\n", 1);
-		write(STDOUT_FILENO, "\033[1A", 4);
+		g_status = 0;
+		write(STDERR_FILENO, "\n", 1);
 		return ;
 	}
 	ft_putstr_fd("minishell: ", STDERR_FILENO);

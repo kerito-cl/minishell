@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 07:36:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/15 13:56:00 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/15 23:25:06 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ typedef struct s_mshell
 void		sig_to_exit_code(t_mshell *ms);
 void		sig_interceptor(t_sig_mode mode);
 void		sig_sigint_main(int sig);
-void		sig_sigint_heredoc(int sig);
+int			sig_reset_readline(void);
 
 /* ------------------------------ Environment ------------------------------ */
 

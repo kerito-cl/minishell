@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 12:34:07 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/11 14:12:20 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/15 23:36:50 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	sig_interceptor(t_sig_mode mode)
 	if (mode == SIG_INTERACTIVE_MODE)
 		sig_init(sig_sigint_main, SIG_IGN);
 	else if (mode == SIG_HEREDOC_MODE)
-		sig_init(sig_sigint_heredoc, SIG_IGN);
+		sig_init(SIG_DFL, SIG_IGN);
 	else
 		sig_init(SIG_DFL, SIG_DFL);
 }
@@ -67,7 +67,7 @@ static void	sig_init(void (*sint_handler)(int), void (*squit_handler)(int))
  */
 static int	sig_struct_init(struct sigaction *sa, int signo)
 {
-	sa->sa_flags = SA_RESTART;
+	sa->sa_flags = SA_RESTART | SA_NOCLDSTOP;
 	if (sigemptyset(&sa->sa_mask) == -1)
 	{
 		perror("minishell: sigemptyset");

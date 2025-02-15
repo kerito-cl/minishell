@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 11:12:25 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/15 14:00:13 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/15 23:51:56 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,8 @@ static int	exe_heredoc(t_ast *node, t_mshell *ms)
 /**
  * @brief Handles the heredoc input in the child process.
  * 
+
+ * 
  * @param node The current AST node.
  * @param fd The file descriptors for the pipe.
  * @param ms The minishell context.
@@ -121,12 +123,6 @@ static int	run_prompt(t_ast *node, int fd, t_bool is_dollar, t_mshell *ms)
 	input = NULL;
 	while (TRUE)
 	{
-		if (g_status == SIGINT)
-		{
-			g_status = 0;
-			close(fd);
-			exit(ERROR_INTERUPTED_SIGINT);
-		}
 		input = readline("> ");
 		if (!input)
 			return (0);
@@ -142,3 +138,43 @@ static int	run_prompt(t_ast *node, int fd, t_bool is_dollar, t_mshell *ms)
 	free(input);
 	return (0);
 }
+
+// static int	run_prompt(t_ast *node, int fd, t_bool is_dollar, t_mshell *ms)
+// {
+// 	char	*input;
+
+// 	input = NULL;
+// 	while (TRUE)
+// 	{
+// 		input = get_user_input();
+// 		if (!input)
+// 			return (0);
+// 		if (ft_strcmp(input, node->value[0]) == 0)
+// 			break ;
+// 		if (is_dollar)
+// 			exe_handle_dollar_expansion(input, fd, ms);
+// 		else
+// 			write(fd, input, ft_strlen(input));
+// 		write(fd, "\n", 1);
+// 		free(input);
+// 	}
+// 	free(input);
+// 	return (0);
+// }
+
+// static char	*get_user_input(void)
+// {
+// 	char	*input;
+// 	char	*nl;
+
+// 	input = NULL;
+// 	nl = NULL;
+// 	ft_putstr_fd("> ", STDOUT_FILENO);
+// 	input = get_next_line(STDIN_FILENO, FALSE);
+// 	if (!input)
+// 		return (NULL);
+// 	nl = ft_strchr(input, '\n');
+// 	if (nl != NULL)
+// 		*nl = '\0';
+// 	return (input);
+// }
