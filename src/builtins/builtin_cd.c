@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:55:21 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/10 14:39:40 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/15 04:46:36 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,6 @@ int	builtin_cd(char **args, t_env *env)
 {
 	if (!args || args[0] == NULL)
 		return ((go_home(env)));
-	if (args[1] != NULL && args[0][0] != '-')
-	{
-		ft_putstr_fd("minishell: cd: too many arguments\n", STDERR_FILENO);
-		return (ERROR_GENERIC);
-	}
 	if (args[0][0] == '-')
 	{
 		ft_putstr_fd("minishell: cd: ", STDERR_FILENO);
