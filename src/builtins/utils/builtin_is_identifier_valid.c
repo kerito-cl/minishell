@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 16:49:14 by ipersids          #+#    #+#             */
-/*   Updated: 2025/01/18 17:00:51 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/15 04:53:29 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ int	builtin_is_identifier_valid(const char *var)
 	if (!var || ft_isdigit(var[0]) || var[0] == '\0')
 		return (0);
 	i = 0;
+	if (var[0] == '=')
+		return (0);
 	while (var[i] != '\0' && var[i] != '=')
 	{
 		if (!(ft_isalnum(var[i]) || var[i] == '_'))

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 07:36:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/14 15:14:05 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/15 13:56:00 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,11 @@
 # include <sys/wait.h>	// waitpid()
 # include <fcntl.h>		// open()
 # include <sys/stat.h>	// stat()
-# include <stdbool.h>
 
 # include "libft.h"
 # include "constants.h"
+
+/* ------------------------------- Structures ------------------------------- */
 
 typedef struct s_ast
 {
@@ -78,16 +79,12 @@ typedef struct s_index
 
 }					t_index;
 
-/* ------------------------------ Environment ------------------------------ */
-
 typedef struct s_env
 {
 	char			**envp;
 	unsigned int	len;
 	unsigned int	capacity;	
 }	t_env;
-
-/* ------------------------------- Minishell ------------------------------- */
 
 typedef struct s_mshell
 {
@@ -142,7 +139,8 @@ void		exe_close_fd(int *fd);
 char		*exe_search_cmd_path(const char *cmd, const char *env_path, \
 								char *path);
 int			exe_check_special_case(char **args, t_mshell *ms);
-void		exe_handle_dollar_expansion(char *input, int fd_write, t_env *env);
+void		exe_handle_dollar_expansion(char *input, int fd_write, t_mshell *ms);
+int			exe_handle_cmd_error(char *path);
 
 /* ------------------------- Exit, errors and memory ----------------------- */
 
