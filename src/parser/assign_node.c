@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 08:54:30 by mquero            #+#    #+#             */
-/*   Updated: 2025/02/13 16:15:17 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/15 12:48:57 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 
 bool	assign_pipe(t_ast *root, t_token *tokens, t_index *i)
 {
+	int		prev_max;
+
+	prev_max = i->max;
 	i->key = i->max - 1;
 	while (i->key > i->min)
 	{
@@ -23,7 +26,7 @@ bool	assign_pipe(t_ast *root, t_token *tokens, t_index *i)
 			i->max = i->key;
 			assign_to_left(root->left, tokens, i, false);
 			i->min = i->max + 1;
-			i->max = i->len;
+			i->max = prev_max;
 			assign_to_right(root->left, tokens, i);
 			return (true);
 		}

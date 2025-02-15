@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 16:15:29 by mquero            #+#    #+#             */
-/*   Updated: 2025/02/14 15:38:18 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/15 12:48:40 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,17 +73,18 @@ bool	add_cmd(t_token *tokens, char *buffer, int *i, int j)
 	k = *i;
 	while (buffer[*i] != '\0')
 	{
-		if (!compare_token(buffer, *i, false, tokens[j].quote))
+		if (buffer[*i] == '\'' || buffer[*i] == '\"')
+			tokens[j].quote = buffer[*i];
+		else if (!compare_token(buffer, *i, false, tokens[j].quote))
 		{
 			tokens[j].value = ft_strdup_no_op(buffer + k, (size_t)(*i - k));
 			tokens[j].cmd = create_cmd(tokens[j].value);
 			if (!tokens[j].cmd)
 				exit_free(tokens, j, buffer);
-			tokens[j].type = ARG;
 			*i -= 1;
 			return (true);
 		}
-		if (buffer[*i] == tokens[j].quote && *i != k)
+		else if (buffer[*i] == tokens[j].quote && *i != k)
 			tokens[j].quote = 0;
 		*i += 1;
 	}
@@ -91,7 +92,6 @@ bool	add_cmd(t_token *tokens, char *buffer, int *i, int j)
 	tokens[j].cmd = create_cmd(tokens[j].value);
 	if (!tokens[j].cmd)
 		exit_free(tokens, j, buffer);
-	tokens[j].type = ARG;
 	return (false);
 }
 
@@ -115,8 +115,7 @@ static bool	add_all(t_token *tokens, char *buffer, t_elem *elem, bool *flag)
 	else if (*flag == false && elem->k == 0)
 	{
 		elem->k = 1;
-		if (buffer[elem->i] == '\'' || buffer[elem->i] == '\"')
-			tokens[elem->j].quote = buffer[elem->i];
+		tokens[elem->j].type = ARG;
 		if (!add_cmd(tokens, buffer, &elem->i, elem->j++))
 			return (false);
 	}
