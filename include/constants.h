@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 18:41:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/13 22:30:02 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/15 13:51:33 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,7 @@
 # define CONSTANTS_H
 
 # include <limits.h>
-
-# ifndef PATH_MAX
-#  define PATH_MAX 1024
-# endif
+# include <stdbool.h>
 
 extern volatile sig_atomic_t	g_status;
 
@@ -52,6 +49,10 @@ typedef enum e_tokentype
 	CMD,
 }	t_tokentype;
 
+# ifndef PATH_MAX
+#  define PATH_MAX 1024
+# endif
+
 # ifndef FD_READ
 #  define FD_READ 0
 # endif
@@ -72,8 +73,6 @@ typedef enum e_tokentype
 #  define EXIT_CODE_CASE "$?"
 # endif
 
-# ifndef HEREDOC_NAME
-#  define HEREDOC_NAME "./obj/tmp/.heredoc_"
-# endif
+# define ADD_CAPACITY 100
 
 #endif

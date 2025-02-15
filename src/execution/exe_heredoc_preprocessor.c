@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 11:12:25 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/14 14:07:38 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/15 14:00:13 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,22 @@
 /* --------------------- Private function prototypes ----------------------- */
 
 static int	exe_heredoc(t_ast *node, t_mshell *ms);
-static void	handle_heredoc_fork(t_ast *node, int doc_fd[2], t_mshell *ms);
-static int	run_prompt(t_ast *node, int fd, t_bool is_dollar, t_env *env);
+static void	handle_heredoc_fork(t_ast *node, int fd[2], t_mshell *ms);
+static int	run_prompt(t_ast *node, int fd, t_bool is_dollar, t_mshell *ms);
 
 /* --------------------------- Public Functions ---------------------------- */
 
+/**
+ * @brief Preprocesses the heredoc nodes in the AST.
+ * 
+ * This function recursively processes the AST nodes to handle heredoc
+ * redirections. It calls exe_heredoc for nodes of type REIN2 and
+ * continues processing the left and right children of the node.
+ * 
+ * @param node The current AST node.
+ * @param ms The minishell context.
+ * @return int The exit code of the heredoc processing.
+ */
 int	exe_heredoc_preprocessor(t_ast *node, t_mshell *ms)
 {
 	int	exit_code;
@@ -38,6 +49,13 @@ int	exe_heredoc_preprocessor(t_ast *node, t_mshell *ms)
 
 /* ------------------- Private Function Implementation --------------------- */
 
+/**
+ * @brief Executes the heredoc for a given AST node.
+ * 
+ * @param node The current AST node.
+ * @param ms The minishell context.
+ * @return int The exit code of the heredoc execution.
+ */
 static int	exe_heredoc(t_ast *node, t_mshell *ms)
 {
 	int		doc_fd[2];
@@ -67,17 +85,36 @@ static int	exe_heredoc(t_ast *node, t_mshell *ms)
 	return (EXIT_SUCCESS);
 }
 
-static void	handle_heredoc_fork(t_ast *node, int doc_fd[2], t_mshell *ms)
+/**
+ * @brief Handles the heredoc input in the child process.
+ * 
+ * @param node The current AST node.
+ * @param fd The file descriptors for the pipe.
+ * @param ms The minishell context.
+ */
+static void	handle_heredoc_fork(t_ast *node, int fd[2], t_mshell *ms)
 {
 	sig_interceptor(SIG_HEREDOC_MODE);
-	exe_close_fd(&doc_fd[FD_READ]);
-	run_prompt(node, doc_fd[FD_WRITE], \
-				ft_strchr(node->value[0], '$') != NULL, &ms->env);
-	exe_close_fd(&doc_fd[FD_WRITE]);
+	exe_close_fd(&fd[FD_READ]);
+	run_prompt(node, fd[FD_WRITE], ft_strchr(node->value[0], '$') != NULL, ms);
+	exe_close_fd(&fd[FD_WRITE]);
 	exit(EXIT_SUCCESS);
 }
 
-static int	run_prompt(t_ast *node, int fd, t_bool is_dollar, t_env *env)
+/**
+ * @brief Runs the prompt to read heredoc input from the user.
+ * 
+ * This function displays a prompt to the user and reads input
+ * until the delimiter is encountered. If dollar expansion is
+ * enabled, it processes the input accordingly.
+ * 
+ * @param node The current AST node.
+ * @param fd The file descriptor to write the input to.
+ * @param is_dollar Indicates if dollar expansion is enabled.
+ * @param ms The minishell context.
+ * @return int The exit code of the prompt.
+ */
+static int	run_prompt(t_ast *node, int fd, t_bool is_dollar, t_mshell *ms)
 {
 	char	*input;
 
@@ -96,7 +133,7 @@ static int	run_prompt(t_ast *node, int fd, t_bool is_dollar, t_env *env)
 		if (ft_strcmp(input, node->value[0]) == 0)
 			break ;
 		if (is_dollar)
-			exe_handle_dollar_expansion(input, fd, env);
+			exe_handle_dollar_expansion(input, fd, ms);
 		else
 			write(fd, input, ft_strlen(input));
 		write(fd, "\n", 1);
