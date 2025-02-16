@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 12:10:10 by mquero            #+#    #+#             */
-/*   Updated: 2025/02/16 15:09:53 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/16 17:17:03 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,12 @@ static void	expand_env_var(char **var, t_elem *elem, char **input, t_mshell *ms)
 		if (!*var)
 			exit(1);
 		elem->len = elem->new_len;
-		while (*temp)
-			(*var)[elem->i++] = *temp++;
+		while (temp[elem->j])
+			(*var)[elem->i++] = temp[elem->j++];
 	}
 	if (**input == '$' && *(*input + 1) == '?')
 	{
+		free(temp);
 		*input += 2;
 		return ;
 	}
@@ -90,6 +91,7 @@ char	*handle_dollar_sign(char *input, t_mshell *ms)
 	t_elem	elem;
 
 	elem.i = 0;
+	elem.j = 0;
 	elem.len = ft_strlen(input);
 	elem.new_len = ft_strlen(input);
 	var = ft_calloc(sizeof(char), (elem.len + 2));
