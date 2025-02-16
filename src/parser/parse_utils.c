@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 11:37:38 by mquero            #+#    #+#             */
-/*   Updated: 2025/02/13 16:44:10 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/16 18:09:51 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,8 @@ char	quote_value(char c)
 {
 	char	quote;
 
-	if (c == '\'')
-		quote = '\'';
-	else if (c == '\"')
-		quote = '\"';
+	if (c == 17)
+		quote = 17;
 	else
 		quote = '\0';
 	return (quote);
