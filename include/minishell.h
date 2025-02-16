@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 07:36:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/16 14:42:29 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/16 19:33:42 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,8 +138,8 @@ int			exe_wait_children(pid_t *pids, int amount);
 void		exe_close_fd(int *fd);
 char		*exe_search_cmd_path(const char *cmd, const char *env_path, \
 								char *path);
-int			exe_check_special_case(char **args, t_mshell *ms);
-void		exe_handle_dollar_expansion(char *input, int fd_write, t_mshell *ms);
+void		exe_handle_dollar_expansion(char *input, int fd_write, \
+										t_mshell *ms);
 int			exe_handle_cmd_error(char *path);
 
 /* ------------------------- Exit, errors and memory ----------------------- */

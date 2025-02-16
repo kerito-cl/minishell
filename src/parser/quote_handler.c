@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quote_handler.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 16:49:00 by mquero            #+#    #+#             */
-/*   Updated: 2025/02/16 18:09:28 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/16 19:38:43 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,6 @@ static void	second_loop(char *input, char *buffer, t_elem *el, t_flags *flag)
 
 static bool	check_quote(char *input, char *buffer, t_elem *el, t_flags *flag)
 {
-	char	quote;
-
-	quote = el->quote;
 	if (input[el->i] != el->quote)
 		buffer[el->j++] = input[el->i];
 	else if (input[el->i] == el->quote && el->i != el->k)

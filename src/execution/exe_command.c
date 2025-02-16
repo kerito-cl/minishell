@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exe_command.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 16:41:21 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/16 17:01:41 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/16 19:33:00 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,6 @@ int	exe_command(t_ast *node, t_mshell *ms)
 	input = node->value;
 	if (input[0] == NULL || input[0][0] == '\0')
 		return (0);
-	//ms->exit_code = exe_check_special_case(input, ms);
-	//if (ms->exit_code == 0)
 	ms->exit_code = run_command(input, ms);
 	return (ms->exit_code);
 }

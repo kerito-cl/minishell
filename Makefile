@@ -6,7 +6,7 @@
 #    By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/15 07:44:51 by ipersids          #+#    #+#              #
-#    Updated: 2025/02/15 03:30:25 by ipersids         ###   ########.fr        #
+#    Updated: 2025/02/16 19:39:07 by ipersids         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -78,7 +78,6 @@ SRCS			:= $(SRCS_DIR)/signals/sig_handler.c \
 				   $(SRCS_DIR)/execution/utils/exe_close_fd.c \
 				   $(SRCS_DIR)/execution/utils/exe_wait_children.c \
 				   $(SRCS_DIR)/execution/utils/exe_search_cmd_path.c \
-				   $(SRCS_DIR)/execution/utils/exe_check_special_case.c \
 				   $(SRCS_DIR)/execution/utils/exe_handle_dollar_expansion.c \
 				   $(SRCS_DIR)/execution/utils/exe_handle_cmd_error.c \
 				   $(SRCS_DIR)/execution/exe_pipe.c \
