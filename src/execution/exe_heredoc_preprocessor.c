@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 11:12:25 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/15 23:51:56 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/16 21:37:13 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 static int	exe_heredoc(t_ast *node, t_mshell *ms);
 static void	handle_heredoc_fork(t_ast *node, int fd[2], t_mshell *ms);
 static int	run_prompt(t_ast *node, int fd, t_bool is_dollar, t_mshell *ms);
+static char	*get_user_input(void);
 
 /* --------------------------- Public Functions ---------------------------- */
 
@@ -123,7 +124,7 @@ static int	run_prompt(t_ast *node, int fd, t_bool is_dollar, t_mshell *ms)
 	input = NULL;
 	while (TRUE)
 	{
-		input = readline("> ");
+		input = get_user_input();
 		if (!input)
 			return (0);
 		if (ft_strcmp(input, node->value[0]) == 0)
@@ -136,45 +137,32 @@ static int	run_prompt(t_ast *node, int fd, t_bool is_dollar, t_mshell *ms)
 		free(input);
 	}
 	free(input);
+	get_next_line(STDIN_FILENO, TRUE);
 	return (0);
 }
 
-// static int	run_prompt(t_ast *node, int fd, t_bool is_dollar, t_mshell *ms)
-// {
-// 	char	*input;
+/**
+ * @brief Prompts the user for input and reads a line from standard input.
+ * 
+ * This function displays a prompt ("> ") to the user, reads a line of input
+ * from the standard input, and removes the newline character if present.
+ * 
+ * @return char* A pointer to the input string, or NULL if an error occurs or 
+ *         end-of-file is reached.
+ */
+static char	*get_user_input(void)
+{
+	char	*input;
+	char	*nl;
 
-// 	input = NULL;
-// 	while (TRUE)
-// 	{
-// 		input = get_user_input();
-// 		if (!input)
-// 			return (0);
-// 		if (ft_strcmp(input, node->value[0]) == 0)
-// 			break ;
-// 		if (is_dollar)
-// 			exe_handle_dollar_expansion(input, fd, ms);
-// 		else
-// 			write(fd, input, ft_strlen(input));
-// 		write(fd, "\n", 1);
-// 		free(input);
-// 	}
-// 	free(input);
-// 	return (0);
-// }
-
-// static char	*get_user_input(void)
-// {
-// 	char	*input;
-// 	char	*nl;
-
-// 	input = NULL;
-// 	nl = NULL;
-// 	ft_putstr_fd("> ", STDOUT_FILENO);
-// 	input = get_next_line(STDIN_FILENO, FALSE);
-// 	if (!input)
-// 		return (NULL);
-// 	nl = ft_strchr(input, '\n');
-// 	if (nl != NULL)
-// 		*nl = '\0';
-// 	return (input);
-// }
+	input = NULL;
+	nl = NULL;
+	ft_putstr_fd("> ", STDOUT_FILENO);
+	input = get_next_line(STDIN_FILENO, FALSE);
+	if (!input)
+		return (NULL);
+	nl = ft_strchr(input, '\n');
+	if (nl != NULL)
+		*nl = '\0';
+	return (input);
+}
