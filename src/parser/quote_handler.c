@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 16:49:00 by mquero            #+#    #+#             */
-/*   Updated: 2025/02/13 21:27:22 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/16 12:40:06 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,11 +61,11 @@ static void	second_loop(char *input, char *buffer, t_elem *el, t_flags *flag)
 
 static bool	check_quote(char *input, char *buffer, t_elem *el, t_flags *flag)
 {
+	char	quote;
+
+	quote = el->quote;
 	if (input[el->i] != el->quote)
-	{
-		buffer[el->j] = input[el->i];
-		el->j++;
-	}
+		buffer[el->j++] = input[el->i];
 	else if (input[el->i] == el->quote && el->i != el->k)
 		flag->a = false;
 	el->i++;
@@ -74,13 +74,9 @@ static bool	check_quote(char *input, char *buffer, t_elem *el, t_flags *flag)
 		second_loop(input, buffer, el, flag);
 		if (flag->a == false)
 		{
-			buffer[el->j] = '\'';
-			el->j++;
+			buffer[el->j++] = quote;
 			if (flag->a == false && input[el->i] != '\0')
-			{
-				buffer[el->j] = ' ';
-				el->j++;
-			}
+				buffer[el->j++] = ' ';
 			return (false);
 		}
 	}
@@ -95,7 +91,7 @@ static void	logic_loop(char *input, char *buffer, t_elem *el, t_flags *flag)
 	first_loop(input, el, flag);
 	if (flag->a)
 	{
-		buffer[el->j] = '\'';
+		buffer[el->j] = el->quote;
 		el->j++;
 		while (input[el->i])
 		{

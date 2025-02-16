@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 16:15:29 by mquero            #+#    #+#             */
-/*   Updated: 2025/02/15 12:48:40 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/16 12:09:55 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ bool	add_redirval(t_token *tokens, char *buffer, int *i, int j)
 			return (true);
 		}
 		*i += 1;
+		if (buffer[*i] == tokens[j].quote)
+			tokens[j].quote = 0;
 	}
 	tokens[j].value = ft_strndup(buffer + k, (size_t)(*i - k));
 	tokens[j].cmd = create_cmd(tokens[j].value);
@@ -73,8 +75,8 @@ bool	add_cmd(t_token *tokens, char *buffer, int *i, int j)
 	k = *i;
 	while (buffer[*i] != '\0')
 	{
-		if (buffer[*i] == '\'' || buffer[*i] == '\"')
-			tokens[j].quote = buffer[*i];
+		if ((buffer[*i] == '\'' || buffer[*i] == '\"') && tokens[j].quote == 0)
+			tokens[j].quote = buffer[(*i)++];
 		else if (!compare_token(buffer, *i, false, tokens[j].quote))
 		{
 			tokens[j].value = ft_strdup_no_op(buffer + k, (size_t)(*i - k));
@@ -84,7 +86,7 @@ bool	add_cmd(t_token *tokens, char *buffer, int *i, int j)
 			*i -= 1;
 			return (true);
 		}
-		else if (buffer[*i] == tokens[j].quote && *i != k)
+		if (buffer[*i] == tokens[j].quote && *i != k)
 			tokens[j].quote = 0;
 		*i += 1;
 	}

@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 08:53:14 by mquero            #+#    #+#             */
-/*   Updated: 2025/02/15 12:25:18 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/16 14:39:15 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ static void	run_shell(t_mshell *ms, int *fake_code)
 			free(ms->input);
 			continue ;
 		}
-		ms->root = parse_input(ms->input, ms->env.envp, fake_code);
+		ms->root = parse_input(ms->input, ms, fake_code);
 		//print_ast(ms->root, 0, "root");
 		if (!ms->root && *fake_code != 0)
 			ms->exit_code = ERROR_SYNTAX_HEREDOC;
