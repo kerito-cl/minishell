@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 12:10:10 by mquero            #+#    #+#             */
-/*   Updated: 2025/02/14 11:20:04 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/16 18:26:17 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,14 @@ static void	check_if_heredoc(char **input, char *var, t_elem *elem)
 	}
 }
 
-static void	expand_env_var(char **var, t_elem *elem, char **input, char **envp)
+static void	expand_env_var(char **var, t_elem *elem, char **input, t_mshell *ms)
 {
-	t_env	envir;
 	char	*temp;
 
-	envir.envp = envp;
-	temp = env_find_value_v2(*input, &envir);
+	if (**input == '$' && *(*input + 1) == '?')
+		temp = ft_itoa(ms->exit_code);
+	else
+		temp = env_find_value_v2(*input, &ms->env);
 	if (temp != NULL)
 	{
 		elem->new_len = elem->len + ft_strlen(temp);
@@ -41,15 +42,17 @@ static void	expand_env_var(char **var, t_elem *elem, char **input, char **envp)
 		if (!*var)
 			exit(1);
 		elem->len = elem->new_len;
-		while (*temp)
-		{
-			(*var)[elem->i] = *temp;
-			elem->i++;
-			temp++;
-		}
+		while (temp[elem->j])
+			(*var)[elem->i++] = temp[elem->j++];
+	}
+	if (**input == '$' && *(*input + 1) == '?')
+	{
+		free(temp);
+		*input += 2;
+		return ;
 	}
 	*input += 1;
-	while (**input != '\0' && !ft_strchr(" \t\"'<>|$", **input))
+	while (**input != '\0' && !ft_strchr(" \t\"'<>|$?", **input))
 		*input += 1;
 }
 
@@ -82,7 +85,7 @@ static void	cpy_if_no_dollar(char **input, char *var, t_elem *elem)
 	}
 }
 
-char	*handle_dollar_sign(char *input, char **envp)
+char	*handle_dollar_sign(char *input, t_mshell *ms)
 {
 	char	*var;
 	t_elem	elem;
@@ -95,11 +98,12 @@ char	*handle_dollar_sign(char *input, char **envp)
 		exit(1);
 	while (*input)
 	{
+		elem.j = 0;
 		cpy_if_no_dollar(&input, var, &elem);
-		if (*input == '$' && (!input[1] || ft_strchr(" \t\"'<>|$?", input[1])))
+		if (*input == '$' && (!input[1] || ft_strchr(" \t\"'<>|$", input[1])))
 			var[elem.i++] = *input++;
 		else if (*input == '$' && input[1] != '\0')
-			expand_env_var(&var, &elem, &input, envp);
+			expand_env_var(&var, &elem, &input, ms);
 		else if (*input != '\0')
 			input++;
 	}

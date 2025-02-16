@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 07:36:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/15 23:25:06 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/16 22:57:16 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,8 +138,8 @@ int			exe_wait_children(pid_t *pids, int amount);
 void		exe_close_fd(int *fd);
 char		*exe_search_cmd_path(const char *cmd, const char *env_path, \
 								char *path);
-int			exe_check_special_case(char **args, t_mshell *ms);
-void		exe_handle_dollar_expansion(char *input, int fd_write, t_mshell *ms);
+void		exe_handle_dollar_expansion(char *input, int fd_write, \
+										t_mshell *ms);
 int			exe_handle_cmd_error(char *path);
 
 /* ------------------------- Exit, errors and memory ----------------------- */
@@ -160,7 +160,7 @@ void		ft_bzero(void *s, size_t n);
 char		*ft_strndup(char *s, size_t n);
 t_ast		*create_node(char **s1, t_tokentype type, t_token *tokens);
 int			tokenize(t_token *tokens, char *input);
-t_ast		*parse_input(char *input, char **envp, int *exit_code);
+t_ast		*parse_input(char *input, t_mshell *ms, int *exit_code);
 void		assign_to_right(t_ast *root, t_token *tokens, t_index *i);
 void		assign_to_left(t_ast *root, t_token *tokens, t_index *i, \
 							bool flag);
@@ -172,7 +172,7 @@ char		**create_cmd(char *s);
 bool		compare_token(char *buffer, int i, bool flag, char quote);
 char		quote_value(char c);
 char		**cpy_cmds(char **strs);
-char		*handle_dollar_sign(char *input, char **envp);
+char		*handle_dollar_sign(char *input, t_mshell *ms);
 char		*env_find_variable_v2(const char *var, t_env *env, size_t *i);
 char		*env_find_value_v2(const char *var, t_env *env);
 bool		check_parse_error(t_token *tokens, int len);

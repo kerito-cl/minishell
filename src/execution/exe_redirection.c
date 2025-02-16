@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exe_redirection.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 14:47:55 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/14 15:11:33 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/16 18:25:48 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ int	exe_redirection(t_ast *node, t_mshell *ms)
 		if (ms->exit_code != 0)
 			exit(ms->exit_code);
 		ms->exit_code = exe_ast_tree(node->left, ms);
-		ms->exit_code = exe_ast_tree(node->right, ms);
+		if (ms->exit_code == 0)
+			ms->exit_code = exe_ast_tree(node->right, ms);
 		exit(ms->exit_code);
 	}
 	ms->exit_code = exe_wait_children(&pid, 1);

@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 19:02:55 by mquero            #+#    #+#             */
-/*   Updated: 2025/02/14 11:18:39 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/16 15:54:18 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ void	exit_free(t_token *tokens, int len, char *buffer)
 		free(buffer);
 	if (*tokens[0].root)
 		free_ast(*tokens[0].root);
-	free_tokens(tokens, len);
+	if (tokens)
+		free_tokens(tokens, len);
 	exit(1);
 }

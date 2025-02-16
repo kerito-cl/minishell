@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 16:41:21 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/15 04:40:11 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/16 22:58:28 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,7 @@ int	exe_command(t_ast *node, t_mshell *ms)
 	input = node->value;
 	if (input[0] == NULL || input[0][0] == '\0')
 		return (0);
-	ms->exit_code = exe_check_special_case(input, ms);
-	if (ms->exit_code == 0)
-		ms->exit_code = run_command(input, ms);
+	ms->exit_code = run_command(input, ms);
 	return (ms->exit_code);
 }
 
@@ -125,7 +123,7 @@ static t_bool	is_directory(const char *path, char *arg, int *exit_code)
 		ft_putstr_fd(arg, STDERR_FILENO);
 		if (ft_strchr(arg, '/') != NULL)
 		{
-			ft_putstr_fd(": Is a directory\n", STDERR_FILENO);
+			ft_putstr_fd(": is a directory\n", STDERR_FILENO);
 			*exit_code = ERROR_ISDIR;
 			return (TRUE);
 		}

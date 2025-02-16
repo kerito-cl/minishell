@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 18:44:20 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/15 17:27:06 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/16 23:00:02 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ static int	run_right_fork(int pipe_fd[2], int *pid, t_ast *node, t_mshell *ms)
 		ms->exit_code = 0;
 		handle_pipe(pipe_fd, ms, FD_WRITE, FD_READ);
 	}
+	exe_close_fd(&pipe_fd[FD_READ]);
 	return (ms->exit_code);
 }
 

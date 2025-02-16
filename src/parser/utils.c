@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 10:40:48 by mquero            #+#    #+#             */
-/*   Updated: 2025/02/06 23:35:41 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/16 18:14:35 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static void	check_if_op(char *str, size_t *i)
 		(*i)++;
 	while (str[*i] != ' ' && str[*i] != '|' && str[*i])
 	{
-		if (str[*i] == '\'' || str[*i] == '\"')
+		if (str[*i] == 17)
 		{
 			quote = str[(*i)++];
 			while (str[*i] != quote)
@@ -58,7 +58,7 @@ char	*ft_strdup_no_op(char *str, size_t n)
 		dest[j++] = str[i++];
 	while (str[i] && str[i] != '|')
 	{
-		if (str[i] == '\'' || str[i] == '\"')
+		if (str[i] == 17)
 			check_if_quotes(str, dest, &i, &j);
 		if (str[i] == '>' || str[i] == '<')
 			check_if_op(str, &i);
