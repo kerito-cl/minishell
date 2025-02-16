@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 08:54:30 by mquero            #+#    #+#             */
-/*   Updated: 2025/02/15 12:48:57 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/16 14:11:43 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,20 @@ bool	assign_pipe(t_ast *root, t_token *tokens, t_index *i)
 bool	assign_node(t_ast **root, t_token *tokens, t_index *i, t_tokentype n)
 {
 	i->key = i->min;
-	i->max = i->max;
 	while (i->key < i->max)
 	{
-		if (n == tokens[i->key].type && !tokens[i->key].lock)
+		if (n != REIN2 && tokens[i->key].type != PIPE
+			&& tokens[i->key].type != ARG && !tokens[i->key].lock)
+		{
+			n = tokens[i->key].type;
+			*root = create_node(tokens[i->key + 1].cmd, n, tokens);
+			tokens[i->key].lock = true;
+			tokens[i->key + 1].lock = true;
+			assign_to_left(*root, tokens, i, true);
+			return (true);
+		}
+		if (tokens[i->key].type != ARG && tokens[i->key].type == n && n == REIN2
+			&& tokens[i->key].type != PIPE && !tokens[i->key].lock)
 		{
 			*root = create_node(tokens[i->key + 1].cmd, n, tokens);
 			tokens[i->key].lock = true;

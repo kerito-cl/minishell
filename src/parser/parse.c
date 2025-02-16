@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 16:28:29 by mquero            #+#    #+#             */
-/*   Updated: 2025/02/15 11:13:54 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/16 15:55:13 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,14 +64,14 @@ t_ast	*divide_input(t_token *tokens, int len, t_index *i)
 	return (root);
 }
 
-t_ast	*parse_input(char *input, char **envp, int *exit_code)
+t_ast	*parse_input(char *input, t_mshell *ms, int *exit_code)
 {
 	t_token	*tokens;
 	t_ast	*root;
 	t_index	i;
 	char	*var;
 
-	var = handle_dollar_sign(input, envp);
+	var = handle_dollar_sign(input, ms);
 	if (!var)
 	{
 		*exit_code = 0;
@@ -79,7 +79,7 @@ t_ast	*parse_input(char *input, char **envp, int *exit_code)
 	}
 	tokens = (t_token *)ft_calloc(sizeof(t_token), ft_strlen(var) * 2);
 	if (!tokens)
-		exit(1);
+		exit_free(tokens, 0, var);
 	tokens[0].len = tokenize(tokens, var);
 	if (!check_parse_error(tokens, tokens[0].len))
 		return (NULL);
