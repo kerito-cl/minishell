@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 07:41:24 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/15 23:47:04 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/16 12:02:17 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	sig_reset_readline(void)
 {
 	if (g_status == SIGINT)
 	{
-		g_status = 0;
+		g_status = 128 + SIGINT;
 		write(STDOUT_FILENO, "\n", 1);
 		rl_replace_line("", 0);
 		rl_on_new_line();
