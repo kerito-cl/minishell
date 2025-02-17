@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 23:27:57 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/17 09:51:52 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/18 01:15:10 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ int	init_termios_attributes(t_mshell *ms)
 		}
 		ms->term[TERM_ECHOCTL] = ms->term[TERM_ORIGIN];
 		ms->term[TERM_ECHOCTL].c_lflag |= ECHOCTL;
+		ms->is_term_set = TRUE;
 	}
 	return (EXIT_SUCCESS);
 }

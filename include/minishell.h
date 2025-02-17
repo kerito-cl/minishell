@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 07:36:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/17 11:29:10 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/18 01:19:05 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ typedef struct s_mshell
 	t_ast			*root;
 	t_ast			*tmp_node;
 	struct termios	term[2];
+	t_bool			is_term_set;
 }					t_mshell;
 
 typedef struct s_token
@@ -105,7 +106,7 @@ void		sig_interceptor(t_sig_mode mode);
 void		sig_sigint_main(int sig);
 int			sig_reset_readline(void);
 int			sig_reset_heredoc_readline(void);
-int			sig_set_termios(struct termios *term);
+int			sig_set_termios(t_term term_type, t_mshell *ms);
 
 /* ------------------------------ Environment ------------------------------ */
 

@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 16:41:21 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/17 02:38:36 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/18 01:27:14 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,8 @@ static int	run_external(char **args, t_mshell *ms)
 	}
 	if (pid == 0)
 	{
-		sig_set_termios(&ms->term[TERM_ECHOCTL]);
 		sig_interceptor(SIG_DEFAULT_MODE);
+		sig_set_termios(TERM_ECHOCTL, ms);
 		execve(path, args, ms->env.envp);
 		perror("minishell: execve");
 		exit(errno);

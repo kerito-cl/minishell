@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 08:53:14 by mquero            #+#    #+#             */
-/*   Updated: 2025/02/17 09:56:05 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/18 01:27:04 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static void	run_shell(t_mshell *ms, int *fake_code)
 {
 	while (1)
 	{
-		ms->input = readline("\033[0;35mminishell*w* \033[0m");
+		ms->input = readline("minishell> ");
 		sig_to_exit_code(ms);
 		if (ms->input == NULL)
 		{
@@ -69,7 +69,7 @@ static void	run_shell(t_mshell *ms, int *fake_code)
 
 static void	reset_shell(t_mshell *ms, int *fake_code)
 {
-	sig_set_termios(&ms->term[TERM_ORIGIN]);
+	sig_set_termios(TERM_ORIGIN, ms);
 	free(ms->input);
 	free_ast(ms->root);
 	*fake_code = -1;
