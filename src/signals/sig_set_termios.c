@@ -1,27 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sig_to_exit_code.c                                 :+:      :+:    :+:   */
+/*   sig_set_termios.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/30 20:21:48 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/16 12:03:03 by ipersids         ###   ########.fr       */
+/*   Created: 2025/02/17 02:04:28 by ipersids          #+#    #+#             */
+/*   Updated: 2025/02/17 02:33:43 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/**
- * @brief Converts signal status to exit code.
- * 
- * @param ms The minishell context.
- */
-void	sig_to_exit_code(t_mshell *ms)
+int	sig_set_termios(struct termios *term)
 {
-	if (g_status == 128 + SIGINT)
-		ms->exit_code = ERROR_INTERUPTED_SIGINT;
-	else if (g_status != 0)
-		ms->exit_code = g_status + 128;
-	g_status = 0;
+	if (isatty(STDIN_FILENO))
+	{
+		if (tcsetattr(STDIN_FILENO, TCSANOW, term) == -1)
+		{
+			perror("minishell: tcsetattr");
+			return (EXIT_FAILURE);
+		}
+	}
+	return (EXIT_SUCCESS);
 }

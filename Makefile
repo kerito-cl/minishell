@@ -6,7 +6,7 @@
 #    By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/15 07:44:51 by ipersids          #+#    #+#              #
-#    Updated: 2025/02/16 19:39:07 by ipersids         ###   ########.fr        #
+#    Updated: 2025/02/17 08:32:02 by ipersids         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,6 +40,7 @@ OBJ_DIR			:= obj
 SRCS			:= $(SRCS_DIR)/signals/sig_handler.c \
 				   $(SRCS_DIR)/signals/sig_to_exit_code.c \
 				   $(SRCS_DIR)/signals/sig_interceptor.c \
+				   $(SRCS_DIR)/signals/sig_set_termios.c \
 				   \
 				   $(SRCS_DIR)/environment/env_find_variable.c \
 				   $(SRCS_DIR)/environment/env_add.c \
@@ -58,6 +59,7 @@ SRCS			:= $(SRCS_DIR)/signals/sig_handler.c \
 				   \
 				   $(SRCS_DIR)/constructor/init_environment.c \
 				   $(SRCS_DIR)/constructor/init_minishell_struct.c \
+				   $(SRCS_DIR)/constructor/init_termios_attributes.c \
 				   \
 				   $(SRCS_DIR)/destructor/exit_destroy_minishell.c \
 				   $(SRCS_DIR)/destructor/free_2d_array.c \
@@ -84,6 +86,7 @@ SRCS			:= $(SRCS_DIR)/signals/sig_handler.c \
 				   $(SRCS_DIR)/execution/exe_ast_tree.c \
 				   $(SRCS_DIR)/execution/exe_command.c \
 				   $(SRCS_DIR)/execution/exe_heredoc_preprocessor.c \
+				   $(SRCS_DIR)/execution/exe_heredoc.c \
 				   $(SRCS_DIR)/execution/exe_redirection.c \
 				   
 SRC_MAIN		:= $(SRCS_DIR)/main.c

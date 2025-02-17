@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 07:36:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/16 19:33:42 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/17 11:29:10 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <sys/wait.h>	// waitpid()
 # include <fcntl.h>		// open()
 # include <sys/stat.h>	// stat()
+# include <termios.h>	// terminal device attributes: tcgetattr(), tcsetattr()
 
 # include "libft.h"
 # include "constants.h"
@@ -38,18 +39,6 @@ typedef struct s_ast
 	struct s_ast	*left;
 	struct s_ast	*right;
 }					t_ast;
-
-typedef struct s_token
-{
-	t_ast			**root;
-	int				len;
-	char			*value;
-	char			**cmd;
-	t_tokentype		type;
-	bool			lock;
-	bool			has_dollar;
-	char			quote;
-}					t_token;
 
 typedef struct s_flags
 {
@@ -88,19 +77,35 @@ typedef struct s_env
 
 typedef struct s_mshell
 {
-	t_env	env;
-	int		exit_code;
-	char	*input;
-	t_ast	*root;
-	t_ast	*tmp_node;
-}			t_mshell;
+	t_env			env;
+	int				exit_code;
+	char			*input;
+	t_ast			*root;
+	t_ast			*tmp_node;
+	struct termios	term[2];
+}					t_mshell;
+
+typedef struct s_token
+{
+	t_ast			**root;
+	t_mshell		*ms;
+	int				len;
+	char			*value;
+	char			**cmd;
+	t_tokentype		type;
+	bool			lock;
+	bool			has_dollar;
+	char			quote;
+}					t_token;
 
 /* -------------------------------- Signals -------------------------------- */
 
 void		sig_to_exit_code(t_mshell *ms);
 void		sig_interceptor(t_sig_mode mode);
 void		sig_sigint_main(int sig);
-void		sig_sigint_heredoc(int sig);
+int			sig_reset_readline(void);
+int			sig_reset_heredoc_readline(void);
+int			sig_set_termios(struct termios *term);
 
 /* ------------------------------ Environment ------------------------------ */
 
@@ -132,6 +137,7 @@ int			exe_ast_tree(t_ast *node, t_mshell *ms);
 int			exe_pipe(t_ast *root, t_mshell *ms);
 int			exe_command(t_ast *node, t_mshell *ms);
 int			exe_heredoc_preprocessor(t_ast *node, t_mshell *ms);
+int			exe_heredoc(t_ast *node, t_mshell *ms);
 int			exe_redirection(t_ast *node, t_mshell *ms);
 
 int			exe_wait_children(pid_t *pids, int amount);
@@ -153,6 +159,7 @@ void		exit_free(t_token *tokens, int len, char *buffer);
 
 int			init_environment(char **envp_arr, t_env *env);
 void		init_minishell_struct(t_mshell *ms, char **envp);
+int			init_termios_attributes(t_mshell *ms);
 
 /* ------------------------------ Parsing --------------------------- */
 

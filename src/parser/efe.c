@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 19:02:55 by mquero            #+#    #+#             */
-/*   Updated: 2025/02/16 15:54:18 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/17 11:18:16 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,5 +68,6 @@ void	exit_free(t_token *tokens, int len, char *buffer)
 		free_ast(*tokens[0].root);
 	if (tokens)
 		free_tokens(tokens, len);
+	exit_destroy_minishell(tokens[0].ms);
 	exit(1);
 }

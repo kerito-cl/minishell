@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_exit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 19:58:44 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/15 04:33:13 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/17 11:26:06 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ int	builtin_exit(char **args, t_mshell *ms)
 		ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
 		ft_putstr_fd(args[0], STDERR_FILENO);
 		ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
+		ms->exit_code = ERROR_INVALID_OPTION;
 	}
 	exit_destroy_minishell(ms);
 	exit(ms->exit_code);

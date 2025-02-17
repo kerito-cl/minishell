@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 16:41:21 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/16 19:33:00 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/17 02:38:36 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,15 +90,18 @@ static int	run_external(char **args, t_mshell *ms)
 
 	path[0] = '\0';
 	if (!exe_search_cmd_path(*args, env_find_value("PATH", &ms->env), path))
-	{
-		ms->exit_code = exe_handle_cmd_error(args[0]);
-		return (ms->exit_code);
-	}
+		return (exe_handle_cmd_error(args[0]));
 	if (is_directory(path, args[0], &ms->exit_code))
 		return (ms->exit_code);
 	pid = fork();
+	if (pid == -1)
+	{
+		perror("minishell: fork");
+		return (errno);
+	}
 	if (pid == 0)
 	{
+		sig_set_termios(&ms->term[TERM_ECHOCTL]);
 		sig_interceptor(SIG_DEFAULT_MODE);
 		execve(path, args, ms->env.envp);
 		perror("minishell: execve");
@@ -123,7 +126,7 @@ static t_bool	is_directory(const char *path, char *arg, int *exit_code)
 		ft_putstr_fd(arg, STDERR_FILENO);
 		if (ft_strchr(arg, '/') != NULL)
 		{
-			ft_putstr_fd(": Is a directory\n", STDERR_FILENO);
+			ft_putstr_fd(": is a directory\n", STDERR_FILENO);
 			*exit_code = ERROR_ISDIR;
 			return (TRUE);
 		}
