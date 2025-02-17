@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 18:41:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/15 13:51:33 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/17 09:41:58 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,30 +49,22 @@ typedef enum e_tokentype
 	CMD,
 }	t_tokentype;
 
+typedef enum e_term
+{
+	TERM_ORIGIN,
+	TERM_ECHOCTL
+}	t_term;
+
 # ifndef PATH_MAX
 #  define PATH_MAX 1024
 # endif
 
-# ifndef FD_READ
-#  define FD_READ 0
-# endif
-
-# ifndef FD_WRITE
-#  define FD_WRITE 1
-# endif
-
-# ifndef FORK_LEFT
-#  define FORK_LEFT 0
-# endif
-
-# ifndef FORK_RIGHT
-#  define FORK_RIGHT 1
-# endif
-
-# ifndef EXIT_CODE_CASE
-#  define EXIT_CODE_CASE "$?"
-# endif
-
+# define FD_READ 0
+# define FD_WRITE 1
+# define FORK_LEFT 0
+# define FORK_RIGHT 1
+# define EXIT_CODE_CASE "$?"
+# define SIGINT_CHAR "^C"
 # define ADD_CAPACITY 100
 
 #endif

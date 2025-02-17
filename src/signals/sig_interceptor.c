@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 12:34:07 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/15 23:36:50 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/17 09:29:08 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	sig_interceptor(t_sig_mode mode)
 	if (mode == SIG_INTERACTIVE_MODE)
 		sig_init(sig_sigint_main, SIG_IGN);
 	else if (mode == SIG_HEREDOC_MODE)
-		sig_init(SIG_DFL, SIG_IGN);
+		sig_init(sig_sigint_main, SIG_IGN);
 	else
 		sig_init(SIG_DFL, SIG_DFL);
 }

@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 23:36:02 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/15 23:43:19 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/17 09:55:26 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	init_minishell_struct(t_mshell *ms, char **envp)
 	rl_catch_signals = 0;
 	sig_interceptor(SIG_INTERACTIVE_MODE);
 	rl_event_hook = sig_reset_readline;
+	init_termios_attributes(ms);
 	ms->exit_code = init_environment(envp, &ms->env);
 	if (ms->exit_code != 0)
 	{
