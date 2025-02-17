@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:55:21 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/15 04:46:36 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/17 11:57:24 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,12 @@ int	builtin_cd(char **args, t_env *env)
 		ft_putstr_fd(": invalid option\n", STDERR_FILENO);
 		ft_putstr_fd("cd: usage: cd [dir]\n", STDERR_FILENO);
 		return (ERROR_INVALID_OPTION);
+	}
+	if (args[1] != NULL)
+	{
+		ft_putstr_fd("minishell: cd: ", STDERR_FILENO);
+		ft_putstr_fd("too many arguments\n", STDERR_FILENO);
+		return (ERROR_GENERIC);
 	}
 	return (go_path(args[0], env));
 }

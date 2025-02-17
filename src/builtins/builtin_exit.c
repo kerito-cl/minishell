@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_exit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 19:58:44 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/17 11:26:06 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/17 12:01:59 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ static t_bool	is_exit_code_valid(const char *str, int *exit_code)
 		}
 		if (!ft_isdigit(str[i]))
 		{
-			*exit_code = ERROR_INVALID_EXIT_CODE;
+			*exit_code = ERROR_INVALID_OPTION;
 			return (FALSE);
 		}
 		i++;
