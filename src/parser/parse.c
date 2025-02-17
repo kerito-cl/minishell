@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 16:28:29 by mquero            #+#    #+#             */
-/*   Updated: 2025/02/16 15:55:13 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/17 09:08:52 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ t_ast	*parse_input(char *input, t_mshell *ms, int *exit_code)
 	if (!check_parse_error(tokens, tokens[0].len))
 		return (NULL);
 	if (tokens[0].len == -1)
-		return (NULL);
+		return (free(tokens), NULL);
 	i.pip = tokens[0].len;
 	i.min = 0;
 	i.len = tokens[0].len;

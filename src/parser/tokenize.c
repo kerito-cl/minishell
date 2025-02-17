@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 16:15:29 by mquero            #+#    #+#             */
-/*   Updated: 2025/02/16 18:11:15 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/17 09:07:14 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,9 +135,9 @@ int	tokenize(t_token *tokens, char *input)
 	elem.k = 0;
 	flag = false;
 	buffer = deal_with_quotes(input);
+	free(input);
 	if (!buffer)
 		return (-1);
-	free(input);
 	while (buffer[elem.i] != '\0')
 	{
 		tokens[elem.j].quote = 0;
