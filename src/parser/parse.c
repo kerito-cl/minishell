@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 16:28:29 by mquero            #+#    #+#             */
-/*   Updated: 2025/02/17 11:39:56 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/17 12:10:18 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ t_ast	*parse_input(char *input, t_mshell *ms, int *exit_code)
 	if (!check_parse_error(tokens, tokens[0].len))
 		return (NULL);
 	if (tokens[0].len == -1)
-		return (NULL);
+		return (free(tokens), NULL);
 	init_index(&i, tokens[0].len);
 	root = divide_input(tokens, tokens[0].len, &i);
 	tokens[0].ms = NULL;
