@@ -6,11 +6,28 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 16:28:29 by mquero            #+#    #+#             */
-/*   Updated: 2025/02/16 15:55:13 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/17 11:39:56 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	check_token(t_token *tokens, char *var, t_mshell *ms)
+{
+	if (!tokens)
+	{
+		free(var);
+		exit_destroy_minishell(ms);
+	}
+}
+
+static void	init_index(t_index *i, int len)
+{
+	i->pip = len;
+	i->min = 0;
+	i->len = len;
+	i->max = i->len;
+}
 
 t_ast	*create_node(char **s1, t_tokentype type, t_token *tokens)
 {
@@ -78,17 +95,15 @@ t_ast	*parse_input(char *input, t_mshell *ms, int *exit_code)
 		return (NULL);
 	}
 	tokens = (t_token *)ft_calloc(sizeof(t_token), ft_strlen(var) * 2);
-	if (!tokens)
-		exit_free(tokens, 0, var);
+	check_token(tokens, var, ms);
+	tokens[0].ms = ms;
 	tokens[0].len = tokenize(tokens, var);
 	if (!check_parse_error(tokens, tokens[0].len))
 		return (NULL);
 	if (tokens[0].len == -1)
 		return (NULL);
-	i.pip = tokens[0].len;
-	i.min = 0;
-	i.len = tokens[0].len;
-	i.max = i.len;
+	init_index(&i, tokens[0].len);
 	root = divide_input(tokens, tokens[0].len, &i);
+	tokens[0].ms = NULL;
 	return (free_tokens(tokens, tokens[0].len), root);
 }

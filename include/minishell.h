@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 07:36:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/17 09:43:04 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/17 11:29:10 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,18 +39,6 @@ typedef struct s_ast
 	struct s_ast	*left;
 	struct s_ast	*right;
 }					t_ast;
-
-typedef struct s_token
-{
-	t_ast			**root;
-	int				len;
-	char			*value;
-	char			**cmd;
-	t_tokentype		type;
-	bool			lock;
-	bool			has_dollar;
-	char			quote;
-}					t_token;
 
 typedef struct s_flags
 {
@@ -96,6 +84,19 @@ typedef struct s_mshell
 	t_ast			*tmp_node;
 	struct termios	term[2];
 }					t_mshell;
+
+typedef struct s_token
+{
+	t_ast			**root;
+	t_mshell		*ms;
+	int				len;
+	char			*value;
+	char			**cmd;
+	t_tokentype		type;
+	bool			lock;
+	bool			has_dollar;
+	char			quote;
+}					t_token;
 
 /* -------------------------------- Signals -------------------------------- */
 
