@@ -6,7 +6,7 @@
 #    By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/15 07:44:51 by ipersids          #+#    #+#              #
-#    Updated: 2025/02/17 08:32:02 by ipersids         ###   ########.fr        #
+#    Updated: 2025/02/18 02:34:41 by ipersids         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -139,19 +139,5 @@ re: fclean all
 run: all
 	@echo "\n\033[036m\tWELCOME TO MINISHELL:\033[0m\n"
 	@./minishell
-
-# TESTING >>>
-TEST_SRC		:= tests/test_main.c tests/test_env.c tests/test_builtin.c tests/test_pipex.c
-TEST_OBJ		:= $(TEST_SRC:tests/%.c=tests/%.o)
-
-test: update-submodule build-submodule $(OBJ_DIR) $(OBJS) $(TEST_OBJ)
-	$(CC) $(CFLAGS) $(OBJS) $(TEST_OBJ) $(HDRS) $(LIBS) -o test_main
-
-%.o: %.c
-	$(CC) $(CFLAGS) $(HDRS) -c $< -o $@
-
-tclean: clean
-	@rm -f $(TEST_OBJ) test_main
-# END OF TESTING <<<
 
 .PHONY: all clean fclean re run

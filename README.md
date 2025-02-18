@@ -1,63 +1,81 @@
 <div align="center">
-<!-- <p><a href="https://www.hive.fi/en/curriculum">Hive (42 School Network)</a></p> -->
+<p><a href="https://www.hive.fi/en/curriculum">Hive (42 School Network)</a></p>  
+
 <h1>Minishell</h1> 
+
 </div>
 
-### Project planning:  
+#### Introduction  
+Minishell is a lightweight shell that's similar to standard Unix shells (like bash). It supports both interactive and non-interactive modes, signal handling, command history, built-in commands, and external executables with piping and redirection.  
 
-#### 1. Signals, command line prompt, data management.   
-- [x] Support `Ctrl-C`, `Ctrl-D`, and `Ctrl-\` for interactive mode  
-- [ ] Non-interactive mode  
+#### Table of Contents
 
-| Key    | Interactive Mode        | Non-Interactive Mode                        |
-| :-----: | ------------------      | ----------------------                     |
-| Ctrl-C | Displays a new prompt.  | Interrupts a running process if not ignored. |
-| Ctrl-D | Exits the shell.        | Signals EOF, ending input.                  |
-| Ctrl-\ | Does nothing (ignored). | Terminates process.                         |
+- [Features](#features)
+  - [Parser and command line prompt](#parser-and-command-line-prompt)
+  - [Signals](#signals-command-line-prompt)
+  - [Builtins](#builtins)
+  - [External commands](#external-commands)
+- [Project structure](#project-structure)
+- [Project diagram](#project-diagram)
+- [Installation](#installation)
 
-- [x] Display a prompt when waiting for a new command (`readline`).  
-- [x] Have a working history.  
-- [x] Data management:  
-    * Region-based memory management - arena?  
-    * Basic struct with pointer to array (environment copy) and AST linked-list?  
-    * Define key structures and error system  
+## Features
 
-#### 2. Parser and syntax validation   
-- Should we pre-validate syntax before actual parsing (like Backus-Naur Form (BNF))?   
-- [x] AST (abstract syntax tree) parser vs split to linked list | array?
-    * Tokenize input using spaces and special characters (`|`, `<`, `>`, `<<`, `>>`, `$`, `||` ...)  
-    * Handle `’` (single quote) which should prevent the shell from interpreting the metacharacters in the quoted sequence.    
-	* Handle `"` (double quote) which should prevent the shell from interpreting the metacharacters in the quoted sequence except for `$` (dollar sign).
-    * Validate syntax in general (e.g., no unclosed quotes)    
+### Parser and command line prompt
 
-#### 3. Builtins  
-Built-in commands are executed directly by the shell and are part of the shell itself. These commands do not require external binaries or files to execute. All commands should return zero in success and not-zero int overwise (we need handle `$?`).  
+**Command line prompt and history**
 
-It takes an array of array of chars as argument (the command should be skipped, ex: `"echo Hello!"` -> `char **args = ["echo", "Hello!", NULL]` -> `builtin_echo(&args[1])`).  
+- This project uses `readline` library to show a prompt and capture user input.
+- A working history of commands is maintained.  
 
-- [x] `echo` with option `-n`. Outputs text to the terminal with new lin or without (if `-n` was used).  
-- [x] `cd` with only a relative or absolute path changes the current working directory.  
-- [x] `pwd` with no options  
-- [x] `export` with no options sets environment variables.  
-- [x] `unset` with no options unsets environment variables.  
-- [x] `env` with no options or arguments  
-- [x] `exit` with no options  
+**Parser** 
+- It uses an AST (Abstract Syntax Tree) linked list to store user input.   
+- Tokenises input using special characters (`|`, `<`, `>`, `<<`, `>>`, `$`, etc.).  
+- Handles single (`'`) and double quotes (`"`) syntax.  
+- Checks for common syntax errors (e.g., unclosed quotes).  
+- Expands environment variables (using `$` notation) and `$?` for the exit status of the last foreground command.
 
-#### 4. External commands  
-The shell must search for the executable in directories specified in the PATH variable and spawn a new process to run it: search the `PATH`, create a new process (`fork()`) and execute (`execve()`) to run the command.   
-- [x] Search and launch the right executable (based on the PATH variable or using a relative or an absolute path).  
-- [x] Pipes (`|`)  
-- [x] Implement redirections:
-    * `<` should redirect input.  
-    * `>` should redirect output.
-    * `<<` should be given a delimiter, then read the input until a line containing the delimiter is seen. However, *it doesn’t have to update the history.*
-    * `>>` should redirect output in append mode.
-- [x] Handle `<<` with pipe
-- [x] Handle environment variables ($ followed by a sequence of characters) which should expand to their values.  
-- [x] Handle `$?` which should expand to the exit status of the most recently executed foreground pipeline.
- 
+### Signals
 
-**Project directories structure**  
+**Signal handling**  
+The shell supports the following key signals in both interactive and non-interactive modes:  
+
+| Key    | Interactive Mode        | Non-Interactive Mode          |
+| :----: | ------------------      | ----------------------        |
+| Ctrl-C | Displays a new prompt.  | Interrupts a running process  |
+| Ctrl-D | Exits the shell.        | Signals EOF, ending input.    |
+| Ctrl-\ | Does nothing (ignored). | Terminates process.           |
+
+### Builtins
+
+Built-in commands are executed directly by the shell without calling external binaries. They follow the convention of returning '0' on success or a non-zero value on error (accessible via `$?`). Each builtin receives an array of strings as arguments (for example, "echo Hello!" is tokenized to `["echo", "Hello!", NULL]` and then executed as `builtin_echo(&args[1])`).  
+
+**Supported Built-ins:**
+- `echo` (supports `-n` option for omitting the newline)  
+- `cd` (changes the current working directory using relative or absolute paths)  
+- `pwd` (prints the current working directory)  
+- `export` (sets environment variables)  
+- `unset` (removes environment variables)  
+- `env` (displays the current environment)  
+- `exit` (exits the shell)  
+
+### External commands
+
+The shell can run external commands by searching the executable in the directories specified by the `PATH` variable.  
+**Execution flow:**
+-	Search for the executable in the `PATH`.
+-	Create a new process using `fork()` and execute the command with `execve()`.  
+
+**Piping and redirection:**
+-	Pipe (`|`): support for piping output between processes.  
+-	Redirections: 
+    * `<` redirects input.   
+    * `>` redirects output.  
+    * `<<` reads input until a specified delimiter is encountered (here-document).   
+    * `>>` appends output.  
+- Supports combining here-documents (`<<`) with pipes.  
+
+## Project structure
 
 ```css
 minishell/
@@ -65,24 +83,25 @@ minishell/
 ├── libft/                    # Submodule libft
 │
 ├── include/                  # Header files
-│   ├── constants.h
 │   ├── minishell.h
-│   └── structures.h
+│   └── constants.h
 │
 ├── src/                      # Source files
-│   ├── signals/
+│   ├── builtins/
+│   │   ├── utils/..
 │   │   └── *.c
-│   ├── parser/
+│   ├── constructor/
 │   │   └── *.c
-│   ├── builtin/
-│   │   └── *.c
-│   ├── utils/
+│   ├── destructor/
 │   │   └── *.c
 │   ├── environment/
 │   │   └── *.c
-│   ├── pipelines/
+│   ├── execution/
+│   │   ├── utils/..
 │   │   └── *.c
-│   ├── .../
+│   ├── parser/
+│   │   └── *.c
+│   ├── signals/
 │   │   └── *.c
 │   └── main.c
 │
@@ -91,7 +110,7 @@ minishell/
 
 ```
 
-**Project diagram**  
+## Project diagram
 
 <div style="width: 400px; height: auto; overflow: auto;">
 <pre>
@@ -104,7 +123,8 @@ flowchart TD
     B2 --> C1{Is the line valid?}
     C1 --> |No| A2
     C1 --> |Yes| A3[Parsing]
-    A3 --> A4[Execute Commands]
+    A3 --> A5[Here-document preprocessing]
+    A5 --> A4[Execute Commands]
 
     subgraph Execute_Flow [Execute Flow]
         A4 --> C2{Is it a built-in?}
@@ -114,9 +134,31 @@ flowchart TD
     end
 
     C3 --> |No| A2
-    C3 --> |Yes| B3[Exit Program]
+    C3 --> |Yes| B3[Exit Minishell]
 ```
+
 </pre> </div>
+
+## Installation
+
+1. Clone the repository and build the project using the provided `Makefile`:  
+```bash
+git clone https://github.com/kerito-cl/minishell.git
+cd minishell
+make
+```
+
+2. Run minishell:  
+```bash
+./minishell
+```
+
+**Other commands:**  
+	* `make clean` will remove all .o' files from the directory.  
+	* `make fclean` will remove all .o' and executable files.  
+	* `make re` will trigger the fclean command and rebuild the program.   
+
+
 
 ________  
 <div align="center">
