@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 07:36:18 by ipersids          #+#    #+#             */
-/*   Updated: 2025/02/18 01:19:05 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/18 17:08:06 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,7 +175,7 @@ void		assign_to_left(t_ast *root, t_token *tokens, t_index *i, \
 void		find_root(t_ast **root, t_token *tokens, t_index *i);
 void		free_tokens(t_token *tokens, int len);
 void		free_ast(t_ast *node);
-char		*deal_with_quotes(char *input);
+char		*deal_with_quotes(char *input, t_mshell *ms);
 char		**create_cmd(char *s);
 bool		compare_token(char *buffer, int i, bool flag, char quote);
 char		quote_value(char c);

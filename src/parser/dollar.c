@@ -3,14 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   dollar.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 12:10:10 by mquero            #+#    #+#             */
-/*   Updated: 2025/02/17 11:43:47 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/18 17:03:33 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	allocate_exit_status(char **temp, t_mshell *ms)
+{
+	*temp = ft_itoa(ms->exit_code);
+	if (*temp == NULL)
+		exit_destroy_minishell(ms);
+}
 
 static void	check_if_heredoc(char **input, char *var, t_elem *elem)
 {
@@ -32,7 +39,7 @@ static void	expand_env_var(char **var, t_elem *elem, char **input, t_mshell *ms)
 	char	*temp;
 
 	if (**input == '$' && *(*input + 1) == '?')
-		temp = ft_itoa(ms->exit_code);
+		allocate_exit_status(&temp, ms);
 	else
 		temp = env_find_value_v2(*input, &ms->env);
 	if (temp != NULL)

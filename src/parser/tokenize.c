@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 16:15:29 by mquero            #+#    #+#             */
-/*   Updated: 2025/02/17 09:07:14 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/18 17:06:15 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ int	tokenize(t_token *tokens, char *input)
 	elem.j = 0;
 	elem.k = 0;
 	flag = false;
-	buffer = deal_with_quotes(input);
+	buffer = deal_with_quotes(input, tokens[0].ms);
 	free(input);
 	if (!buffer)
 		return (-1);

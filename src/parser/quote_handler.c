@@ -6,7 +6,7 @@
 /*   By: ipersids <ipersids@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 16:49:00 by mquero            #+#    #+#             */
-/*   Updated: 2025/02/16 19:38:43 by ipersids         ###   ########.fr       */
+/*   Updated: 2025/02/18 17:05:01 by ipersids         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ static void	logic_loop(char *input, char *buffer, t_elem *el, t_flags *flag)
 		el->i++;
 }
 
-char	*deal_with_quotes(char *input)
+char	*deal_with_quotes(char *input, t_mshell *ms)
 {
 	t_elem	elem;
 	t_flags	flag;
@@ -120,7 +120,7 @@ char	*deal_with_quotes(char *input)
 	if (!buffer)
 	{
 		free(input);
-		exit(1);
+		exit_destroy_minishell(ms);
 	}
 	while (input[elem.i] != '\n' && input[elem.i])
 		logic_loop(input, buffer, &elem, &flag);
